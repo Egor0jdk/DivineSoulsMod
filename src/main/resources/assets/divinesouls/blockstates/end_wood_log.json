@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=y": { "model": "divinesouls:block/end_wood_log" },
+    "axis=z": { "model": "divinesouls:block/end_wood_log_horizontal", "x": 90 },
+    "axis=x": { "model": "divinesouls:block/end_wood_log_horizontal", "x": 90, "y": 90 }
+  }
+}

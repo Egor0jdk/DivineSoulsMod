@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "divinesouls:end_wood_log"
+    }
+  ],
+  "result": {
+    "item": "divinesouls:end_wood_planks",
+    "count": 4
+  }
+}

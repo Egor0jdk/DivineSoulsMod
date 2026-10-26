@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="MIT"
+
+[[mods]]
+modId="divinesouls"
+version="1.0.0"
+displayName="Divine Souls"
+credits=""
+authors="rlYqAz123"
+description='''
+A massive RPG mod featuring dozens of custom dimensions, epic bosses, unique weapons, and tons of items, inspired by DivineRPG, OreSpawn and Terraria
+'''
+
+[[dependencies.divinesouls]]
+modId="forge"
+mandatory=true
+versionRange="[36.2.39,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.divinesouls]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.16.5,1.17)"
+ordering="NONE"
+side="BOTH"

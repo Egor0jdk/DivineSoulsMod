@@ -1,0 +1,9 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "particle": "divinesouls:block/xen_grass_block_side",
+    "bottom": "minecraft:block/end_stone",
+    "top": "divinesouls:block/xen_grass_block_top",
+    "side": "divinesouls:block/xen_grass_block_side"
+  }
+}

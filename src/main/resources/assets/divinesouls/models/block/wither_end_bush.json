@@ -1,0 +1,6 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "divinesouls:block/wither_end_bush"
+  }
+}

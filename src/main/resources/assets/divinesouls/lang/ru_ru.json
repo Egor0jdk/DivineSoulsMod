@@ -1,0 +1,31 @@
+{
+  "item.divinesouls.ancient_rune": "Древняя руна",
+  "item.divinesouls.wither_core": "Ядро Визера",
+  "item.divinesouls.end_crystal_gem": "Кристалл Энда",
+  "block.divinesouls.end_crystal_ore": "Руда Кристалла Энда",
+  "item.divinesouls.end_wood_stick": "Палка из древесины Края",
+  "block.divinesouls.xen_grass_block": "Дёрн Края",
+  "block.divinesouls.xen_bush_grass": "Трава Края",
+  "block.divinesouls.wither_end_bush": "Иссушенный куст Края",
+  "block.divinesouls.end_wood_log": "Бревно Края",
+  "block.divinesouls.end_wood_planks": "Доски Края",
+  "block.divinesouls.end_wood_leaves": "Листва Края",
+  "block.divinesouls.end_sapling": "Саженец Края",
+
+  "item.divinesouls.end_crystal_sword": "Меч из кристалла Энда",
+  "item.divinesouls.end_crystal_pickaxe": "Кирка из кристалла Энда",
+  "item.divinesouls.end_crystal_axe": "Топор из кристалла Энда",
+  "item.divinesouls.end_crystal_shovel": "Лопата из кристалла Энда",
+  "item.divinesouls.end_crystal_hoe": "Мотыга из кристалла Энда",
+
+  "item.divinesouls.end_crystal_helmet": "Шлем из кристалла Энда",
+  "item.divinesouls.end_crystal_chestplate": "Нагрудник из кристалла Энда",
+  "item.divinesouls.end_crystal_leggings": "Поножи из кристалла Энда",
+  "item.divinesouls.end_crystal_boots": "Ботинки из кристалла Энда",
+
+  "itemGroup.divine_items_tab": "Divine Souls: Предметы",
+  "itemGroup.divine_weapons_tab": "Divine Souls: Оружие",
+  "itemGroup.divine_mobs_tab": "Divine Souls: Мобы",
+  "itemGroup.divine_blocks_tab": "Divine Souls: Блоки",
+  "itemGroup.divine_summons_tab": "Divine Souls: Призывалки"
+}

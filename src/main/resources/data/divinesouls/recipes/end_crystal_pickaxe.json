@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    " R ",
+    " R "
+  ],
+  "key": {
+    "G": { "item": "divinesouls:end_crystal_gem" },
+    "R": { "item": "divinesouls:end_wood_stick" }
+  },
+  "result": { "item": "divinesouls:end_crystal_pickaxe", "count": 1 }
+}

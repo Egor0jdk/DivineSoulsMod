@@ -1,0 +1,31 @@
+{
+  "item.divinesouls.ancient_rune": "Ancient Rune",
+  "item.divinesouls.wither_core": "Wither Core",
+  "item.divinesouls.end_crystal_gem": "End Crystal Gem",
+  "block.divinesouls.end_crystal_ore": "End Crystal Ore",
+  "item.divinesouls.end_wood_stick": "End Wood Stick",
+  "block.divinesouls.xen_grass_block": "End Grass Block",
+  "block.divinesouls.xen_bush_grass": "End Grass",
+  "block.divinesouls.wither_end_bush": "Withered End Bush",
+  "block.divinesouls.end_wood_log": "End Log",
+  "block.divinesouls.end_wood_planks": "End Planks",
+  "block.divinesouls.end_wood_leaves": "End Leaves",
+  "block.divinesouls.end_sapling": "End Sapling",
+
+  "item.divinesouls.end_crystal_sword": "End Crystal Sword",
+  "item.divinesouls.end_crystal_pickaxe": "End Crystal Pickaxe",
+  "item.divinesouls.end_crystal_axe": "End Crystal Axe",
+  "item.divinesouls.end_crystal_shovel": "End Crystal Shovel",
+  "item.divinesouls.end_crystal_hoe": "End Crystal Hoe",
+
+  "item.divinesouls.end_crystal_helmet": "End Crystal Helmet",
+  "item.divinesouls.end_crystal_chestplate": "End Crystal Chestplate",
+  "item.divinesouls.end_crystal_leggings": "End Crystal Leggings",
+  "item.divinesouls.end_crystal_boots": "End Crystal Boots",
+
+  "itemGroup.divine_items_tab": "Divine Souls: Items",
+  "itemGroup.divine_weapons_tab": "Divine Souls: Weapons",
+  "itemGroup.divine_mobs_tab": "Divine Souls: Mobs",
+  "itemGroup.divine_blocks_tab": "Divine Souls: Blocks",
+  "itemGroup.divine_summons_tab": "Divine Souls: Summons"
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "divinesouls:block/xen_bush_grass"
+  }
+}
