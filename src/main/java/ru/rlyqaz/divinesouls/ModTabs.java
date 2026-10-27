@@ -15,11 +15,18 @@ public class ModTabs {
         }
     };
 
-    // 2. Вкладка: Оружие (иконка — ванильный алмазный меч)
+    // 2. Вкладки: Оружие-Броня
     public static final ItemGroup DIVINE_WEAPONS = new ItemGroup("divine_weapons_tab") {
         @Override
         public ItemStack makeIcon() {
-            return new ItemStack(Items.DIAMOND_SWORD);
+            return new ItemStack(ModWeapons.END_CRYSTAL_SWORD.get());
+        }
+    };
+
+    public static final ItemGroup DIVINE_ARMOR = new ItemGroup("divine_armor_tab") {
+        @Override
+        public ItemStack makeIcon() {
+            return new ItemStack(ModArmor.END_CRYSTAL_CHESTPLATE.get());
         }
     };
 

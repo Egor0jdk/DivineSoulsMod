@@ -110,6 +110,10 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
+    maven {
+        name = "GeckoLib Repository"
+        url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
+    }
     // Официальный репозиторий для мододелов
     maven {
         name = "ModMaven"
@@ -140,6 +144,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     runtimeOnly fg.deobf("mezz.jei:jei-1.16.5:7.7.1.118")
+    implementation fg.deobf("software.bernie.geckolib:geckolib-forge-1.16.5:3.0.106")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

@@ -18,24 +18,19 @@ import net.minecraftforge.fml.RegistryObject;
  */
 public class ModArmor {
 
-    // --- КРИСТАЛЬНЫЙ СЕТ ЭНДА (END CRYSTAL SET) ---
-    // Элементы головы, тела и ног используют кастомный класс EndCrystalArmorItem для отслеживания фулл-сета и иммунитета к левитации
-
     public static final RegistryObject<Item> END_CRYSTAL_HELMET = DivineSoulsMod.ITEMS.register("end_crystal_helmet",
-            () -> new EndCrystalArmorItem(ModArmorMaterial.END_CRYSTAL, EquipmentSlotType.HEAD, new Item.Properties().tab(ModTabs.DIVINE_WEAPONS)));
+            () -> new EndCrystalArmorItem(ModArmorMaterial.END_CRYSTAL, EquipmentSlotType.HEAD, new Item.Properties().tab(ModTabs.DIVINE_ARMOR)));
 
     public static final RegistryObject<Item> END_CRYSTAL_CHESTPLATE = DivineSoulsMod.ITEMS.register("end_crystal_chestplate",
-            () -> new EndCrystalArmorItem(ModArmorMaterial.END_CRYSTAL, EquipmentSlotType.CHEST, new Item.Properties().tab(ModTabs.DIVINE_WEAPONS)));
+            () -> new EndCrystalArmorItem(ModArmorMaterial.END_CRYSTAL, EquipmentSlotType.CHEST, new Item.Properties().tab(ModTabs.DIVINE_ARMOR)));
 
     public static final RegistryObject<Item> END_CRYSTAL_LEGGINGS = DivineSoulsMod.ITEMS.register("end_crystal_leggings",
-            () -> new EndCrystalArmorItem(ModArmorMaterial.END_CRYSTAL, EquipmentSlotType.LEGS, new Item.Properties().tab(ModTabs.DIVINE_WEAPONS)));
+            () -> new EndCrystalArmorItem(ModArmorMaterial.END_CRYSTAL, EquipmentSlotType.LEGS, new Item.Properties().tab(ModTabs.DIVINE_ARMOR)));
 
-    // Ботинки используют стандартный ванильный класс ArmorItem, так как тики отслеживаются через шлем (HEAD)
     public static final RegistryObject<Item> END_CRYSTAL_BOOTS = DivineSoulsMod.ITEMS.register("end_crystal_boots",
-            () -> new ArmorItem(ModArmorMaterial.END_CRYSTAL, EquipmentSlotType.FEET, new Item.Properties().tab(ModTabs.DIVINE_WEAPONS)));
+            () -> new ArmorItem(ModArmorMaterial.END_CRYSTAL, EquipmentSlotType.FEET, new Item.Properties().tab(ModTabs.DIVINE_ARMOR)));
 
-    // Метод-заглушка для вызова инициализации класса в главном моде
     public static void register() {
-        // Оставляем пустым
+        // Заглушка
     }
 }
