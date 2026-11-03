@@ -1,0 +1,26 @@
+image: ubuntu/lts
+packages:
+  - bash
+  - curl
+  - unzip
+  - zip
+  - tar
+  - sed
+  - ftp-upload
+sources:
+  - https://git.sr.ht/~jtech-labs/neoforge-1.21-base
+tasks:
+  - start: |
+      curl -s "https://get.sdkman.io" | bash
+      source "$HOME/.sdkman/bin/sdkman-init.sh"
+      sdk install java
+      sdk install kotlin
+  - build: |
+      cd neoforge-1.21-base
+      export JAVA_HOME=/home/build/.sdkman/candidates/java/21.0.7-tem/
+      ./gradlew --refresh-dependencies
+      ./gradlew build
+  - send: |
+      cd neoforge-1.21-base
+      cd build/libs
+      ftp-upload --passive -h ftp.byethost33.com -u b33_38909655 --password TheVeryGoodPassword -d htdocs jtechlabstestone-0.0.1.jar

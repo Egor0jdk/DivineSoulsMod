@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "divinesouls:end_crystal_ore"
+  },
+  "result": {
+    "id": "divinesouls:end_crystal_gem"
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

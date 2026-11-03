@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GGG",
+    "G G",
+    "G G"
+  ],
+  "key": {
+    "G": {
+      "item": "divinesouls:end_crystal_gem"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:end_crystal_leggings"
+  }
+}

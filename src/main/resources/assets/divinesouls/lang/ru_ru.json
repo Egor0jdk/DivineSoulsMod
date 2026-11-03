@@ -4,8 +4,8 @@
   "item.divinesouls.end_crystal_gem": "Кристалл Энда",
   "block.divinesouls.end_crystal_ore": "Руда Кристалла Энда",
   "item.divinesouls.end_wood_stick": "Палка из древесины Края",
-  "block.divinesouls.xen_grass_block": "Дёрн Края",
-  "block.divinesouls.xen_bush_grass": "Трава Края",
+  "block.divinesouls.end_grass_block": "Дёрн Края",
+  "block.divinesouls.end_bush_grass": "Трава Края",
   "block.divinesouls.wither_end_bush": "Иссушенный куст Края",
   "block.divinesouls.end_wood_log": "Бревно Края",
   "block.divinesouls.end_wood_planks": "Доски Края",
@@ -23,10 +23,10 @@
   "item.divinesouls.end_crystal_leggings": "Поножи из кристалла Энда",
   "item.divinesouls.end_crystal_boots": "Ботинки из кристалла Энда",
 
-  "itemGroup.divine_items_tab": "Divine Souls: Предметы",
-  "itemGroup.divine_weapons_tab": "Divine Souls: Оружие",
-  "itemGroup.divine_armor_tab": "Divine Souls: Броня",
-  "itemGroup.divine_mobs_tab": "Divine Souls: Мобы",
-  "itemGroup.divine_blocks_tab": "Divine Souls: Блоки",
-  "itemGroup.divine_summons_tab": "Divine Souls: Призывалки"
+  "itemGroup.divinesouls.items": "Divine Souls: Предметы",
+  "itemGroup.divinesouls.weapons": "Divine Souls: Оружие",
+  "itemGroup.divinesouls.armor": "Divine Souls: Броня",
+  "itemGroup.divinesouls.mobs": "Divine Souls: Мобы",
+  "itemGroup.divinesouls.blocks": "Divine Souls: Блоки",
+  "itemGroup.divinesouls.summons": "Divine Souls: Призывалки"
 }
