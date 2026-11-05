@@ -20,6 +20,7 @@ import ru.rlyqaz.divinesouls.item.ModWeapons
 import ru.rlyqaz.divinesouls.item.ModArmorMaterials
 import ru.rlyqaz.divinesouls.item.ModArmor
 import ru.rlyqaz.divinesouls.worldgen.EndOasisFeature
+import ru.rlyqaz.divinesouls.worldgen.EndTreeFeature
 import thedarkcolour.kotlinforforge.neoforge.forge.MOD_BUS
 import java.util.function.Supplier
 
@@ -38,9 +39,14 @@ object DivineSoulsMod {
     val ITEMS: DeferredRegister.Items = DeferredRegister.createItems(MOD_ID)
     val FEATURES: DeferredRegister<Feature<*>> = DeferredRegister.create(Registries.FEATURE, MOD_ID)
 
-    // Исправлено выведение типов для регистрации кастомной фичи оазиса
+    // Фича покрытия поляны
     val END_OASIS_FEATURE: Supplier<Feature<NoneFeatureConfiguration>> = FEATURES.register("end_oasis", Supplier<Feature<*>> {
         EndOasisFeature(NoneFeatureConfiguration.CODEC)
+    }) as Supplier<Feature<NoneFeatureConfiguration>>
+
+    // Новая фича отдельно для самого Дерева Края!
+    val END_TREE_FEATURE: Supplier<Feature<NoneFeatureConfiguration>> = FEATURES.register("end_tree", Supplier<Feature<*>> {
+        EndTreeFeature(NoneFeatureConfiguration.CODEC)
     }) as Supplier<Feature<NoneFeatureConfiguration>>
 
     init {
@@ -58,6 +64,11 @@ object DivineSoulsMod {
         ModArmor.register(modEventBus)
 
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.ArmorEffectsHandler)
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WardenBalanceHandler)
+        // Очищаем босс-бары Вардена при выключении встроенного или выделенного сервера
+        NeoForge.EVENT_BUS.addListener { event: net.neoforged.neoforge.event.server.ServerStoppedEvent ->
+            ru.rlyqaz.divinesouls.event.WardenBalanceHandler.clearAllBars()
+        }
         NeoForge.EVENT_BUS.register(this)
 
         LOGGER.info("Divine Souls: Главный класс успешно инициализирован под именем DivineSoulsMod!")

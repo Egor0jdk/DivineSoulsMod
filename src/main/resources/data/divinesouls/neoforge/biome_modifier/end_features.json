@@ -7,8 +7,8 @@
     "minecraft:small_end_islands"
   ],
   "features": [
-    "divinesouls:end_crystal_ore",
-    "divinesouls:end_oasis"
+    "divinesouls:end_oasis",
+    "divinesouls:end_tree"
   ],
   "step": "vegetal_decoration"
 }

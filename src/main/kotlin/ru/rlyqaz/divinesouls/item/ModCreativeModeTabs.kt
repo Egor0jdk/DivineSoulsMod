@@ -22,6 +22,7 @@ object ModCreativeModeTabs {
             .displayItems { _, output ->
                 output.accept(ModItems.END_CRYSTAL_GEM.get())
                 output.accept(ModItems.END_WOOD_STICK.get())
+                output.accept(ModItems.WARDEN_SOUL.get())
             }
             .build()
     })

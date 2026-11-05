@@ -99,14 +99,17 @@ object ModBlocks {
                 }
             }
 
+            // 2. Проверка, является ли блок валидной целью для муки
             override fun isValidBonemealTarget(level: net.minecraft.world.level.LevelReader, pos: BlockPos, state: BlockState): Boolean {
                 return level.getBlockState(pos.below()).`is`(END_GRASS_BLOCK.get())
             }
 
+            // БАГФИКС: Возвращаем каноничный ванильный шанс роста (около 40% успеха за один клик мукой)
             override fun isBonemealSuccess(level: net.minecraft.world.level.Level, random: RandomSource, pos: BlockPos, state: BlockState): Boolean {
-                return true
+                return random.nextFloat() < 0.45f
             }
 
+            // 3. Выращивание при успешном срабатывании муки
             override fun performBonemeal(level: ServerLevel, random: RandomSource, pos: BlockPos, state: BlockState) {
                 ru.rlyqaz.divinesouls.worldgen.EndTree.growTree(level, pos, random)
             }

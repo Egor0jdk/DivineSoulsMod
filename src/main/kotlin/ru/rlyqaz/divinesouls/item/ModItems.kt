@@ -40,6 +40,11 @@ object ModItems {
         Item(Item.Properties())
     }
 
+    // Душа Вардена (RPG Материал)
+    val WARDEN_SOUL: Supplier<Item> = registerItem("warden_soul") {
+        Item(Item.Properties().rarity(net.minecraft.world.item.Rarity.EPIC))
+    }
+
     // Вспомогательная функция регистрации
     private fun <T : Item> registerItem(name: String, itemSupplier: () -> T): Supplier<T> {
         return REGISTRY.register(name, itemSupplier)

@@ -11,6 +11,7 @@
   "block.divinesouls.end_wood_planks": "End Planks",
   "block.divinesouls.end_wood_leaves": "End Leaves",
   "block.divinesouls.end_sapling": "End Sapling",
+  "item.divinesouls.warden_soul": "Warden Soul",
 
   "item.divinesouls.end_crystal_sword": "End Crystal Sword",
   "item.divinesouls.end_crystal_pickaxe": "End Crystal Pickaxe",
@@ -28,5 +29,8 @@
   "itemGroup.divinesouls.armor": "Divine Souls: Armor",
   "itemGroup.divinesouls.mobs": "Divine Souls: Mobs",
   "itemGroup.divinesouls.blocks": "Divine Souls: Blocks",
-  "itemGroup.divinesouls.summons": "Divine Souls: Summons"
+  "itemGroup.divinesouls.summons": "Divine Souls: Summons",
+
+  "advancements.divinesouls.kill_warden.title": "Overthrowing the Gatekeeper",
+  "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune"
 }

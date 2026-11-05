@@ -11,6 +11,7 @@
   "block.divinesouls.end_wood_planks": "Доски Края",
   "block.divinesouls.end_wood_leaves": "Листва Края",
   "block.divinesouls.end_sapling": "Саженец Края",
+  "item.divinesouls.warden_soul": "Душа Вардена",
 
   "item.divinesouls.end_crystal_sword": "Меч из кристалла Энда",
   "item.divinesouls.end_crystal_pickaxe": "Кирка из кристалла Энда",
@@ -28,5 +29,8 @@
   "itemGroup.divinesouls.armor": "Divine Souls: Броня",
   "itemGroup.divinesouls.mobs": "Divine Souls: Мобы",
   "itemGroup.divinesouls.blocks": "Divine Souls: Блоки",
-  "itemGroup.divinesouls.summons": "Divine Souls: Призывалки"
+  "itemGroup.divinesouls.summons": "Divine Souls: Призывалки",
+
+  "advancements.divinesouls.kill_warden.title": "Свержение Привратника",
+  "advancements.divinesouls.kill_warden.description": "Одолейте Хранителя глубин и соберите его душу для создания Древней Руны"
 }
