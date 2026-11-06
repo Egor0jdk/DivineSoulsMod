@@ -12,6 +12,9 @@
   "block.divinesouls.end_wood_leaves": "End Leaves",
   "block.divinesouls.end_sapling": "End Sapling",
   "item.divinesouls.warden_soul": "Warden Soul",
+  "item.divinesouls.ancient_eye": "Ancient Eye",
+  "item.divinesouls.ancient_eye_shard": "Ancient Eye Shard",
+  "item.divinesouls.nether_essence": "Nether Essence",
 
   "item.divinesouls.end_crystal_sword": "End Crystal Sword",
   "item.divinesouls.end_crystal_pickaxe": "End Crystal Pickaxe",
@@ -30,6 +33,8 @@
   "itemGroup.divinesouls.mobs": "Divine Souls: Mobs",
   "itemGroup.divinesouls.blocks": "Divine Souls: Blocks",
   "itemGroup.divinesouls.summons": "Divine Souls: Summons",
+
+  "entity.divinesouls.void_dragon": "Void Dragon",
 
   "advancements.divinesouls.kill_warden.title": "Overthrowing the Gatekeeper",
   "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune"

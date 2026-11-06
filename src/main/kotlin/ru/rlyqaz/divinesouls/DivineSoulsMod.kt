@@ -14,6 +14,8 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent
 import net.neoforged.neoforge.event.level.BlockEvent
 import net.neoforged.neoforge.registries.DeferredRegister
 import ru.rlyqaz.divinesouls.block.ModBlocks
+import ru.rlyqaz.divinesouls.entity.ModEntities
+import ru.rlyqaz.divinesouls.entity.custom.VoidDragonEntity
 import ru.rlyqaz.divinesouls.item.ModCreativeModeTabs
 import ru.rlyqaz.divinesouls.item.ModItems
 import ru.rlyqaz.divinesouls.item.ModWeapons
@@ -59,16 +61,23 @@ object DivineSoulsMod {
         ModWeapons.register(modEventBus)
         ModBlocks.register(modEventBus)
         ModItems.register(modEventBus)
+        ModEntities.register(modEventBus)
         ModCreativeModeTabs.register(modEventBus)
         ModArmorMaterials.register(modEventBus) // РЕГИСТРИРУЕМ МАТЕРИАЛЫ СТРОГО ДО КЛАССА БРОНИ!
         ModArmor.register(modEventBus)
 
+        // БАГФИКС: Исправил опечатку event.add и сделал вызов чистым благодаря импортам сверху!
+        modEventBus.addListener { event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent ->
+            event.put(ModEntities.VOID_DRAGON.get(), VoidDragonEntity.createAttributes().build())
+        }
+
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.ArmorEffectsHandler)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WardenBalanceHandler)
-        // Очищаем босс-бары Вардена при выключении встроенного или выделенного сервера
+
         NeoForge.EVENT_BUS.addListener { event: net.neoforged.neoforge.event.server.ServerStoppedEvent ->
             ru.rlyqaz.divinesouls.event.WardenBalanceHandler.clearAllBars()
         }
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.EndAuraHandler)
         NeoForge.EVENT_BUS.register(this)
 
         LOGGER.info("Divine Souls: Главный класс успешно инициализирован под именем DivineSoulsMod!")

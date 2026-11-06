@@ -21,7 +21,7 @@ object ModItems {
     // --- АКТИВАТОРЫ ПРОГРЕССИИ (ЭРЫ СЮЖЕТА) ---
     // Древняя руна: Открывает проход в Незер при клике по Обсидиану (AncientRuneItem)
     val ANCIENT_RUNE: Supplier<Item> = registerItem("ancient_rune") {
-        AncientRuneItem(Item.Properties().stacksTo(1))
+        AncientRuneItem(Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON))
     }
 
     // Ядро Визера: Вручную зажигает портал Энда 3х3 после проверки всех 12 глаз (WitherCoreItem)
@@ -45,9 +45,24 @@ object ModItems {
         Item(Item.Properties().rarity(net.minecraft.world.item.Rarity.EPIC))
     }
 
+    // Древнее Око (Дроп с Древнего Стража)
+    val ANCIENT_EYE: Supplier<Item> = registerItem("ancient_eye") {
+        Item(Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE))
+    }
+
+    // Осколок Древнего Ока (Материал крафта руны)
+    val ANCIENT_EYE_SHARD: Supplier<Item> = registerItem("ancient_eye_shard") {
+        Item(Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE))
+    }
+
     // Вспомогательная функция регистрации
     private fun <T : Item> registerItem(name: String, itemSupplier: () -> T): Supplier<T> {
         return REGISTRY.register(name, itemSupplier)
+    }
+
+    // Эссенция Нижнего Мира (Промежуточный материал)
+    val NETHER_ESSENCE: Supplier<Item> = registerItem("nether_essence") {
+        Item(Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE))
     }
 
     fun register(eventBus: IEventBus) {

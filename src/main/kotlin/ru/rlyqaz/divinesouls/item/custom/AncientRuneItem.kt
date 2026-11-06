@@ -12,7 +12,7 @@ import net.minecraft.world.level.portal.PortalShape
  * ====================================================================
  * НАЗВАНИЕ МОДА: Divine Souls (1.21.1 NeoForge)
  * КЛАСС: AncientRuneItem (Древняя Руна)
- * ЛОГИКА: Активация портала в Незер по клику на Обсидиан
+ * ЛОГИКА: Активация портала в Незер по клику на Обсидиан со звуком Энда
  * ====================================================================
  */
 class AncientRuneItem(properties: Properties) : Item(properties) {
@@ -30,7 +30,6 @@ class AncientRuneItem(properties: Properties) : Item(properties) {
                 val airPos = pos.relative(face)
 
                 if (level.isEmptyBlock(airPos)) {
-                    // В 1.21.1 вместо PortalSize используется PortalShape
                     var shape = PortalShape.findEmptyPortalShape(level, airPos, Direction.Axis.X)
 
                     if (shape.isEmpty) {
@@ -38,8 +37,17 @@ class AncientRuneItem(properties: Properties) : Item(properties) {
                     }
 
                     if (shape.isPresent) {
-                        // В 1.21.1 метод создания блоков требует ServerLevel
                         shape.get().createPortalBlocks()
+
+                        // БАГФИКС: Бахаем каноничный звук Энд-портала при успешной активации Незера!
+                        level.playSound(
+                            null,
+                            airPos,
+                            net.minecraft.sounds.SoundEvents.END_PORTAL_SPAWN,
+                            net.minecraft.sounds.SoundSource.BLOCKS,
+                            1.0f,
+                            1.0f
+                        )
 
                         val player = context.player
                         if (player != null && !player.isCreative) {

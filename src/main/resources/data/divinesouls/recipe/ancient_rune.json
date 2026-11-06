@@ -1,20 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " E ",
-    "ESE",
-    " E "
+    "EmE",
+    "mSm",
+    "EmE"
   ],
   "key": {
     "E": {
       "item": "minecraft:echo_shard"
+    },
+    "m": {
+      "item": "divinesouls:ancient_eye_shard"
     },
     "S": {
       "item": "divinesouls:warden_soul"
     }
   },
   "result": {
-    "id": "divinesouls:ancient_rune",
-    "count": 1
+    "count": 1,
+    "id": "divinesouls:ancient_rune"
   }
 }

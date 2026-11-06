@@ -20,8 +20,11 @@ object ModCreativeModeTabs {
             .icon { ItemStack(ModItems.END_CRYSTAL_GEM.get()) }
             .title(Component.translatable("itemGroup.divinesouls.items"))
             .displayItems { _, output ->
-                output.accept(ModItems.END_CRYSTAL_GEM.get())
                 output.accept(ModItems.END_WOOD_STICK.get())
+                output.accept(ModItems.END_CRYSTAL_GEM.get())
+                output.accept(ModItems.NETHER_ESSENCE.get())
+                output.accept(ModItems.ANCIENT_EYE.get())
+                output.accept(ModItems.ANCIENT_EYE_SHARD.get())
                 output.accept(ModItems.WARDEN_SOUL.get())
             }
             .build()
