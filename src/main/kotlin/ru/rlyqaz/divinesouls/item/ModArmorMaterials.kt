@@ -39,9 +39,10 @@ object ModArmorMaterials {
             put(ArmorItem.Type.HELMET, 4)
         }
 
-        // Слои текстуры брони
-        val layers = listOf(
-            ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, "end_crystal"))
+        // ТОТ САМЫЙ РАБОЧИЙ ФИКС: Передаем 3 аргумента в Layer!
+        // "" (пустой суффикс) и true чинят отображение на сервере и не ломают типы Котлина.
+        val layers = listOf<ArmorMaterial.Layer>(
+            ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, "end_crystal"), "", true)
         )
 
         // Строгий вызов конструктора 1.21.1: defense, enchantmentValue, equipSound, repairIngredient, layers, toughness, knockbackResistance

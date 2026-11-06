@@ -89,10 +89,16 @@ object WardenBalanceHandler {
         if (!level.isClientSide && player is ServerPlayer && player.tickCount % 5 == 0) {
             val serverLevel = level as ServerLevel
 
-            for ((wardenUuid, bossEvent) in activeBossEvents) {
+            // Безопасный обход мапы через итератор, защищающий сервер от ConcurrentModificationException
+            val iterator = activeBossEvents.entries.iterator()
+            while (iterator.hasNext()) {
+                val entry = iterator.next()
+                val wardenUuid = entry.key
+                val bossEvent = entry.value
                 val warden = serverLevel.getEntity(wardenUuid)
 
-                if (warden is Warden && warden.isAlive) {
+                // Проверяем жив ли Варден и НЕ закопался ли он под землю через !warden.isRemoved
+                if (warden is Warden && warden.isAlive && !warden.isRemoved) {
                     val healthPercent = warden.health / warden.maxHealth
                     bossEvent.progress = healthPercent.coerceIn(0.0f, 1.0f)
 
@@ -103,8 +109,9 @@ object WardenBalanceHandler {
                         bossEvent.removePlayer(player)
                     }
                 } else {
+                    // Если особь исчезла/закопалась — зачищаем бары у игроков и безопасно удаляем из мапы
                     bossEvent.removeAllPlayers()
-                    activeBossEvents.remove(wardenUuid)
+                    iterator.remove()
                 }
             }
         }

@@ -45,10 +45,11 @@ object ModBlocks {
             override fun mayPlaceOn(state: BlockState, level: BlockGetter, pos: BlockPos): Boolean = state.`is`(END_GRASS_BLOCK.get())
             override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = SAPLING_SHAPE
             override fun getCollisionShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = Shapes.empty()
+            override fun canBeReplaced(state: BlockState, context: net.minecraft.world.item.context.BlockPlaceContext): Boolean = true
 
-            // Нативный метод заменяемости блока для 1.21.1
-            override fun canBeReplaced(state: BlockState, context: net.minecraft.world.item.context.BlockPlaceContext): Boolean {
-                return true
+            // ТОЧЕЧНЫЙ ФИКС ТРАВЫ-ПРИЗРАКА: Уничтожает куст, если опора под ним исчезла
+            override fun canSurvive(state: BlockState, level: net.minecraft.world.level.LevelReader, pos: BlockPos): Boolean {
+                return this.mayPlaceOn(level.getBlockState(pos.below()), level, pos.below())
             }
         }
     }
@@ -59,9 +60,10 @@ object ModBlocks {
             override fun mayPlaceOn(state: BlockState, level: BlockGetter, pos: BlockPos): Boolean = state.`is`(Blocks.END_STONE)
             override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = SAPLING_SHAPE
             override fun getCollisionShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = Shapes.empty()
+            override fun canBeReplaced(state: BlockState, context: net.minecraft.world.item.context.BlockPlaceContext): Boolean = true
 
-            override fun canBeReplaced(state: BlockState, context: net.minecraft.world.item.context.BlockPlaceContext): Boolean {
-                return true
+            override fun canSurvive(state: BlockState, level: net.minecraft.world.level.LevelReader, pos: BlockPos): Boolean {
+                return this.mayPlaceOn(level.getBlockState(pos.below()), level, pos.below())
             }
         }
     }
@@ -81,37 +83,39 @@ object ModBlocks {
         LeavesBlock(BlockBehaviour.Properties.of().destroyTime(0.2f).randomTicks().sound(SoundType.GRASS).noOcclusion())
     }
 
-    // 8. Саженец дерева Края
+    // 8. Саженец дерева Края (Переписан на SaplingBlock — убирает траву-призрак из коробки)
     val END_SAPLING: Supplier<Block> = registerBlock("end_sapling") {
-        object : Block(BlockBehaviour.Properties.of().randomTicks().instabreak().sound(SoundType.GRASS)), BonemealableBlock {
+        object : SaplingBlock(null, BlockBehaviour.Properties.of().randomTicks().instabreak().sound(SoundType.GRASS)), BonemealableBlock {
             override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = SAPLING_SHAPE
             override fun getCollisionShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = Shapes.empty()
+            override fun canBeReplaced(state: BlockState, context: net.minecraft.world.item.context.BlockPlaceContext): Boolean = true
 
-            override fun canBeReplaced(state: BlockState, context: net.minecraft.world.item.context.BlockPlaceContext): Boolean {
-                return true
+            // Разрешаем саженцу расти строго на твоем дёрне Ксена
+            override fun mayPlaceOn(state: BlockState, level: BlockGetter, pos: BlockPos): Boolean {
+                return state.`is`(END_GRASS_BLOCK.get())
             }
 
             override fun randomTick(state: BlockState, level: ServerLevel, pos: BlockPos, random: RandomSource) {
                 if (level.getBlockState(pos.below()).`is`(END_GRASS_BLOCK.get())) {
                     if (random.nextInt(7) == 0) {
+                        // Передаем pos дважды, соответствуя нашей новой сигнатуре оптимизации чанков (level, pos, originPos, random)
                         ru.rlyqaz.divinesouls.worldgen.EndTree.growTree(level, pos, random)
                     }
                 }
             }
 
-            // 2. Проверка, является ли блок валидной целью для муки
             override fun isValidBonemealTarget(level: net.minecraft.world.level.LevelReader, pos: BlockPos, state: BlockState): Boolean {
                 return level.getBlockState(pos.below()).`is`(END_GRASS_BLOCK.get())
             }
 
-            // БАГФИКС: Возвращаем каноничный ванильный шанс роста (около 40% успеха за один клик мукой)
             override fun isBonemealSuccess(level: net.minecraft.world.level.Level, random: RandomSource, pos: BlockPos, state: BlockState): Boolean {
                 return random.nextFloat() < 0.45f
             }
 
-            // 3. Выращивание при успешном срабатывании муки
             override fun performBonemeal(level: ServerLevel, random: RandomSource, pos: BlockPos, state: BlockState) {
+                // Передаем pos дважды под костную муку (убирает ClassCastException и вылеты сервера)
                 ru.rlyqaz.divinesouls.worldgen.EndTree.growTree(level, pos, random)
+
             }
         }
     }
