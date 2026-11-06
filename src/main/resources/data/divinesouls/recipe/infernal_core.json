@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:polished_blackstone"
+    },
+    "P": {
+      "item": "minecraft:blaze_powder"
+    },
+    "E": {
+      "item": "divinesouls:nether_essence"
+    }
+  },
+  "pattern": [
+    "CPC",
+    "PEP",
+    "CPC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "divinesouls:infernal_core"
+  }
+}

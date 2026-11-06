@@ -44,12 +44,12 @@ object WardenBalanceHandler {
                 maxHealthAttr?.baseValue = 500.0
                 attackDamageAttr?.baseValue = 30.0 // Каноничный лейтгейм-урон
                 entity.health = 500.0f
-                DivineSoulsMod.LOGGER.info("Divine Souls: Спавн каноничного Вардена (500 HP).")
+                DivineSoulsMod.LOGGER.info("Divine Souls: Spawning a standard Warden (500 HP).")
             } else {
-                maxHealthAttr?.baseValue = 180.0
-                attackDamageAttr?.baseValue = 8.0 // БАГФИКС: Чуть приподняли урон от рук (был 6.5)
-                entity.health = 180.0f
-                DivineSoulsMod.LOGGER.info("Divine Souls: Спавн ослабленного Вардена (180 HP).")
+                maxHealthAttr?.baseValue = 200.0  // Оставляем честные 200 ХП
+                attackDamageAttr?.baseValue = 14.0 // 14 урона — штраф за то, что попался неповоротливому боссу
+                entity.health = 200.0f
+                DivineSoulsMod.LOGGER.info("Divine Souls: Spawning a weakened Warden (200 HP).")
             }
 
             val bossEvent = ServerBossEvent(
@@ -76,7 +76,8 @@ object WardenBalanceHandler {
             // ИСПРАВЛЕНИЕ ДЛЯ NEOFORGE 1.21.1:
             // Лезем внутрь нового DamageContainer и принудительно выставляем урон 4.0f (2 сердца)
             if (!isDragonKilled) {
-                event.container.setNewDamage(4.0f)
+                // БАЛАНС ПОД ЩИТ: 6.0 единиц урона. Со щитом прилетит всего 1.5 сердца!
+                event.container.setNewDamage(6.0f)
             }
         }
     }

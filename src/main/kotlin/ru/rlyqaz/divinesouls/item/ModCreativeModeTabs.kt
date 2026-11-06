@@ -26,6 +26,8 @@ object ModCreativeModeTabs {
                 output.accept(ModItems.ANCIENT_EYE.get())
                 output.accept(ModItems.ANCIENT_EYE_SHARD.get())
                 output.accept(ModItems.WARDEN_SOUL.get())
+                output.accept(ModItems.DRAGON_SOUL_SHARD.get())
+                output.accept(ModItems.INFERNAL_CORE.get())
             }
             .build()
     })
@@ -35,6 +37,7 @@ object ModCreativeModeTabs {
             .icon { ItemStack(ModWeapons.END_CRYSTAL_SWORD.get()) }
             .title(Component.translatable("itemGroup.divinesouls.weapons"))
             .displayItems { _, output ->
+                output.accept(ModItems.FIRE_BOW.get())
                 output.accept(ModWeapons.END_CRYSTAL_SWORD.get())
                 output.accept(ModWeapons.END_CRYSTAL_PICKAXE.get())
                 output.accept(ModWeapons.END_CRYSTAL_AXE.get())

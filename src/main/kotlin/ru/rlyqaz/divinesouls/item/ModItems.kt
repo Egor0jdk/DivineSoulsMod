@@ -65,6 +65,21 @@ object ModItems {
         Item(Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE))
     }
 
+    // Огненный Лук из DivineRPG
+    val FIRE_BOW: Supplier<Item> = registerItem("fire_bow") {
+        ru.rlyqaz.divinesouls.item.custom.FireBowItem(Item.Properties().durability(584).rarity(net.minecraft.world.item.Rarity.RARE))
+    }
+
+    // Артефакт-батарейка (Ядро Адского Пламени)
+    val INFERNAL_CORE: Supplier<Item> = registerItem("infernal_core") {
+        Item(Item.Properties().stacksTo(1).rarity(net.minecraft.world.item.Rarity.EPIC))
+    }
+
+    // Осколок Души Дракона (из Яйца)
+    val DRAGON_SOUL_SHARD: Supplier<Item> = registerItem("dragon_soul_shard") {
+        Item(Item.Properties().stacksTo(4).rarity(net.minecraft.world.item.Rarity.EPIC))
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }

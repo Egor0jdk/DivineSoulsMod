@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "P": {
+      "item": "minecraft:blaze_powder"
+    },
+    "E": {
+      "item": "divinesouls:nether_essence"
+    }
+  },
+  "pattern": [
+    " BP",
+    "BEP",
+    " BP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "divinesouls:fire_bow"
+  }
+}

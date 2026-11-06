@@ -80,7 +80,29 @@ object DivineSoulsMod {
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.EndAuraHandler)
         NeoForge.EVENT_BUS.register(this)
 
-        LOGGER.info("Divine Souls: Главный класс успешно инициализирован под именем DivineSoulsMod!")
+        // Клиентский фикс анимации 2D-лука (ItemProperties) под 1.21.1
+        modEventBus.addListener { event: net.neoforged.fml.event.lifecycle.FMLClientSetupEvent ->
+            event.enqueueWork {
+                net.minecraft.client.renderer.item.ItemProperties.register(
+                    ModItems.FIRE_BOW.get(),
+                    net.minecraft.resources.ResourceLocation.withDefaultNamespace("pull")
+                ) { stack, _, entity, _ ->
+                    if (entity == null) 0.0f
+                    else if (entity.useItem != stack) 0.0f
+                    // ФИКС: В 1.21.1 используется метод getUseDuration(entity)
+                    else (stack.getUseDuration(entity) - entity.useItemRemainingTicks).toFloat() / 20.0f
+                }
+
+                net.minecraft.client.renderer.item.ItemProperties.register(
+                    ModItems.FIRE_BOW.get(),
+                    net.minecraft.resources.ResourceLocation.withDefaultNamespace("pulling")
+                ) { stack, _, entity, _ ->
+                    if (entity != null && entity.isUsingItem && entity.useItem == stack) 1.0f else 0.0f
+                }
+            }
+        }
+
+        LOGGER.info("Divine Souls: The main class has been successfully initialized under the name DivineSoulsMod!")
     }
 
     @SubscribeEvent
@@ -121,7 +143,7 @@ object DivineSoulsMod {
                         event.itemStack.shrink(1)
                     }
 
-                    LOGGER.info("Divine Souls: Ванильная генерация портала Энда заблокирована!")
+                    LOGGER.info("Divine Souls: Vanilla End portal generation is disabled!")
                 }
             }
         }
