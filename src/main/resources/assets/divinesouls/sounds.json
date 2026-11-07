@@ -1,0 +1,18 @@
+{
+  "sorrow_wraith_ambient_1": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/sorrow_wraith/ambient_1" ]
+  },
+  "sorrow_wraith_ambient_2": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/sorrow_wraith/ambient_2" ]
+  },
+  "sorrow_wraith_hurt": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/sorrow_wraith/hurt" ]
+  },
+  "sorrow_wraith_death": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/sorrow_wraith/death" ]
+  }
+}

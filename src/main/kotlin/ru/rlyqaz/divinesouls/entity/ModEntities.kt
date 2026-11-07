@@ -7,6 +7,7 @@ import net.neoforged.bus.api.IEventBus
 import net.neoforged.neoforge.registries.DeferredRegister
 import ru.rlyqaz.divinesouls.DivineSoulsMod
 import ru.rlyqaz.divinesouls.entity.custom.VoidDragonEntity
+import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
 import java.util.function.Supplier
 
 /**
@@ -26,6 +27,15 @@ object ModEntities {
         }, MobCategory.MONSTER)
             .sized(1.2f, 1.2f)
             .build("void_dragon")
+    })
+
+    // БАГФИКС: Используем явную обёртку Supplier, чтобы намертво уничтожить Overload resolution ambiguity!
+    val SORROW_WRAITH = REGISTRY.register("sorrow_wraith", java.util.function.Supplier {
+        net.minecraft.world.entity.EntityType.Builder.of({ type: net.minecraft.world.entity.EntityType<SorrowWraithEntity>, level ->
+            SorrowWraithEntity(type, level)
+        }, net.minecraft.world.entity.MobCategory.MONSTER)
+            .sized(0.6f, 1.8f)
+            .build("sorrow_wraith")
     })
 
     fun register(eventBus: IEventBus) {

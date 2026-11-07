@@ -58,6 +58,8 @@ object DivineSoulsMod {
         ITEMS.register(modEventBus)
         FEATURES.register(modEventBus)
 
+        // Прописываем регистрацию кастомных звуков перед предметами
+        ru.rlyqaz.divinesouls.sound.ModSounds.register(modEventBus)
         ModWeapons.register(modEventBus)
         ModBlocks.register(modEventBus)
         ModItems.register(modEventBus)
@@ -66,9 +68,10 @@ object DivineSoulsMod {
         ModArmorMaterials.register(modEventBus) // РЕГИСТРИРУЕМ МАТЕРИАЛЫ СТРОГО ДО КЛАССА БРОНИ!
         ModArmor.register(modEventBus)
 
-        // БАГФИКС: Исправил опечатку event.add и сделал вызов чистым благодаря импортам сверху!
+        // Регистрируем статы мобов: сначала Дракон, следом наш новый Призрак!
         modEventBus.addListener { event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent ->
             event.put(ModEntities.VOID_DRAGON.get(), VoidDragonEntity.createAttributes().build())
+            event.put(ModEntities.SORROW_WRAITH.get(), ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity.createAttributes().build())
         }
 
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.ArmorEffectsHandler)
@@ -101,6 +104,37 @@ object DivineSoulsMod {
                 }
             }
         }
+
+        // НАШ ТЕКУЩИЙ КУСОК КОДА ДЛЯ ПРИЗРАКА ВСТАЁТ СЮДА:
+        modEventBus.addListener { event: net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers ->
+            event.registerEntityRenderer(ModEntities.SORROW_WRAITH.get()) { context ->
+                ru.rlyqaz.divinesouls.entity.client.SorrowWraithRenderer(context)
+            }
+        }
+
+        modEventBus.addListener { event: net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterLayerDefinitions ->
+            event.registerLayerDefinition(ru.rlyqaz.divinesouls.entity.client.SorrowWraithModel.LAYER_LOCATION) {
+                ru.rlyqaz.divinesouls.entity.client.SorrowWraithModel.createBodyLayer()
+            }
+        }
+
+        // Исправленный регистратор спавна под чистый NeoForge 1.21.1
+        modEventBus.addListener { event: net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent ->
+            event.register(
+                ModEntities.SORROW_WRAITH.get(),
+                net.minecraft.world.entity.SpawnPlacementTypes.ON_GROUND,
+                net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                net.minecraft.world.entity.monster.Monster::checkMonsterSpawnRules,
+                net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent.Operation.OR
+            )
+        }
+
+        // Регистрируем наш кастомный строитель обсидианового пьедестала в Энде
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.EndPlatformModifier)
+        // Регистрируем наш новый класс общих событий (дроп с гастов и плачущий обсидиан)
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.ModCommonEvents)
+        // Регистрируем обработчик физики полёта Крыльев Ветра
+        net.neoforged.neoforge.common.NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WingsFlightHandler)
 
         LOGGER.info("Divine Souls: The main class has been successfully initialized under the name DivineSoulsMod!")
     }

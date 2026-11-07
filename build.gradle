@@ -21,6 +21,10 @@ repositories {
         name = "Kotlin for Forge"
         setUrl("https://thedarkcolour.github.io/KotlinForForge/")
     }
+    maven {
+        name = "Illusive C4 Maven"
+        setUrl("https://maven.theillusivec4.top/")
+    }
 }
 
 // Имя выходного .jar файла мода
@@ -90,6 +94,9 @@ configurations {
 dependencies {
     // Ключевая зависимость: Подключаем языковой лоадер Kotlin for Forge (KFF)
     implementation("thedarkcolour:kotlinforforge-neoforge:$kff_version")
+    // ПРАВИЛЬНОЕ ПОДКЛЮЧЕНИЕ ДЛЯ СРЕДЫ РАЗРАБОТКИ:
+    compileOnly "top.theillusivec4.curios:curios-neoforge:9.4.2+1.21.1:api"
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:9.4.2+1.21.1"
 }
 
 // Автоматическая подстановка метаданных из gradle.properties в шаблоны ресурсов мода

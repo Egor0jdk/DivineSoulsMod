@@ -16,6 +16,10 @@
   "item.divinesouls.ancient_eye_shard": "Осколок Древнего Ока",
   "item.divinesouls.nether_essence": "Эссенция Нижнего Мира",
   "item.divinesouls.dragon_soul_shard": "Осколок Души Дракона",
+  "item.divinesouls.infernal_core": "Ядро Адского Пламени",
+  "item.divinesouls.burning_soul": "Пылающая Душа",
+  "item.divinesouls.soul_of_flight": "Душа полёта",
+  "item.divinesouls.wings_of_wind": "Крылья ветра",
 
   "item.divinesouls.end_crystal_sword": "Меч из кристалла Энда",
   "item.divinesouls.end_crystal_pickaxe": "Кирка из кристалла Энда",
@@ -23,7 +27,6 @@
   "item.divinesouls.end_crystal_shovel": "Лопата из кристалла Энда",
   "item.divinesouls.end_crystal_hoe": "Мотыга из кристалла Энда",
   "item.divinesouls.fire_bow": "Огненный Лук",
-  "item.divinesouls.infernal_core": "Ядро Адского Пламени",
 
   "item.divinesouls.end_crystal_helmet": "Шлем из кристалла Энда",
   "item.divinesouls.end_crystal_chestplate": "Нагрудник из кристалла Энда",
@@ -38,6 +41,9 @@
   "itemGroup.divinesouls.summons": "Divine Souls: Призывалки",
 
   "entity.divinesouls.void_dragon": "Дракон Пустоты",
+  "entity.divinesouls.sorrow_wraith": "Дух Скорби",
+
+  "item.divinesouls.sorrow_wraith_spawn_egg": "Яйцо призыва Духа Скорби",
 
   "advancements.divinesouls.kill_warden.title": "Свержение Привратника",
   "advancements.divinesouls.kill_warden.description": "Одолейте Хранителя глубин и соберите его душу для создания Древней Руны"

@@ -7,6 +7,7 @@ import net.neoforged.neoforge.registries.DeferredRegister
 import ru.rlyqaz.divinesouls.DivineSoulsMod
 import ru.rlyqaz.divinesouls.item.custom.AncientRuneItem
 import ru.rlyqaz.divinesouls.item.custom.WitherCoreItem
+import ru.rlyqaz.divinesouls.entity.ModEntities
 import java.util.function.Supplier
 
 /**
@@ -78,6 +79,32 @@ object ModItems {
     // Осколок Души Дракона (из Яйца)
     val DRAGON_SOUL_SHARD: Supplier<Item> = registerItem("dragon_soul_shard") {
         Item(Item.Properties().stacksTo(4).rarity(net.minecraft.world.item.Rarity.EPIC))
+    }
+
+    val BURNING_SOUL: Supplier<Item> = registerItem("burning_soul") {
+        Item(Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON))
+    }
+
+    // Яйцо спавна для Духа Скорби (Светло-серая основа савана, бирюзовые крапинки огня душ!)
+    val SORROW_WRAITH_SPAWN_EGG: Supplier<Item> = registerItem("sorrow_wraith_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.SORROW_WRAITH,
+            0xD3D3D3,                  // Светло-серый цвет (Light Gray)
+            0x00FFFF,                  // Ярко-бирюзовый/голубой (Cyan / Soul Fire)
+            Item.Properties()
+        )
+    }
+
+    // Душа полёта остаётся как была
+    val SOUL_OF_FLIGHT: java.util.function.Supplier<Item> = registerItem("soul_of_flight") {
+        Item(Item.Properties())
+    }
+
+    // БАГФИКС: Создаём крылья как кастомный объект ICurioItem, чтобы Curios мгновенно открыл слот на спине!
+    val WINGS_OF_WIND: java.util.function.Supplier<Item> = registerItem("wings_of_wind") {
+        object : Item(Item.Properties().stacksTo(1)), top.theillusivec4.curios.api.type.capability.ICurioItem {
+            // Код Curios автоматически понимает, что этот предмет принадлежит слоту 'back'
+        }
     }
 
     fun register(eventBus: IEventBus) {

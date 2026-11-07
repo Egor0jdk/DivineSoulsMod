@@ -1,12 +1,15 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    {
-      "item": "minecraft:ghast_tear"
-    },
-    {
-      "item": "minecraft:magma_cream"
-    }
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": { "item": "minecraft:magma_cream" },
+    "S": { "item": "divinesouls:burning_soul" },
+    "T": { "item": "minecraft:ghast_tear" }
+  },
+  "pattern": [
+    "MSM",
+    "STS",
+    "MSM"
   ],
   "result": {
     "count": 1,

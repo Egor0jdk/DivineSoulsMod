@@ -1,0 +1,12 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "minecraft:soul_sand_valley",
+  "spawners": [
+    {
+      "type": "divinesouls:sorrow_wraith",
+      "weight": 80,
+      "minCount": 2,
+      "maxCount": 4
+    }
+  ]
+}
