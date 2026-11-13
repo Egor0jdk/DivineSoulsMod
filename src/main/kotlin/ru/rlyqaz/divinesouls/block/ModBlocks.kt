@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.Shapes
 import net.minecraft.world.phys.shapes.VoxelShape
+import net.minecraft.sounds.SoundEvents
 import net.neoforged.neoforge.registries.DeferredRegister
 import ru.rlyqaz.divinesouls.DivineSoulsMod
 import java.util.function.Supplier
@@ -34,9 +35,33 @@ object ModBlocks {
         Block(BlockBehaviour.Properties.of().destroyTime(5.0f).explosionResistance(6.0f).sound(SoundType.STONE))
     }
 
-    // 2. Дёрн Ксена
+    // 2. Дёрн Края (Полный аналог Нилия: звуки камня/травы, требует кирку, превращается в эндерняк под сплошным блоком)
     val END_GRASS_BLOCK: Supplier<Block> = registerBlock("end_grass_block") {
-        Block(BlockBehaviour.Properties.of().destroyTime(0.6f).sound(SoundType.GRASS))
+        val endGrassSound = SoundType(
+            1.0f,
+            1.0f,
+            SoundEvents.STONE_BREAK,
+            SoundEvents.GRASS_STEP,
+            SoundEvents.STONE_PLACE,
+            SoundEvents.STONE_HIT,
+            SoundEvents.GRASS_FALL
+        )
+        object : Block(
+            BlockBehaviour.Properties.of()
+                .strength(3.0f, 9.0f)
+                .requiresCorrectToolForDrops()
+                .randomTicks() // Включаем случайные тики для проверки света сверху
+                .sound(endGrassSound)
+        ) {
+            override fun randomTick(state: BlockState, level: ServerLevel, pos: BlockPos, random: RandomSource) {
+                val abovePos = pos.above()
+                val aboveState = level.getBlockState(abovePos)
+                // Если сверху стоит сплошной блок, перекрывающий свет — дёрн умирает и становится обычным эндерняком
+                if (aboveState.isSolidRender(level, abovePos)) {
+                    level.setBlockAndUpdate(pos, Blocks.END_STONE.defaultBlockState())
+                }
+            }
+        }
     }
 
     // 3. Кастомная трава Ксена (Края)

@@ -63,4 +63,28 @@ object ModCommonEvents {
             }
         }
     }
+
+    // Размножение Дёрна Края костной мукой (как Нилий в Незере)
+    @SubscribeEvent
+    fun onBonemealEndStone(event: net.neoforged.neoforge.event.entity.player.BonemealEvent) {
+        val level = event.level
+        val pos = event.pos
+        val state = event.state
+
+        if (state.`is`(net.minecraft.world.level.block.Blocks.END_STONE)) {
+            // Проверяем, есть ли хотя бы один блок Дёрна Края рядом (север, юг, запад, восток)
+            val hasNeighborEndGrass = net.minecraft.core.Direction.Plane.HORIZONTAL.any { dir ->
+                level.getBlockState(pos.relative(dir)).`is`(ru.rlyqaz.divinesouls.block.ModBlocks.END_GRASS_BLOCK.get())
+            }
+
+            if (hasNeighborEndGrass) {
+                if (!level.isClientSide) {
+                    level.setBlockAndUpdate(pos, ru.rlyqaz.divinesouls.block.ModBlocks.END_GRASS_BLOCK.get().defaultBlockState())
+                }
+                // Помечаем событие как успешное (костная мука потратится, появятся зелёные частицы)
+                event.isCanceled = true
+                event.setSuccessful(true)
+            }
+        }
+    }
 }
