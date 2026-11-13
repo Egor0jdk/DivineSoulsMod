@@ -20,6 +20,9 @@
   "item.divinesouls.burning_soul": "Burning Soul",
   "item.divinesouls.soul_of_flight": "Soul of Flight",
   "item.divinesouls.wings_of_wind": "Wings of Wind",
+  "item.divinesouls.wither_seal": "Wither Seal",
+  "block.divinesouls.wither_seal_block": "Wither Seal Block",
+  "item.divinesouls.wither_bone": "Wither Bone",
 
   "item.divinesouls.end_crystal_sword": "End Crystal Sword",
   "item.divinesouls.end_crystal_pickaxe": "End Crystal Pickaxe",
@@ -28,6 +31,7 @@
   "item.divinesouls.end_crystal_hoe": "End Crystal Hoe",
   "item.divinesouls.fire_bow": "Fire Bow",
   "item.divinesouls.end_crystal_shield": "End Crystal Shield",
+  "item.divinesouls.wither_mace": "Mace of Woe",
 
   "item.divinesouls.end_crystal_helmet": "End Crystal Helmet",
   "item.divinesouls.end_crystal_chestplate": "End Crystal Chestplate",
@@ -43,8 +47,10 @@
 
   "entity.divinesouls.void_dragon": "Void Dragon",
   "entity.divinesouls.sorrow_wraith": "Sorrow Wraith",
+  "entity.divinesouls.twin_wither_skeleton": "Wither Twins",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Sorrow Wraith Spawn Egg",
+  "item.divinesouls.twin_wither_skeleton_spawn_egg": "Wither Twins Spawn Egg",
 
   "advancements.divinesouls.kill_warden.title": "Overthrowing the Gatekeeper",
   "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune"

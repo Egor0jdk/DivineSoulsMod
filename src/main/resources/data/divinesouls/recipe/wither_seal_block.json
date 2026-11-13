@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "R": {
+      "item": "minecraft:red_nether_bricks"
+    },
+    "B": {
+      "item": "divinesouls:wither_bone"
+    },
+    "S": {
+      "item": "divinesouls:wither_seal"
+    }
+  },
+  "pattern": [
+    "RBR",
+    "BSB",
+    "RBR"
+  ],
+  "result": {
+    "count": 1,
+    "id": "divinesouls:wither_seal_block"
+  }
+}

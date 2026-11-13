@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredRegister
 import ru.rlyqaz.divinesouls.DivineSoulsMod
 import ru.rlyqaz.divinesouls.entity.custom.VoidDragonEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
+import ru.rlyqaz.divinesouls.entity.custom.TwinWitherSkeletonEntity
 import java.util.function.Supplier
 
 /**
@@ -36,6 +37,13 @@ object ModEntities {
         }, net.minecraft.world.entity.MobCategory.MONSTER)
             .sized(0.6f, 1.8f)
             .build("sorrow_wraith")
+    })
+
+    val TWIN_WITHER_SKELETON: Supplier<EntityType<TwinWitherSkeletonEntity>> = REGISTRY.register("twin_wither_skeleton", Supplier {
+        EntityType.Builder.of(::TwinWitherSkeletonEntity, MobCategory.MONSTER)
+            .sized(0.95f, 3.1f)
+            .fireImmune()
+            .build("twin_wither_skeleton")
     })
 
     fun register(eventBus: IEventBus) {

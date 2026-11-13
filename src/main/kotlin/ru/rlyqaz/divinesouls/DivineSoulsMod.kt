@@ -68,10 +68,11 @@ object DivineSoulsMod {
         ModArmorMaterials.register(modEventBus) // РЕГИСТРИРУЕМ МАТЕРИАЛЫ СТРОГО ДО КЛАССА БРОНИ!
         ModArmor.register(modEventBus)
 
-        // Регистрируем статы мобов: сначала Дракон, следом наш новый Призрак!
+        // Регистрируем статы мобов: сначала Дракон, следом наш новый Призрак и Близнецы!
         modEventBus.addListener { event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent ->
             event.put(ModEntities.VOID_DRAGON.get(), VoidDragonEntity.createAttributes().build())
             event.put(ModEntities.SORROW_WRAITH.get(), ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity.createAttributes().build())
+            event.put(ModEntities.TWIN_WITHER_SKELETON.get(), ru.rlyqaz.divinesouls.entity.custom.TwinWitherSkeletonEntity.createAttributes().build())
         }
 
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.ArmorEffectsHandler)
@@ -79,7 +80,9 @@ object DivineSoulsMod {
 
         NeoForge.EVENT_BUS.addListener { event: net.neoforged.neoforge.event.server.ServerStoppedEvent ->
             ru.rlyqaz.divinesouls.event.WardenBalanceHandler.clearAllBars()
+            ru.rlyqaz.divinesouls.worldgen.FortressTwinsInjector.clearQueue()
         }
+
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.EndAuraHandler)
         NeoForge.EVENT_BUS.register(this)
 
@@ -113,16 +116,23 @@ object DivineSoulsMod {
             }
         }
 
-        // НАШ ТЕКУЩИЙ КУСОК КОДА ДЛЯ ПРИЗРАКА ВСТАЁТ СЮДА:
+        // Регистрация рендереров мобов
         modEventBus.addListener { event: net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers ->
             event.registerEntityRenderer(ModEntities.SORROW_WRAITH.get()) { context ->
                 ru.rlyqaz.divinesouls.entity.client.SorrowWraithRenderer(context)
             }
+            event.registerEntityRenderer(ModEntities.TWIN_WITHER_SKELETON.get()) { context ->
+                ru.rlyqaz.divinesouls.entity.client.TwinWitherSkeletonRenderer(context)
+            }
         }
 
+        // Регистрация 3D-слоёв моделей мобов
         modEventBus.addListener { event: net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterLayerDefinitions ->
             event.registerLayerDefinition(ru.rlyqaz.divinesouls.entity.client.SorrowWraithModel.LAYER_LOCATION) {
                 ru.rlyqaz.divinesouls.entity.client.SorrowWraithModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(ru.rlyqaz.divinesouls.entity.client.TwinWitherSkeletonModel.LAYER_LOCATION) {
+                ru.rlyqaz.divinesouls.entity.client.TwinWitherSkeletonModel.createBodyLayer()
             }
         }
 
@@ -187,6 +197,10 @@ object DivineSoulsMod {
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.ModCommonEvents)
         // Регистрируем обработчик физики полёта Крыльев Ветра
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WingsFlightHandler)
+
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WitherSummonHandler)
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.ElderGuardianBossBarHandler)
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.worldgen.FortressTwinsInjector)
 
         LOGGER.info("Divine Souls: The main class has been successfully initialized under the name DivineSoulsMod!")
     }

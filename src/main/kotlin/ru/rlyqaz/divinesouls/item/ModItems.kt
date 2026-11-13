@@ -116,6 +116,26 @@ object ModItems {
         }
     }
 
+    // Печать Иссушения (выпадает с Двуглавого Визер-скелета, нужна для крафта блока призыва)
+    val WITHER_SEAL: Supplier<Item> = registerItem("wither_seal") {
+        Item(Item.Properties().stacksTo(1).rarity(Rarity.RARE))
+    }
+
+    // Иссушённая кость (падает с обычных визер-скелетов с шансом 25%, нужна для Блока Печати)
+    val WITHER_BONE: Supplier<Item> = registerItem("wither_bone") {
+        Item(Item.Properties().rarity(Rarity.UNCOMMON))
+    }
+
+    // Яйцо призыва Близнецов Иссушения
+    val TWIN_WITHER_SKELETON_SPAWN_EGG: Supplier<Item> = registerItem("twin_wither_skeleton_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ru.rlyqaz.divinesouls.entity.ModEntities.TWIN_WITHER_SKELETON,
+            0x141414,
+            0x5A1A1A,
+            Item.Properties()
+        )
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }

@@ -52,6 +52,36 @@ object ModWeapons {
         ))
     }
 
+    // --- ОРУЖИЕ БОССОВ И МИНИ-БОССОВ ---
+
+    // Булава Скорби: 10 (бонус) + 4 (базовый урон незерита) + 1 (рука) = 15 общего урона, перезарядка ~2.2 сек (-3.55f)
+    val WITHER_MACE: Supplier<Item> = registerWeapon("wither_mace") {
+        object : SwordItem(
+            Tiers.NETHERITE,
+            Item.Properties()
+                .durability(1200)
+                .rarity(Rarity.EPIC)
+                .attributes(
+                    SwordItem.createAttributes(Tiers.NETHERITE, 10, -3.55f)
+                )
+        ) {
+            override fun postHurtEnemy(
+                stack: ItemStack,
+                target: net.minecraft.world.entity.LivingEntity,
+                attacker: net.minecraft.world.entity.LivingEntity
+            ) {
+                target.addEffect(
+                    net.minecraft.world.effect.MobEffectInstance(
+                        net.minecraft.world.effect.MobEffects.WITHER,
+                        80,
+                        1
+                    )
+                )
+                super.postHurtEnemy(stack, target, attacker)
+            }
+        }
+    }
+
     // Хелпер для чистой регистрации
     private fun <T : Item> registerWeapon(name: String, itemSupplier: () -> T): Supplier<T> {
         return REGISTRY.register(name, itemSupplier)

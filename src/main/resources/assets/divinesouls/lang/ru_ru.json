@@ -20,6 +20,9 @@
   "item.divinesouls.burning_soul": "Пылающая Душа",
   "item.divinesouls.soul_of_flight": "Душа полёта",
   "item.divinesouls.wings_of_wind": "Крылья ветра",
+  "item.divinesouls.wither_seal": "Печать Иссушения",
+  "block.divinesouls.wither_seal_block": "Блок Печати Иссушения",
+  "item.divinesouls.wither_bone": "Иссушённая кость",
 
   "item.divinesouls.end_crystal_sword": "Меч из кристалла Края",
   "item.divinesouls.end_crystal_pickaxe": "Кирка из кристалла Края",
@@ -28,6 +31,7 @@
   "item.divinesouls.end_crystal_hoe": "Мотыга из кристалла Края",
   "item.divinesouls.fire_bow": "Огненный Лук",
   "item.divinesouls.end_crystal_shield": "Кристальный щит Края",
+  "item.divinesouls.wither_mace": "Булава Скорби",
 
   "item.divinesouls.end_crystal_helmet": "Шлем из кристалла Края",
   "item.divinesouls.end_crystal_chestplate": "Нагрудник из кристалла Края",
@@ -43,8 +47,10 @@
 
   "entity.divinesouls.void_dragon": "Дракон Пустоты",
   "entity.divinesouls.sorrow_wraith": "Дух Скорби",
+  "entity.divinesouls.twin_wither_skeleton": "Близнецы Иссушения",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Яйцо призыва Духа Скорби",
+  "item.divinesouls.twin_wither_skeleton_spawn_egg": "Яйцо призыва Близнецов Иссушения",
 
   "advancements.divinesouls.kill_warden.title": "Свержение Привратника",
   "advancements.divinesouls.kill_warden.description": "Одолейте Хранителя глубин и соберите его душу для создания Древней Руны"

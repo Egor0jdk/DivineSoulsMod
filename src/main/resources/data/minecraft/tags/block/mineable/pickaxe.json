@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "divinesouls:end_crystal_ore",
-    "divinesouls:end_grass_block"
+    "divinesouls:end_grass_block",
+    "divinesouls:wither_seal_block"
   ]
 }

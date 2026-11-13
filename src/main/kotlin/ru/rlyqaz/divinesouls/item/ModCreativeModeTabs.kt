@@ -22,15 +22,17 @@ object ModCreativeModeTabs {
             .displayItems { _, output ->
                 output.accept(ModItems.END_WOOD_STICK.get())
                 output.accept(ModItems.END_CRYSTAL_GEM.get())
+                output.accept(ModItems.WITHER_BONE.get())
                 output.accept(ModItems.BURNING_SOUL.get())
                 output.accept(ModItems.SOUL_OF_FLIGHT.get())
                 output.accept(ModItems.NETHER_ESSENCE.get())
                 output.accept(ModItems.ANCIENT_EYE.get())
                 output.accept(ModItems.ANCIENT_EYE_SHARD.get())
                 output.accept(ModItems.WARDEN_SOUL.get())
-                output.accept(ModItems.DRAGON_SOUL_SHARD.get())
                 output.accept(ModItems.INFERNAL_CORE.get())
                 output.accept(ModItems.WINGS_OF_WIND.get())
+                output.accept(ModItems.WITHER_SEAL.get())
+                output.accept(ModItems.DRAGON_SOUL_SHARD.get())
             }
             .build()
     })
@@ -47,6 +49,7 @@ object ModCreativeModeTabs {
                 output.accept(ModWeapons.END_CRYSTAL_SHOVEL.get())
                 output.accept(ModWeapons.END_CRYSTAL_HOE.get())
                 output.accept(ModItems.END_CRYSTAL_SHIELD.get())
+                output.accept(ModWeapons.WITHER_MACE.get())
             }
             .build()
     })
@@ -71,6 +74,7 @@ object ModCreativeModeTabs {
             .title(Component.translatable("itemGroup.divinesouls.mobs"))
             .displayItems { _, output ->
                 output.accept(ModItems.SORROW_WRAITH_SPAWN_EGG.get())
+                output.accept(ModItems.TWIN_WITHER_SKELETON_SPAWN_EGG.get())
             }
             .build()
     })
@@ -88,6 +92,7 @@ object ModCreativeModeTabs {
                 output.accept(ModBlocks.END_WOOD_PLANKS.get())
                 output.accept(ModBlocks.END_WOOD_LEAVES.get())
                 output.accept(ModBlocks.END_SAPLING.get())
+                output.accept(ModBlocks.WITHER_SEAL_BLOCK.get())
             }
             .build()
     })

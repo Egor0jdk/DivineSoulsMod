@@ -4,7 +4,8 @@
   "package": "ru.rlyqaz.divinesouls.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "ElytraItemMixin"
+    "ElytraItemMixin",
+    "WitherSkullBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1

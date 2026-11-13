@@ -145,6 +145,17 @@ object ModBlocks {
         }
     }
 
+    // 9. Ритуальный блок Печати Иссушения (заменяет центральный череп при призыве Иссушителя)
+    val WITHER_SEAL_BLOCK: Supplier<Block> = registerBlock("wither_seal_block") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .strength(5.0f, 12.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.STONE)
+                .lightLevel { 7 } // Лёгкое зловещее свечение в темноте
+        )
+    }
+
     // ====================================================================
     // АВТОМАТИЧЕСКАЯ РЕГИСТРАЦИЯ БЛОКОВ И ИХ ПРЕДМЕТОВ (BLOCK ITEMS)
     // ====================================================================
