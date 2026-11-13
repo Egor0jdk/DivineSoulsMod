@@ -104,6 +104,11 @@ object WingsFlightHandler {
 
         player.deltaMovement = dashVelocity
 
+        // Отправляем сигнал на сервер: если в руках Кристальный щит — тараним мобов на пути!
+        net.neoforged.neoforge.network.PacketDistributor.sendToServer(
+            ru.rlyqaz.divinesouls.network.DashAttackPayload
+        )
+
         player.level().playLocalSound(
             player.x, player.y, player.z,
             SoundEvents.BREEZE_JUMP, SoundSource.PLAYERS,

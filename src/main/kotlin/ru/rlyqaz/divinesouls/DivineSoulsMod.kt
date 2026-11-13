@@ -102,6 +102,14 @@ object DivineSoulsMod {
                 ) { stack, _, entity, _ ->
                     if (entity != null && entity.isUsingItem && entity.useItem == stack) 1.0f else 0.0f
                 }
+
+                net.minecraft.client.renderer.item.ItemProperties.register(
+                    ModItems.END_CRYSTAL_SHIELD.get(),
+                    net.minecraft.resources.ResourceLocation.withDefaultNamespace("blocking")
+                ) { stack, _, entity, _ ->
+                    if (entity != null && entity.isUsingItem && entity.useItem == stack) 1.0f else 0.0f
+                }
+
             }
         }
 
@@ -144,6 +152,33 @@ object DivineSoulsMod {
                     ru.rlyqaz.divinesouls.client.renderer.WingsCurioRenderer("elytra", isVanillaTexture = true)
                 }
             }
+        }
+
+        // Подключаем кастомную текстуру 64x64 для Кристального щита Края
+        modEventBus.addListener { event: net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent ->
+            event.registerItem(
+                object : net.neoforged.neoforge.client.extensions.common.IClientItemExtensions {
+                    private var renderer: ru.rlyqaz.divinesouls.client.renderer.CrystalShieldRenderer? = null
+
+                    override fun getCustomRenderer(): net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer {
+                        if (renderer == null) {
+                            renderer = ru.rlyqaz.divinesouls.client.renderer.CrystalShieldRenderer()
+                        }
+                        return renderer!!
+                    }
+                },
+                ModItems.END_CRYSTAL_SHIELD.get()
+            )
+        }
+
+        // Регистрируем сетевой пакет для тарана Кристальным щитом при рывке
+        modEventBus.addListener { event: net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent ->
+            val registrar = event.registrar(MOD_ID)
+            registrar.playToServer(
+                ru.rlyqaz.divinesouls.network.DashAttackPayload.TYPE,
+                ru.rlyqaz.divinesouls.network.DashAttackPayload.STREAM_CODEC,
+                ru.rlyqaz.divinesouls.network.DashAttackPayload::handleServer
+            )
         }
 
         // Регистрируем наш кастомный строитель обсидианового пьедестала в Энде

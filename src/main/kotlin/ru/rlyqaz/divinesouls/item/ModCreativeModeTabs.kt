@@ -46,6 +46,7 @@ object ModCreativeModeTabs {
                 output.accept(ModWeapons.END_CRYSTAL_AXE.get())
                 output.accept(ModWeapons.END_CRYSTAL_SHOVEL.get())
                 output.accept(ModWeapons.END_CRYSTAL_HOE.get())
+                output.accept(ModItems.END_CRYSTAL_SHIELD.get())
             }
             .build()
     })

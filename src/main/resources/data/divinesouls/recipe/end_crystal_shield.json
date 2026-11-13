@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "W": {
+      "item": "divinesouls:end_wood_planks"
+    },
+    "C": {
+      "item": "divinesouls:end_crystal_gem"
+    }
+  },
+  "pattern": [
+    "WCW",
+    "WWW",
+    " W "
+  ],
+  "result": {
+    "count": 1,
+    "id": "divinesouls:end_crystal_shield"
+  }
+}

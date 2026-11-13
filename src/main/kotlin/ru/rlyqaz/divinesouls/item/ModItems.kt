@@ -107,6 +107,15 @@ object ModItems {
         }
     }
 
+    // Кристальный щит Энда (для тарана при рывке на Элитрах)
+    val END_CRYSTAL_SHIELD: Supplier<Item> = registerItem("end_crystal_shield") {
+        object : net.minecraft.world.item.ShieldItem(Item.Properties().durability(1008).rarity(Rarity.RARE)) {
+            override fun isValidRepairItem(toRepair: net.minecraft.world.item.ItemStack, repair: net.minecraft.world.item.ItemStack): Boolean {
+                return repair.`is`(END_CRYSTAL_GEM.get())
+            }
+        }
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }
