@@ -129,6 +129,23 @@ object DivineSoulsMod {
             )
         }
 
+        modEventBus.addListener { event: net.neoforged.fml.event.lifecycle.FMLClientSetupEvent ->
+            event.enqueueWork {
+                top.theillusivec4.curios.api.client.CuriosRendererRegistry.register(
+                    ru.rlyqaz.divinesouls.item.ModItems.WINGS_OF_WIND.get()
+                ) {
+                    ru.rlyqaz.divinesouls.client.renderer.WingsCurioRenderer("wings_of_wind")
+                }
+
+                // Регистрируем 3D-модель для ванильных Элитр в слоте Curios
+                top.theillusivec4.curios.api.client.CuriosRendererRegistry.register(
+                    net.minecraft.world.item.Items.ELYTRA
+                ) {
+                    ru.rlyqaz.divinesouls.client.renderer.WingsCurioRenderer("elytra", isVanillaTexture = true)
+                }
+            }
+        }
+
         // Регистрируем наш кастомный строитель обсидианового пьедестала в Энде
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.EndPlatformModifier)
         // Регистрируем наш новый класс общих событий (дроп с гастов и плачущий обсидиан)

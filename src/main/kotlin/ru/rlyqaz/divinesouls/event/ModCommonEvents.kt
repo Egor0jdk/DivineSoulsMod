@@ -21,16 +21,17 @@ import ru.rlyqaz.divinesouls.item.ModItems
  */
 object ModCommonEvents {
 
-    // 1. СТОПРОЦЕНТНЫЙ ДРОП ДУШИ ПОЛЁТА С ГАСТОВ
+    // 1. СБАЛАНСИРОВАННЫЙ ДРОП ДУШИ ПОЛЁТА С ГАСТОВ
     @SubscribeEvent
     fun onGhastDeath(event: LivingDeathEvent) {
         val entity = event.entity
         val level = entity.level()
 
         if (!level.isClientSide && entity is Ghast) {
-            // Выкидываем от 1 до 3 Душ Полёта со 100% шансом под ноги
-            val count = 1 + entity.random.nextInt(3)
-            entity.spawnAtLocation(ItemStack(ModItems.SOUL_OF_FLIGHT.get(), count))
+            // Выставляем комфортный шанс 65% на выпадение строго 1 Души Полёта
+            if (entity.random.nextFloat() < 0.65f) {
+                entity.spawnAtLocation(ItemStack(ModItems.SOUL_OF_FLIGHT.get(), 1))
+            }
         }
     }
 
