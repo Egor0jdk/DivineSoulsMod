@@ -35,6 +35,7 @@
   "item.divinesouls.fire_bow": "Fire Bow",
   "item.divinesouls.end_crystal_shield": "End Crystal Shield",
   "item.divinesouls.wither_mace": "Mace of Woe",
+  "item.divinesouls.spiked_stone_club": "Spiked Stone Club",
 
   "item.divinesouls.end_crystal_helmet": "End Crystal Helmet",
   "item.divinesouls.end_crystal_chestplate": "End Crystal Chestplate",
@@ -54,12 +55,15 @@
   "entity.divinesouls.twin_wither_skeleton": "Wither Twins",
   "entity.divinesouls.meadow_slime": "Meadow Slime",
   "entity.divinesouls.sandy_crab": "Sandy Crab",
+  "entity.divinesouls.cave_goblin": "Cave Goblin",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Sorrow Wraith Spawn Egg",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Wither Twins Spawn Egg",
   "item.divinesouls.meadow_slime_spawn_egg": "Meadow Slime Spawn Egg",
   "item.divinesouls.sandy_crab_spawn_egg": "Sandy Crab Spawn Egg",
+  "item.divinesouls.cave_goblin_spawn_egg": "Cave Goblin Spawn Egg",
 
   "advancements.divinesouls.kill_warden.title": "Overthrowing the Gatekeeper",
-  "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune"
+  "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune",
+  "message.divinesouls.hardmode_unlocked": "The ancient souls of light and void have been released!"
 }

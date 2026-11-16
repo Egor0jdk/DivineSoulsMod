@@ -167,6 +167,15 @@ object ModItems {
         )
     }
 
+    val CAVE_GOBLIN_SPAWN_EGG: Supplier<Item> = registerItem("cave_goblin_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ru.rlyqaz.divinesouls.entity.ModEntities.CAVE_GOBLIN,
+            0x4A6B3E,
+            0x2D332B,
+            Item.Properties()
+        )
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }

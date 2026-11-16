@@ -14,11 +14,14 @@ import ru.rlyqaz.divinesouls.entity.client.SorrowWraithModel
 import ru.rlyqaz.divinesouls.entity.client.SorrowWraithRenderer
 import ru.rlyqaz.divinesouls.entity.client.TwinWitherSkeletonModel
 import ru.rlyqaz.divinesouls.entity.client.TwinWitherSkeletonRenderer
+import ru.rlyqaz.divinesouls.entity.client.CaveGoblinModel
+import ru.rlyqaz.divinesouls.entity.client.CaveGoblinRenderer
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
 import ru.rlyqaz.divinesouls.entity.custom.TwinWitherSkeletonEntity
 import ru.rlyqaz.divinesouls.entity.custom.VoidDragonEntity
+import ru.rlyqaz.divinesouls.entity.custom.CaveGoblinEntity
 
 object ModEntityEvents {
 
@@ -30,6 +33,7 @@ object ModEntityEvents {
             event.put(ModEntities.TWIN_WITHER_SKELETON.get(), TwinWitherSkeletonEntity.createAttributes().build())
             event.put(ModEntities.MEADOW_SLIME.get(), MeadowSlimeEntity.createAttributes().build())
             event.put(ModEntities.SANDY_CRAB.get(), SandyCrabEntity.createAttributes().build())
+            event.put(ModEntities.CAVE_GOBLIN.get(), CaveGoblinEntity.createAttributes().build())
         }
 
         // 2. Рендереры мобов
@@ -38,6 +42,7 @@ object ModEntityEvents {
             event.registerEntityRenderer(ModEntities.TWIN_WITHER_SKELETON.get(), ::TwinWitherSkeletonRenderer)
             event.registerEntityRenderer(ModEntities.MEADOW_SLIME.get(), ::MeadowSlimeRenderer)
             event.registerEntityRenderer(ModEntities.SANDY_CRAB.get(), ::SandyCrabRenderer)
+            event.registerEntityRenderer(ModEntities.CAVE_GOBLIN.get(), ::CaveGoblinRenderer)
         }
 
         // 3. 3D-слои моделей
@@ -50,6 +55,9 @@ object ModEntityEvents {
             }
             event.registerLayerDefinition(SandyCrabModel.LAYER_LOCATION) {
                 SandyCrabModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(CaveGoblinModel.LAYER_LOCATION) {
+                CaveGoblinModel.createBodyLayer()
             }
         }
 
@@ -74,6 +82,13 @@ object ModEntityEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 SandyCrabEntity::checkSandyCrabSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.CAVE_GOBLIN.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                CaveGoblinEntity::checkCaveGoblinSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
             )
         }

@@ -29,7 +29,6 @@ object ModCreativeModeTabs {
                 output.accept(ModItems.ANCIENT_EYE.get())
                 output.accept(ModItems.ANCIENT_EYE_SHARD.get())
                 output.accept(ModItems.WARDEN_SOUL.get())
-                output.accept(ModItems.INFERNAL_CORE.get())
                 output.accept(ModItems.WINGS_OF_WIND.get())
                 output.accept(ModItems.WITHER_SEAL.get())
                 output.accept(ModItems.DRAGON_SOUL_SHARD.get())
@@ -42,6 +41,7 @@ object ModCreativeModeTabs {
             .icon { ItemStack(ModWeapons.END_CRYSTAL_SWORD.get()) }
             .title(Component.translatable("itemGroup.divinesouls.weapons"))
             .displayItems { _, output ->
+                output.accept(ModWeapons.SPIKED_STONE_CLUB.get())
                 output.accept(ModItems.FIRE_BOW.get())
                 output.accept(ModWeapons.WITHER_MACE.get())
                 output.accept(ModWeapons.END_CRYSTAL_SWORD.get())
@@ -50,6 +50,7 @@ object ModCreativeModeTabs {
                 output.accept(ModWeapons.END_CRYSTAL_SHOVEL.get())
                 output.accept(ModWeapons.END_CRYSTAL_HOE.get())
                 output.accept(ModWeapons.END_CRYSTAL_SHIELD.get())
+                output.accept(ModItems.INFERNAL_CORE.get())
             }
             .build()
     })
@@ -75,6 +76,7 @@ object ModCreativeModeTabs {
             .displayItems { _, output ->
                 output.accept(ModItems.MEADOW_SLIME_SPAWN_EGG.get())
                 output.accept(ModItems.SANDY_CRAB_SPAWN_EGG.get())
+                output.accept(ModItems.CAVE_GOBLIN_SPAWN_EGG.get())
                 output.accept(ModItems.SORROW_WRAITH_SPAWN_EGG.get())
                 output.accept(ModItems.TWIN_WITHER_SKELETON_SPAWN_EGG.get())
             }

@@ -11,6 +11,7 @@ import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
 import ru.rlyqaz.divinesouls.entity.custom.TwinWitherSkeletonEntity
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
+import ru.rlyqaz.divinesouls.entity.custom.CaveGoblinEntity
 import java.util.function.Supplier
 
 /**
@@ -60,6 +61,13 @@ object ModEntities {
             .sized(0.85f, 0.55f)
             .clientTrackingRange(10)
             .build("sandy_crab")
+    })
+
+    val CAVE_GOBLIN: Supplier<EntityType<CaveGoblinEntity>> = REGISTRY.register("cave_goblin", Supplier {
+        EntityType.Builder.of(::CaveGoblinEntity, MobCategory.MONSTER)
+            .sized(0.6f, 1.4f)
+            .clientTrackingRange(10)
+            .build("cave_goblin")
     })
 
     fun register(eventBus: IEventBus) {

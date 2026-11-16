@@ -91,6 +91,40 @@ object ModWeapons {
         }
     }
 
+    // Дубинка с каменными шипами: аналог каменного топора (9 урона, скорость 0.8), лёгкое отбрасывание и 30% шанс замедления
+    val SPIKED_STONE_CLUB: Supplier<Item> = registerWeapon("spiked_stone_club") {
+        object : SwordItem(
+            Tiers.STONE,
+            Item.Properties()
+                .durability(160)
+                .attributes(
+                    SwordItem.createAttributes(Tiers.STONE, 7, -3.2f)
+                )
+        ) {
+            override fun postHurtEnemy(
+                stack: ItemStack,
+                target: net.minecraft.world.entity.LivingEntity,
+                attacker: net.minecraft.world.entity.LivingEntity
+            ) {
+                // Лёгкое дополнительное отбрасывание
+                val look = attacker.lookAngle
+                target.knockback(0.35, -look.x, -look.z)
+
+                // 30% шанс оглушить (Замедление I на 2 секунды)
+                if (attacker.random.nextFloat() < 0.30f) {
+                    target.addEffect(
+                        net.minecraft.world.effect.MobEffectInstance(
+                            net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN,
+                            40,
+                            0
+                        )
+                    )
+                }
+                super.postHurtEnemy(stack, target, attacker)
+            }
+        }
+    }
+
     // Хелпер для чистой регистрации
     private fun <T : Item> registerWeapon(name: String, itemSupplier: () -> T): Supplier<T> {
         return REGISTRY.register(name, itemSupplier)

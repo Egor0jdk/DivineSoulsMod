@@ -87,4 +87,52 @@ object ModCommonEvents {
             }
         }
     }
+
+    // 3. ОТКЛЮЧЕНИЕ ТИТРОВ ПОСЛЕ ПОРТАЛА ЭНДА
+    @SubscribeEvent
+    fun onPlayerChangeDimension(event: net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent) {
+        val player = event.entity as? net.minecraft.server.level.ServerPlayer ?: return
+        if (event.from == net.minecraft.world.level.Level.END || event.to == net.minecraft.world.level.Level.END) {
+            player.seenCredits = true
+        }
+    }
+
+    // 4. СООБЩЕНИЕ В ДУХЕ СТЕНЫ ПЛОТИ РОВНО В МОМЕНТ РАСПАДА ДРАКОНА В ОПЫТ
+    @SubscribeEvent
+    fun onEnderDragonTick(event: net.neoforged.neoforge.event.tick.EntityTickEvent.Post) {
+        val dragon = event.entity as? net.minecraft.world.entity.boss.enderdragon.EnderDragon ?: return
+        val serverLevel = dragon.level() as? ServerLevel ?: return
+
+        // Анимация смерти дракона длится 200 тиков; на 199 тике он окончательно распадается в опыт
+        if (dragon.dragonDeathTime != 199) return
+
+        val dragonFight = serverLevel.dragonFight
+        val isFirstKill = dragonFight != null && !dragonFight.hasPreviouslyKilledDragon()
+
+        if (isFirstKill) {
+            val server = serverLevel.server
+
+            for (player in server.playerList.players) {
+                player.seenCredits = true
+            }
+
+            val hardmodeMessage = net.minecraft.network.chat.Component.translatable("message.divinesouls.hardmode_unlocked")
+                .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE, net.minecraft.ChatFormatting.BOLD)
+
+            server.playerList.broadcastSystemMessage(hardmodeMessage, false)
+
+            for (player in server.playerList.players) {
+                player.level().playSound(
+                    null,
+                    player.x,
+                    player.y,
+                    player.z,
+                    net.minecraft.sounds.SoundEvents.WITHER_SPAWN,
+                    net.minecraft.sounds.SoundSource.MASTER,
+                    0.8f,
+                    0.75f
+                )
+            }
+        }
+    }
 }
