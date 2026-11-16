@@ -45,11 +45,20 @@ object ModWeapons {
         ))
     }
 
-    // Кристальная мотыга
+    // Кристальная мотыга: 1 урон (-7f + 7f + 1 = 1) и 5 скорость атаки (4.0 + 1.0f = 5)
     val END_CRYSTAL_HOE: Supplier<Item> = registerWeapon("end_crystal_hoe") {
         HoeItem(ModItemTier.END_CRYSTAL, Item.Properties().attributes(
-            HoeItem.createAttributes(ModItemTier.END_CRYSTAL, -3f, 0.0f)
+            HoeItem.createAttributes(ModItemTier.END_CRYSTAL, -7f, 1.0f)
         ))
+    }
+
+    // Кристальный щит Энда (для тарана при рывке на Элитрах)
+    val END_CRYSTAL_SHIELD: Supplier<Item> = registerWeapon("end_crystal_shield") {
+        object : ShieldItem(Item.Properties().durability(1008).rarity(Rarity.RARE)) {
+            override fun isValidRepairItem(toRepair: ItemStack, repair: ItemStack): Boolean {
+                return repair.`is`(ModItems.END_CRYSTAL_GEM.get())
+            }
+        }
     }
 
     // --- ОРУЖИЕ БОССОВ И МИНИ-БОССОВ ---

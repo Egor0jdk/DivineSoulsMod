@@ -15,7 +15,6 @@ import net.neoforged.neoforge.event.level.BlockEvent
 import net.neoforged.neoforge.registries.DeferredRegister
 import ru.rlyqaz.divinesouls.block.ModBlocks
 import ru.rlyqaz.divinesouls.entity.ModEntities
-import ru.rlyqaz.divinesouls.entity.custom.VoidDragonEntity
 import ru.rlyqaz.divinesouls.item.ModCreativeModeTabs
 import ru.rlyqaz.divinesouls.item.ModItems
 import ru.rlyqaz.divinesouls.item.ModWeapons
@@ -64,16 +63,10 @@ object DivineSoulsMod {
         ModBlocks.register(modEventBus)
         ModItems.register(modEventBus)
         ModEntities.register(modEventBus)
+        ru.rlyqaz.divinesouls.entity.ModEntityEvents.register(modEventBus)
         ModCreativeModeTabs.register(modEventBus)
         ModArmorMaterials.register(modEventBus) // РЕГИСТРИРУЕМ МАТЕРИАЛЫ СТРОГО ДО КЛАССА БРОНИ!
         ModArmor.register(modEventBus)
-
-        // Регистрируем статы мобов: сначала Дракон, следом наш новый Призрак и Близнецы!
-        modEventBus.addListener { event: net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent ->
-            event.put(ModEntities.VOID_DRAGON.get(), VoidDragonEntity.createAttributes().build())
-            event.put(ModEntities.SORROW_WRAITH.get(), ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity.createAttributes().build())
-            event.put(ModEntities.TWIN_WITHER_SKELETON.get(), ru.rlyqaz.divinesouls.entity.custom.TwinWitherSkeletonEntity.createAttributes().build())
-        }
 
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.ArmorEffectsHandler)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WardenBalanceHandler)
@@ -107,44 +100,13 @@ object DivineSoulsMod {
                 }
 
                 net.minecraft.client.renderer.item.ItemProperties.register(
-                    ModItems.END_CRYSTAL_SHIELD.get(),
+                    ModWeapons.END_CRYSTAL_SHIELD.get(),
                     net.minecraft.resources.ResourceLocation.withDefaultNamespace("blocking")
                 ) { stack, _, entity, _ ->
                     if (entity != null && entity.isUsingItem && entity.useItem == stack) 1.0f else 0.0f
                 }
 
             }
-        }
-
-        // Регистрация рендереров мобов
-        modEventBus.addListener { event: net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers ->
-            event.registerEntityRenderer(ModEntities.SORROW_WRAITH.get()) { context ->
-                ru.rlyqaz.divinesouls.entity.client.SorrowWraithRenderer(context)
-            }
-            event.registerEntityRenderer(ModEntities.TWIN_WITHER_SKELETON.get()) { context ->
-                ru.rlyqaz.divinesouls.entity.client.TwinWitherSkeletonRenderer(context)
-            }
-        }
-
-        // Регистрация 3D-слоёв моделей мобов
-        modEventBus.addListener { event: net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterLayerDefinitions ->
-            event.registerLayerDefinition(ru.rlyqaz.divinesouls.entity.client.SorrowWraithModel.LAYER_LOCATION) {
-                ru.rlyqaz.divinesouls.entity.client.SorrowWraithModel.createBodyLayer()
-            }
-            event.registerLayerDefinition(ru.rlyqaz.divinesouls.entity.client.TwinWitherSkeletonModel.LAYER_LOCATION) {
-                ru.rlyqaz.divinesouls.entity.client.TwinWitherSkeletonModel.createBodyLayer()
-            }
-        }
-
-        // Исправленный регистратор спавна под чистый NeoForge 1.21.1
-        modEventBus.addListener { event: net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent ->
-            event.register(
-                ModEntities.SORROW_WRAITH.get(),
-                net.minecraft.world.entity.SpawnPlacementTypes.ON_GROUND,
-                net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                net.minecraft.world.entity.monster.Monster::checkMonsterSpawnRules,
-                net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent.Operation.OR
-            )
         }
 
         modEventBus.addListener { event: net.neoforged.fml.event.lifecycle.FMLClientSetupEvent ->
@@ -177,7 +139,7 @@ object DivineSoulsMod {
                         return renderer!!
                     }
                 },
-                ModItems.END_CRYSTAL_SHIELD.get()
+                ModWeapons.END_CRYSTAL_SHIELD.get()
             )
         }
 

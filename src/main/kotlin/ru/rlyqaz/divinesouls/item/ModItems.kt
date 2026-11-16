@@ -107,15 +107,6 @@ object ModItems {
         }
     }
 
-    // Кристальный щит Энда (для тарана при рывке на Элитрах)
-    val END_CRYSTAL_SHIELD: Supplier<Item> = registerItem("end_crystal_shield") {
-        object : net.minecraft.world.item.ShieldItem(Item.Properties().durability(1008).rarity(Rarity.RARE)) {
-            override fun isValidRepairItem(toRepair: net.minecraft.world.item.ItemStack, repair: net.minecraft.world.item.ItemStack): Boolean {
-                return repair.`is`(END_CRYSTAL_GEM.get())
-            }
-        }
-    }
-
     // Печать Иссушения (выпадает с Двуглавого Визер-скелета, нужна для крафта блока призыва)
     val WITHER_SEAL: Supplier<Item> = registerItem("wither_seal") {
         Item(Item.Properties().stacksTo(1).rarity(Rarity.RARE))
@@ -133,6 +124,46 @@ object ModItems {
             0x141414,
             0x5A1A1A,
             Item.Properties()
+        )
+    }
+
+    val MEADOW_SLIME_SPAWN_EGG: Supplier<Item> = registerItem("meadow_slime_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ru.rlyqaz.divinesouls.entity.ModEntities.MEADOW_SLIME,
+            0xD9A426, // Основной цвет (насыщенный янтарно-жёлтый)
+            0xFFE66D, // Цвет пятен (светлый медово-жёлтый)
+            Item.Properties()
+        )
+    }
+
+    val SANDY_CRAB_SPAWN_EGG: Supplier<Item> = registerItem("sandy_crab_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ru.rlyqaz.divinesouls.entity.ModEntities.SANDY_CRAB,
+            0xD8B47C, // Основной цвет яйца (песчаный панцирь)
+            0x8C583A, // Цвет крапинок (тёмно-охристые клешни)
+            Item.Properties()
+        )
+    }
+
+    val RAW_CRAB_MEAT: Supplier<Item> = registerItem("raw_crab_meat") {
+        Item(
+            Item.Properties().food(
+                net.minecraft.world.food.FoodProperties.Builder()
+                    .nutrition(2)
+                    .saturationModifier(0.2f)
+                    .build()
+            )
+        )
+    }
+
+    val COOKED_CRAB_MEAT: Supplier<Item> = registerItem("cooked_crab_meat") {
+        Item(
+            Item.Properties().food(
+                net.minecraft.world.food.FoodProperties.Builder()
+                    .nutrition(5)
+                    .saturationModifier(0.6f)
+                    .build()
+            )
         )
     }
 

@@ -43,13 +43,13 @@ object ModCreativeModeTabs {
             .title(Component.translatable("itemGroup.divinesouls.weapons"))
             .displayItems { _, output ->
                 output.accept(ModItems.FIRE_BOW.get())
+                output.accept(ModWeapons.WITHER_MACE.get())
                 output.accept(ModWeapons.END_CRYSTAL_SWORD.get())
                 output.accept(ModWeapons.END_CRYSTAL_PICKAXE.get())
                 output.accept(ModWeapons.END_CRYSTAL_AXE.get())
                 output.accept(ModWeapons.END_CRYSTAL_SHOVEL.get())
                 output.accept(ModWeapons.END_CRYSTAL_HOE.get())
-                output.accept(ModItems.END_CRYSTAL_SHIELD.get())
-                output.accept(ModWeapons.WITHER_MACE.get())
+                output.accept(ModWeapons.END_CRYSTAL_SHIELD.get())
             }
             .build()
     })
@@ -73,6 +73,8 @@ object ModCreativeModeTabs {
             .icon { ItemStack(ModItems.SORROW_WRAITH_SPAWN_EGG.get()) }
             .title(Component.translatable("itemGroup.divinesouls.mobs"))
             .displayItems { _, output ->
+                output.accept(ModItems.MEADOW_SLIME_SPAWN_EGG.get())
+                output.accept(ModItems.SANDY_CRAB_SPAWN_EGG.get())
                 output.accept(ModItems.SORROW_WRAITH_SPAWN_EGG.get())
                 output.accept(ModItems.TWIN_WITHER_SKELETON_SPAWN_EGG.get())
             }
@@ -104,6 +106,17 @@ object ModCreativeModeTabs {
             .displayItems { _, output ->
                 output.accept(ModItems.ANCIENT_RUNE.get()) // Руна уехала сюда
                 output.accept(ModItems.WITHER_CORE.get())
+            }
+            .build()
+    })
+
+    val DIVINE_FOOD: Supplier<CreativeModeTab> = REGISTRY.register("divine_food_tab", Supplier<CreativeModeTab> {
+        CreativeModeTab.builder()
+            .icon { ItemStack(ModItems.COOKED_CRAB_MEAT.get()) }
+            .title(Component.translatable("itemGroup.divinesouls.food"))
+            .displayItems { _, output ->
+                output.accept(ModItems.RAW_CRAB_MEAT.get())
+                output.accept(ModItems.COOKED_CRAB_MEAT.get())
             }
             .build()
     })

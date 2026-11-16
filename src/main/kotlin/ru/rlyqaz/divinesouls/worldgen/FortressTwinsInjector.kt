@@ -1,6 +1,7 @@
 package ru.rlyqaz.divinesouls.worldgen
 
 import net.minecraft.core.BlockPos
+import net.minecraft.core.Direction
 import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerLevel
@@ -34,6 +35,11 @@ object FortressTwinsInjector {
         val searchZ: Int,
         val minY: Int,
         val maxY: Int
+    )
+
+    private data class BridgeSpot(
+        val attachPos: BlockPos,     // Точка на краю моста (на бортике), к которой стыкуется вход
+        val outwardDir: Direction    // Направление ОТ моста в сторону пустоты (куда уходит арена)
     )
 
     private val pendingArenas = ConcurrentLinkedQueue<PendingArena>()
@@ -103,28 +109,41 @@ object FortressTwinsInjector {
                 break
             }
 
-            // Находим самый северный край моста/площадки крепости
-            val bridgeEdgePos = findNorthBridgeEdge(level, task.searchX, task.searchZ, task.minY, task.maxY) ?: continue
+            // Ищем ТОЛЬКО настоящий открытый мост с забором по краю (никаких крыш и спавнеров!)
+            val spot = findRealFortressBridge(level, task.searchX, task.searchZ, task.minY, task.maxY) ?: continue
 
             val template = level.structureManager.get(ARENA_TEMPLATE_ID).getOrNull() ?: continue
-            val size = template.size // size.x = 14 (центр между 6 и 7)
+            val size = template.size // X = 14, Y = 9, Z = 22
 
-            // Опустили на 1 блок ниже (bridgeEdgePos.y - 2) и сдвинули на 1 блок назад на север (bridgeEdgePos.z - size.z)
-            val placeOrigin = BlockPos(
-                bridgeEdgePos.x - (size.x / 2),
-                bridgeEdgePos.y - 1, // Возвращаем высоту ровно в уровень с мостом крепости
-                bridgeEdgePos.z - size.z
-            )
+            val rotation = when (spot.outwardDir) {
+                Direction.NORTH -> Rotation.NONE
+                Direction.EAST -> Rotation.CLOCKWISE_90
+                Direction.SOUTH -> Rotation.CLOCKWISE_180
+                Direction.WEST -> Rotation.COUNTERCLOCKWISE_90
+                else -> Rotation.NONE
+            }
 
-            val boxStartX = placeOrigin.x
-            val boxStartZ = placeOrigin.z + 5
+            val floorY = spot.attachPos.y - 1
 
-            // 1. Очищаем внутреннее пространство самого зала (12x6x12) от незерака
+            // Вычисляем точный мировой центр основной коробки 14x14 (отстоит от края моста на 3 блока мостика + 7 блоков до центра = 10 блоков)
+            val boxCenter = spot.attachPos.relative(spot.outwardDir, 10)
+            val boxMinX = boxCenter.x - 7
+            val boxMinZ = boxCenter.z - 7
+
+            // Точка вставки шаблона в мире с учётом поворота
+            val placeOrigin = when (rotation) {
+                Rotation.NONE -> BlockPos(boxMinX, floorY, boxMinZ - 5)
+                Rotation.CLOCKWISE_90 -> BlockPos(boxMinX + 13 + 5, floorY, boxMinZ)
+                Rotation.CLOCKWISE_180 -> BlockPos(boxMinX + 13, floorY, boxMinZ + 13 + 5)
+                Rotation.COUNTERCLOCKWISE_90 -> BlockPos(boxMinX - 5, floorY, boxMinZ + 13)
+            }
+
+            // 1. Очищаем внутренний зал 12x6x12 от незерака
             for (ix in 1..12) {
                 for (iy in 1..6) {
                     for (iz in 1..12) {
                         level.setBlock(
-                            BlockPos(boxStartX + ix, placeOrigin.y + iy, boxStartZ + iz),
+                            BlockPos(boxMinX + ix, floorY + iy, boxMinZ + iz),
                             Blocks.AIR.defaultBlockState(),
                             2
                         )
@@ -132,60 +151,24 @@ object FortressTwinsInjector {
                 }
             }
 
-            // 2. Вставляем структуру (игнорируем воздух шаблона, чтобы не ломать существующий мост)
+            // 2. Вставляем структуру с поворотом
             val settings = StructurePlaceSettings()
-                .setRotation(Rotation.NONE)
+                .setRotation(rotation)
                 .setMirror(Mirror.NONE)
                 .setIgnoreEntities(true)
                 .addProcessor(BlockIgnoreProcessor.STRUCTURE_AND_AIR)
 
             template.placeInWorld(level, placeOrigin, placeOrigin, settings, level.random, 2)
 
-            // 3. Разделённая расчистка + замена выпирающих заборов на уровне пола на цельный адский кирпич
-            val entranceCenterX = placeOrigin.x + (size.x / 2)
-            val bridgeStartZ = boxStartZ + 13
-            val bridgeEndZ = placeOrigin.z + size.z
+            // 3. Расчищаем проход от края моста крепости вглубь входа в арену
+            clearRotatedEntrance(level, spot.attachPos, spot.outwardDir, floorY)
 
-            for (z in bridgeStartZ..bridgeEndZ) {
-                if (z == bridgeStartZ) {
-                    // Сам дверной проём в стене арены: 2 в ширину (-1..0) и 3 в высоту (2..4)
-                    for (dx in -1..0) {
-                        for (dy in 2..4) {
-                            val clearPos = BlockPos(entranceCenterX + dx, placeOrigin.y + dy, z)
-                            if (!level.getBlockState(clearPos).isAir) {
-                                level.setBlock(clearPos, Blocks.AIR.defaultBlockState(), 2)
-                            }
-                        }
-                    }
-                } else {
-                    // Вся площадка моста дальше: квадрат 4 в ширину (-2..1) и 4 в высоту (2..5)
-                    for (dx in -2..1) {
-                        for (dy in 2..5) {
-                            val clearPos = BlockPos(entranceCenterX + dx, placeOrigin.y + dy, z)
-                            if (!level.getBlockState(clearPos).isAir) {
-                                level.setBlock(clearPos, Blocks.AIR.defaultBlockState(), 2)
-                            }
-                        }
-
-                        // Если на уровне пола (dy = 1) торчит забор крепости — меняем его на обычный блок адского кирпича!
-                        val floorLevelPos = BlockPos(entranceCenterX + dx, placeOrigin.y + 1, z)
-                        if (level.getBlockState(floorLevelPos).`is`(Blocks.NETHER_BRICK_FENCE)) {
-                            level.setBlock(floorLevelPos, Blocks.NETHER_BRICKS.defaultBlockState(), 2)
-                        }
-                    }
-                }
-            }
-
-            // 4. Строим 4 опорные колонны 3x3 по углам основной коробки вниз до полного упора в дно
-            val boxEndX = boxStartX + 13
-            val boxEndZ = boxStartZ + 13
-            val floorY = placeOrigin.y
-
+            // 4. Строим 4 опорные колонны 3x3 строго по углам коробки 14x14 вниз до дна
             val pillarCorners = listOf(
-                Pair(boxStartX, boxStartZ),
-                Pair(boxEndX - 2, boxStartZ),
-                Pair(boxStartX, boxEndZ - 2),
-                Pair(boxEndX - 2, boxEndZ - 2)
+                Pair(boxMinX, boxMinZ),
+                Pair(boxMinX + 11, boxMinZ),
+                Pair(boxMinX, boxMinZ + 11),
+                Pair(boxMinX + 11, boxMinZ + 11)
             )
 
             for ((cornerX, cornerZ) in pillarCorners) {
@@ -193,9 +176,9 @@ object FortressTwinsInjector {
             }
 
             // 5. Спавним Близнецов Иссушения ровно в центре зала
-            val bossSpawnX = boxStartX + 7.0
-            val bossSpawnY = floorY + 1.0
-            val bossSpawnZ = boxStartZ + 7.0
+            val bossSpawnX = boxMinX + 7.0
+            val bossSpawnY = floorY + 2.0
+            val bossSpawnZ = boxMinZ + 7.0
 
             val boss = ModEntities.TWIN_WITHER_SKELETON.get().create(level)
             if (boss != null) {
@@ -206,49 +189,96 @@ object FortressTwinsInjector {
             }
 
             savedData.markFortressProcessed(task.fortressOrigin)
-            DivineSoulsMod.LOGGER.info("Divine Souls: Generated Twins Arena attached cleanly to bridge edge at $bridgeEdgePos")
+            DivineSoulsMod.LOGGER.info("Divine Souls: Generated Twins Arena attached to fortress bridge at ${spot.attachPos}")
         }
     }
 
-    // Ищет самый северный крайний блок моста/площадки крепости (где дальше на север уже нет кирпича крепости)
-    private fun findNorthBridgeEdge(level: ServerLevel, centerX: Int, centerZ: Int, minY: Int, maxY: Int): BlockPos? {
-        val startY = maxY.coerceAtMost(95)
-        val endY = minY.coerceAtLeast(45)
+    // Ищет ИМЕННО открытый мост крепости (пол из адского кирпича + забор NETHER_BRICK_FENCE по краю + пустота снаружи)
+    private fun findRealFortressBridge(level: ServerLevel, centerX: Int, centerZ: Int, minY: Int, maxY: Int): BridgeSpot? {
+        val startY = maxY.coerceAtMost(85)
+        val endY = minY.coerceAtLeast(50)
+        val horizontalDirs = listOf(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST)
 
-        for (dx in -8..8) {
-            for (dz in -8..8) {
+        for (dx in -7..7) {
+            for (dz in -7..7) {
                 for (y in startY downTo endY) {
                     val pos = BlockPos(centerX + dx, y, centerZ + dz)
                     if (!level.getBlockState(pos).`is`(Blocks.NETHER_BRICKS)) continue
 
-                    // Над краем моста должно быть минимум 3 блока воздуха
+                    // Над дорожкой моста должно быть чистое пространство (не крыша закрытого коридора!)
                     if (!level.getBlockState(pos.above()).isAir ||
                         !level.getBlockState(pos.above(2)).isAir ||
-                        !level.getBlockState(pos.above(3)).isAir
+                        !level.getBlockState(pos.above(3)).isAir ||
+                        !level.getBlockState(pos.above(4)).isAir
                     ) continue
 
-                    // Проверяем, что это именно КРАЙ моста с северной стороны:
-                    // на 1 блок севернее (pos.north(1)) уже нет пола крепости (там воздух или забор)
-                    val oneStepNorth = pos.north(1)
-                    if (level.getBlockState(oneStepNorth).`is`(Blocks.NETHER_BRICKS)) continue
+                    for (dir in horizontalDirs) {
+                        val edgeBlock = pos.relative(dir, 1)
+                        val fenceBlock = edgeBlock.above()
 
-                    // А на 2–6 блоков севернее нет других коридоров крепости, в которые мы могли бы врезаться
-                    var clearNorth = true
-                    for (dist in 2..6) {
-                        val checkNorth = pos.north(dist)
-                        val state = level.getBlockState(checkNorth)
-                        if (state.`is`(Blocks.NETHER_BRICKS) || state.`is`(Blocks.NETHER_BRICK_FENCE)) {
-                            clearNorth = false
-                            break
+                        // Ключевая проверка моста: на 1 блок в сторону идёт край моста с АДСКИМ ЗАБОРОМ сверху!
+                        if (!level.getBlockState(edgeBlock).`is`(Blocks.NETHER_BRICKS) ||
+                            !level.getBlockState(fenceBlock).`is`(Blocks.NETHER_BRICK_FENCE)
+                        ) continue
+
+                        // Проверяем, что вдоль этого бортика вправо и влево тоже идёт мост (минимум по 2 блока)
+                        val left = dir.counterClockWise
+                        val right = dir.clockWise
+                        if (!level.getBlockState(edgeBlock.relative(left)).`is`(Blocks.NETHER_BRICKS) ||
+                            !level.getBlockState(edgeBlock.relative(right)).`is`(Blocks.NETHER_BRICKS)
+                        ) continue
+
+                        // Проверяем, что снаружи за забором (в направлении dir на 2..16 блоков) нет других частей крепости
+                        var clearOutside = true
+                        for (dist in 2..16) {
+                            val checkPos = edgeBlock.relative(dir, dist)
+                            val state = level.getBlockState(checkPos)
+                            if (state.`is`(Blocks.NETHER_BRICKS) || state.`is`(Blocks.NETHER_BRICK_FENCE)) {
+                                clearOutside = false
+                                break
+                            }
                         }
-                    }
-                    if (clearNorth) {
-                        return pos
+
+                        if (clearOutside) {
+                            return BridgeSpot(edgeBlock, dir)
+                        }
                     }
                 }
             }
         }
         return null
+    }
+
+    private fun clearRotatedEntrance(level: ServerLevel, edgePos: BlockPos, outwardDir: Direction, floorY: Int) {
+        val sideDir = outwardDir.clockWise
+        for (step in -1..2) {
+            val centerStepPos = edgePos.relative(outwardDir, step)
+            val isDoorway = (step == 2)
+
+            if (isDoorway) {
+                for (sideOffset in -1..0) {
+                    for (dy in 2..4) {
+                        val pos = centerStepPos.relative(sideDir, sideOffset).atY(floorY + dy)
+                        if (!level.getBlockState(pos).isAir) {
+                            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2)
+                        }
+                    }
+                }
+            } else {
+                for (sideOffset in -2..1) {
+                    for (dy in 2..5) {
+                        val pos = centerStepPos.relative(sideDir, sideOffset).atY(floorY + dy)
+                        if (!level.getBlockState(pos).isAir) {
+                            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 2)
+                        }
+                    }
+                    val floorCheckPos = centerStepPos.relative(sideDir, sideOffset).atY(floorY + 1)
+                    if (level.getBlockState(floorCheckPos).`is`(Blocks.NETHER_BRICK_FENCE)) {
+                        level.setBlock(floorCheckPos, Blocks.NETHER_BRICKS.defaultBlockState(), 2)
+                    }
+                }
+            }
+        }
     }
 
     private fun buildSupportPillar3x3(level: ServerLevel, startX: Int, startY: Int, startZ: Int) {
@@ -258,6 +288,7 @@ object FortressTwinsInjector {
                 while (currentY > level.minBuildHeight + 5) {
                     val pos = BlockPos(startX + dx, currentY, startZ + dz)
                     val state = level.getBlockState(pos)
+
                     if (state.isAir || !state.fluidState.isEmpty || state.canBeReplaced()) {
                         level.setBlock(pos, Blocks.NETHER_BRICKS.defaultBlockState(), 2)
                         currentY--

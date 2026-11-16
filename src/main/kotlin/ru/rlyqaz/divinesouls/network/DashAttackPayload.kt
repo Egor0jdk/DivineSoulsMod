@@ -10,7 +10,7 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
 import net.neoforged.neoforge.network.handling.IPayloadContext
 import ru.rlyqaz.divinesouls.DivineSoulsMod
-import ru.rlyqaz.divinesouls.item.ModItems
+import ru.rlyqaz.divinesouls.item.ModWeapons
 
 object DashAttackPayload : CustomPacketPayload {
 
@@ -28,11 +28,11 @@ object DashAttackPayload : CustomPacketPayload {
             val level = player.level()
 
             val isBlockingWithCrystalShield = player.isUsingItem &&
-                    player.useItem.`is`(ModItems.END_CRYSTAL_SHIELD.get())
+                    player.useItem.item == ModWeapons.END_CRYSTAL_SHIELD.get()
 
             if (isBlockingWithCrystalShield) {
                 val lookVec = player.lookAngle
-                val searchBox = player.boundingBox.expandTowards(lookVec.scale(2.5)).inflate(1.0)
+                val searchBox = player.boundingBox.expandTowards(lookVec.scale(1.75)).inflate(0.7)
                 val targets = level.getEntitiesOfClass(LivingEntity::class.java, searchBox) { entity ->
                     entity != player && entity.isAlive
                 }

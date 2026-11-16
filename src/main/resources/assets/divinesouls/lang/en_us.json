@@ -16,13 +16,16 @@
   "item.divinesouls.ancient_eye_shard": "Ancient Eye Shard",
   "item.divinesouls.nether_essence": "Nether Essence",
   "item.divinesouls.dragon_soul_shard": "Dragon Soul Shard",
-  "item.divinesouls.infernal_core": "Infernal Core",
+  "item.divinesouls.infernal_core": "Hellfire Charge",
   "item.divinesouls.burning_soul": "Burning Soul",
   "item.divinesouls.soul_of_flight": "Soul of Flight",
   "item.divinesouls.wings_of_wind": "Wings of Wind",
   "item.divinesouls.wither_seal": "Wither Seal",
   "block.divinesouls.wither_seal_block": "Wither Seal Block",
   "item.divinesouls.wither_bone": "Wither Bone",
+
+  "item.divinesouls.raw_crab_meat": "Raw Crab Meat",
+  "item.divinesouls.cooked_crab_meat": "Cooked Crab Meat",
 
   "item.divinesouls.end_crystal_sword": "End Crystal Sword",
   "item.divinesouls.end_crystal_pickaxe": "End Crystal Pickaxe",
@@ -44,13 +47,18 @@
   "itemGroup.divinesouls.mobs": "Divine Souls: Mobs",
   "itemGroup.divinesouls.blocks": "Divine Souls: Blocks",
   "itemGroup.divinesouls.summons": "Divine Souls: Summons",
+  "itemGroup.divinesouls.food": "Divine Souls: Food",
 
   "entity.divinesouls.void_dragon": "Void Dragon",
   "entity.divinesouls.sorrow_wraith": "Sorrow Wraith",
   "entity.divinesouls.twin_wither_skeleton": "Wither Twins",
+  "entity.divinesouls.meadow_slime": "Meadow Slime",
+  "entity.divinesouls.sandy_crab": "Sandy Crab",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Sorrow Wraith Spawn Egg",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Wither Twins Spawn Egg",
+  "item.divinesouls.meadow_slime_spawn_egg": "Meadow Slime Spawn Egg",
+  "item.divinesouls.sandy_crab_spawn_egg": "Sandy Crab Spawn Egg",
 
   "advancements.divinesouls.kill_warden.title": "Overthrowing the Gatekeeper",
   "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune"

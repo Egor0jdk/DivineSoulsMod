@@ -14,5 +14,18 @@
   "sorrow_wraith_death": {
     "category": "hostile",
     "sounds": [ "divinesouls:mob/sorrow_wraith/death" ]
+  },
+
+  "sandy_crab_ambient": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/sandy_crab/ambient" ]
+  },
+  "sandy_crab_hurt": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/sandy_crab/hurt" ]
+  },
+  "sandy_crab_death": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/sandy_crab/death" ]
   }
 }

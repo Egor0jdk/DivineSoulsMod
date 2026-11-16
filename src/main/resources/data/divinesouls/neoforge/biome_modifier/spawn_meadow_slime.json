@@ -1,0 +1,14 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:sunflower_plains",
+    "minecraft:meadow"
+  ],
+  "spawners": {
+    "type": "divinesouls:meadow_slime",
+    "weight": 20,
+    "minCount": 1,
+    "maxCount": 3
+  }
+}

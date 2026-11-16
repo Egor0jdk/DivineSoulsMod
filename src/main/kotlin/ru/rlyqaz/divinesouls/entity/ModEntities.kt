@@ -9,6 +9,8 @@ import ru.rlyqaz.divinesouls.DivineSoulsMod
 import ru.rlyqaz.divinesouls.entity.custom.VoidDragonEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
 import ru.rlyqaz.divinesouls.entity.custom.TwinWitherSkeletonEntity
+import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
+import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import java.util.function.Supplier
 
 /**
@@ -44,6 +46,20 @@ object ModEntities {
             .sized(0.95f, 3.1f)
             .fireImmune()
             .build("twin_wither_skeleton")
+    })
+
+    val MEADOW_SLIME: Supplier<EntityType<MeadowSlimeEntity>> = REGISTRY.register("meadow_slime", Supplier {
+        EntityType.Builder.of(::MeadowSlimeEntity, MobCategory.MONSTER)
+            .sized(0.52f, 0.52f)
+            .clientTrackingRange(10)
+            .build("meadow_slime")
+    })
+
+    val SANDY_CRAB: Supplier<EntityType<SandyCrabEntity>> = REGISTRY.register("sandy_crab", Supplier {
+        EntityType.Builder.of(::SandyCrabEntity, MobCategory.MONSTER)
+            .sized(0.85f, 0.55f)
+            .clientTrackingRange(10)
+            .build("sandy_crab")
     })
 
     fun register(eventBus: IEventBus) {
