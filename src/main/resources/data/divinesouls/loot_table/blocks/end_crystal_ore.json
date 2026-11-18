@@ -8,6 +8,11 @@
           "type": "minecraft:item",
           "name": "divinesouls:end_crystal_gem"
         }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
       ]
     }
   ]

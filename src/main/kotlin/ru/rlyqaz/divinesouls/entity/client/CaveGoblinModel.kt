@@ -29,14 +29,28 @@ class CaveGoblinModel<T : CaveGoblinEntity>(root: ModelPart) : EntityModel<T>(),
             val meshdefinition = MeshDefinition()
             val partdefinition = meshdefinition.root
 
-            partdefinition.addOrReplaceChild(
+            val head = partdefinition.addOrReplaceChild(
                 "head",
                 CubeListBuilder.create()
                     .texOffs(0, 0).addBox(-4.0f, -8.0f, -4.0f, 8.0f, 8.0f, 8.0f, CubeDeformation.NONE)
-                    .texOffs(0, 0).addBox(-1.0f, -3.0f, -6.0f, 2.0f, 3.0f, 2.0f, CubeDeformation.NONE)
-                    .texOffs(30, 0).addBox(-7.0f, -6.0f, -1.0f, 3.0f, 4.0f, 0.0f, CubeDeformation.NONE)
-                    .texOffs(24, 0).addBox(4.0f, -6.0f, -1.0f, 3.0f, 4.0f, 0.0f, CubeDeformation.NONE),
+                    .texOffs(0, 0).addBox(-1.0f, -3.0f, -6.0f, 2.0f, 3.0f, 2.0f, CubeDeformation.NONE),
                 PartPose.offset(0.0f, 8.0f, 0.0f)
+            )
+
+            // Правое ухо: крепится к виску (-4.0) и согнуто НАЗАД к затылку под 45 градусов
+            head.addOrReplaceChild(
+                "right_ear",
+                CubeListBuilder.create()
+                    .texOffs(30, 0).addBox(-3.0f, -2.0f, 0.0f, 3.0f, 4.0f, 0.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(-4.0f, -4.0f, -1.0f, 0.0f, 0.7854f, 0.0f)
+            )
+
+            // Левое ухо: крепится к виску (+4.0) и согнуто НАЗАД к затылку под 45 градусов
+            head.addOrReplaceChild(
+                "left_ear",
+                CubeListBuilder.create()
+                    .texOffs(24, 0).addBox(0.0f, -2.0f, 0.0f, 3.0f, 4.0f, 0.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(4.0f, -4.0f, -1.0f, 0.0f, -0.7854f, 0.0f)
             )
 
             partdefinition.addOrReplaceChild(

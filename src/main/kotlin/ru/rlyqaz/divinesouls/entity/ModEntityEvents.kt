@@ -16,12 +16,23 @@ import ru.rlyqaz.divinesouls.entity.client.TwinWitherSkeletonModel
 import ru.rlyqaz.divinesouls.entity.client.TwinWitherSkeletonRenderer
 import ru.rlyqaz.divinesouls.entity.client.CaveGoblinModel
 import ru.rlyqaz.divinesouls.entity.client.CaveGoblinRenderer
+import ru.rlyqaz.divinesouls.entity.client.SwampSpiritModel
+import ru.rlyqaz.divinesouls.entity.client.SwampSpiritRenderer
+import ru.rlyqaz.divinesouls.entity.client.GiantWaspModel
+import ru.rlyqaz.divinesouls.entity.client.GiantWaspRenderer
+import ru.rlyqaz.divinesouls.entity.client.PoisonDaggerRenderer
+import ru.rlyqaz.divinesouls.entity.client.IceElementalModel
+import ru.rlyqaz.divinesouls.entity.client.IceElementalRenderer
+import ru.rlyqaz.divinesouls.entity.client.IceShardRenderer
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
 import ru.rlyqaz.divinesouls.entity.custom.TwinWitherSkeletonEntity
 import ru.rlyqaz.divinesouls.entity.custom.VoidDragonEntity
 import ru.rlyqaz.divinesouls.entity.custom.CaveGoblinEntity
+import ru.rlyqaz.divinesouls.entity.custom.SwampSpiritEntity
+import ru.rlyqaz.divinesouls.entity.custom.GiantWaspEntity
+import ru.rlyqaz.divinesouls.entity.custom.IceElementalEntity
 
 object ModEntityEvents {
 
@@ -34,6 +45,9 @@ object ModEntityEvents {
             event.put(ModEntities.MEADOW_SLIME.get(), MeadowSlimeEntity.createAttributes().build())
             event.put(ModEntities.SANDY_CRAB.get(), SandyCrabEntity.createAttributes().build())
             event.put(ModEntities.CAVE_GOBLIN.get(), CaveGoblinEntity.createAttributes().build())
+            event.put(ModEntities.SWAMP_SPIRIT.get(), SwampSpiritEntity.createAttributes().build())
+            event.put(ModEntities.GIANT_WASP.get(), GiantWaspEntity.createAttributes().build())
+            event.put(ModEntities.ICE_ELEMENTAL.get(), IceElementalEntity.createAttributes().build())
         }
 
         // 2. Рендереры мобов
@@ -43,6 +57,11 @@ object ModEntityEvents {
             event.registerEntityRenderer(ModEntities.MEADOW_SLIME.get(), ::MeadowSlimeRenderer)
             event.registerEntityRenderer(ModEntities.SANDY_CRAB.get(), ::SandyCrabRenderer)
             event.registerEntityRenderer(ModEntities.CAVE_GOBLIN.get(), ::CaveGoblinRenderer)
+            event.registerEntityRenderer(ModEntities.SWAMP_SPIRIT.get(), ::SwampSpiritRenderer)
+            event.registerEntityRenderer(ModEntities.GIANT_WASP.get(), ::GiantWaspRenderer)
+            event.registerEntityRenderer(ModEntities.POISON_DAGGER.get(), ::PoisonDaggerRenderer)
+            event.registerEntityRenderer(ModEntities.ICE_ELEMENTAL.get(), ::IceElementalRenderer)
+            event.registerEntityRenderer(ModEntities.ICE_SHARD.get(), ::IceShardRenderer)
         }
 
         // 3. 3D-слои моделей
@@ -58,6 +77,15 @@ object ModEntityEvents {
             }
             event.registerLayerDefinition(CaveGoblinModel.LAYER_LOCATION) {
                 CaveGoblinModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(SwampSpiritModel.LAYER_LOCATION) {
+                SwampSpiritModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(GiantWaspModel.LAYER_LOCATION) {
+                GiantWaspModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(IceElementalModel.LAYER_LOCATION) {
+                IceElementalModel.createBodyLayer()
             }
         }
 
@@ -89,6 +117,27 @@ object ModEntityEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 CaveGoblinEntity::checkCaveGoblinSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.SWAMP_SPIRIT.get(),
+                SpawnPlacementTypes.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SwampSpiritEntity::checkSwampSpiritSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.GIANT_WASP.get(),
+                SpawnPlacementTypes.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                GiantWaspEntity::checkGiantWaspSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.ICE_ELEMENTAL.get(),
+                SpawnPlacementTypes.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                IceElementalEntity::checkIceElementalSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
             )
         }

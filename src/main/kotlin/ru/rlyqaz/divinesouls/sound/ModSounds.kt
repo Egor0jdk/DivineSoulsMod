@@ -28,6 +28,12 @@ object ModSounds {
     val SANDY_CRAB_HURT: DeferredHolder<SoundEvent, SoundEvent> = registerSound("sandy_crab_hurt")
     val SANDY_CRAB_DEATH: DeferredHolder<SoundEvent, SoundEvent> = registerSound("sandy_crab_death")
 
+    // ============== ЛЕДЯНОЙ ЭЛЕМЕНТАЛЬ (ICE ELEMENTAL) ==============
+    val ICE_ELEMENTAL_AMBIENT: DeferredHolder<SoundEvent, SoundEvent> = registerSound("ice_elemental_ambient")
+    val ICE_ELEMENTAL_HURT: DeferredHolder<SoundEvent, SoundEvent> = registerSound("ice_elemental_hurt")
+    val ICE_ELEMENTAL_DEATH: DeferredHolder<SoundEvent, SoundEvent> = registerSound("ice_elemental_death")
+    val ICE_ELEMENTAL_SHOOT: DeferredHolder<SoundEvent, SoundEvent> = registerSound("ice_elemental_shoot")
+
     fun register(eventBus: IEventBus) {
         REGISTRY.register(eventBus)
     }

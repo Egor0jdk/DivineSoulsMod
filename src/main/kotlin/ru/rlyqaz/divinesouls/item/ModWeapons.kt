@@ -125,6 +125,18 @@ object ModWeapons {
         }
     }
 
+    val POISON_THROWING_DAGGER: Supplier<Item> = registerWeapon("poison_throwing_dagger") {
+        ru.rlyqaz.divinesouls.item.custom.PoisonThrowingDaggerItem(
+            Item.Properties().stacksTo(32)
+        )
+    }
+
+    val FROST_STAFF: Supplier<Item> = registerWeapon("frost_staff") {
+        ru.rlyqaz.divinesouls.item.custom.FrostStaffItem(
+            Item.Properties().durability(280).rarity(net.minecraft.world.item.Rarity.UNCOMMON)
+        )
+    }
+
     // Хелпер для чистой регистрации
     private fun <T : Item> registerWeapon(name: String, itemSupplier: () -> T): Supplier<T> {
         return REGISTRY.register(name, itemSupplier)

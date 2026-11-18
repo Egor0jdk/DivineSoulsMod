@@ -27,5 +27,21 @@
   "sandy_crab_death": {
     "category": "hostile",
     "sounds": [ "divinesouls:mob/sandy_crab/death" ]
+  },
+  "ice_elemental_ambient": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/ice_elemental/ambient" ]
+  },
+  "ice_elemental_hurt": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/ice_elemental/hurt" ]
+  },
+  "ice_elemental_death": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/ice_elemental/death" ]
+  },
+  "ice_elemental_shoot": {
+    "category": "hostile",
+    "sounds": [ "divinesouls:mob/ice_elemental/shoot" ]
   }
 }

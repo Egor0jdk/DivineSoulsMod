@@ -135,4 +135,14 @@ object ModCommonEvents {
             }
         }
     }
+
+    // 5. ВАРКА ЗЕЛЬЯ ОТРАВЛЕНИЯ ИЗ ЖАЛА ОСЫ (альтернатива паучьему глазу)
+    @SubscribeEvent
+    fun onRegisterBrewingRecipes(event: net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent) {
+        event.builder.addMix(
+            net.minecraft.world.item.alchemy.Potions.AWKWARD,
+            ru.rlyqaz.divinesouls.item.ModItems.WASP_STINGER.get(),
+            net.minecraft.world.item.alchemy.Potions.POISON
+        )
+    }
 }

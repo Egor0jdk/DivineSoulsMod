@@ -12,6 +12,11 @@ import ru.rlyqaz.divinesouls.entity.custom.TwinWitherSkeletonEntity
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import ru.rlyqaz.divinesouls.entity.custom.CaveGoblinEntity
+import ru.rlyqaz.divinesouls.entity.custom.SwampSpiritEntity
+import ru.rlyqaz.divinesouls.entity.custom.GiantWaspEntity
+import ru.rlyqaz.divinesouls.entity.custom.PoisonDaggerEntity
+import ru.rlyqaz.divinesouls.entity.custom.IceElementalEntity
+import ru.rlyqaz.divinesouls.entity.custom.IceShardEntity
 import java.util.function.Supplier
 
 /**
@@ -68,6 +73,43 @@ object ModEntities {
             .sized(0.6f, 1.4f)
             .clientTrackingRange(10)
             .build("cave_goblin")
+    })
+
+    val SWAMP_SPIRIT: Supplier<EntityType<SwampSpiritEntity>> = REGISTRY.register("swamp_spirit", Supplier {
+        EntityType.Builder.of(::SwampSpiritEntity, MobCategory.MONSTER)
+            .sized(0.65f, 0.65f)
+            .clientTrackingRange(12)
+            .build("swamp_spirit")
+    })
+
+    val GIANT_WASP: Supplier<EntityType<GiantWaspEntity>> = REGISTRY.register("giant_wasp", Supplier {
+        EntityType.Builder.of(::GiantWaspEntity, MobCategory.MONSTER)
+            .sized(0.85f, 0.95f)
+            .clientTrackingRange(10)
+            .build("giant_wasp")
+    })
+
+    val POISON_DAGGER: Supplier<EntityType<PoisonDaggerEntity>> = REGISTRY.register("poison_dagger", Supplier {
+        EntityType.Builder.of(::PoisonDaggerEntity, MobCategory.MISC)
+            .sized(0.25f, 0.25f)
+            .clientTrackingRange(4)
+            .updateInterval(10)
+            .build("poison_dagger")
+    })
+
+    val ICE_ELEMENTAL: Supplier<EntityType<IceElementalEntity>> = REGISTRY.register("ice_elemental", Supplier {
+        EntityType.Builder.of(::IceElementalEntity, MobCategory.MONSTER)
+            .sized(0.95f, 1.35f)
+            .clientTrackingRange(12)
+            .build("ice_elemental")
+    })
+
+    val ICE_SHARD: Supplier<EntityType<IceShardEntity>> = REGISTRY.register("ice_shard", Supplier {
+        EntityType.Builder.of(::IceShardEntity, MobCategory.MISC)
+            .sized(0.3f, 0.3f)
+            .clientTrackingRange(6)
+            .updateInterval(10)
+            .build("ice_shard")
     })
 
     fun register(eventBus: IEventBus) {

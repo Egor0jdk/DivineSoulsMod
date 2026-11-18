@@ -20,18 +20,21 @@ object ModCreativeModeTabs {
             .icon { ItemStack(ModItems.END_CRYSTAL_GEM.get()) }
             .title(Component.translatable("itemGroup.divinesouls.items"))
             .displayItems { _, output ->
+                output.accept(ModItems.WASP_STINGER.get())
+                output.accept(ModItems.ICE_CORE.get())
+                output.accept(ModItems.WITHER_BONE.get())
+                output.accept(ModItems.NETHER_ESSENCE.get())
                 output.accept(ModItems.END_WOOD_STICK.get())
                 output.accept(ModItems.END_CRYSTAL_GEM.get())
-                output.accept(ModItems.WITHER_BONE.get())
-                output.accept(ModItems.BURNING_SOUL.get())
-                output.accept(ModItems.SOUL_OF_FLIGHT.get())
-                output.accept(ModItems.NETHER_ESSENCE.get())
+                output.accept(ModItems.DRAGON_SOUL_SHARD.get())
+                output.accept(ModItems.ECTOPLASM.get())
                 output.accept(ModItems.ANCIENT_EYE.get())
                 output.accept(ModItems.ANCIENT_EYE_SHARD.get())
                 output.accept(ModItems.WARDEN_SOUL.get())
-                output.accept(ModItems.WINGS_OF_WIND.get())
+                output.accept(ModItems.SOUL_OF_FLIGHT.get())
+                output.accept(ModItems.BURNING_SOUL.get())
                 output.accept(ModItems.WITHER_SEAL.get())
-                output.accept(ModItems.DRAGON_SOUL_SHARD.get())
+                output.accept(ModItems.AWOKEN_WARDEN_SOUL.get())
             }
             .build()
     })
@@ -42,7 +45,8 @@ object ModCreativeModeTabs {
             .title(Component.translatable("itemGroup.divinesouls.weapons"))
             .displayItems { _, output ->
                 output.accept(ModWeapons.SPIKED_STONE_CLUB.get())
-                output.accept(ModItems.FIRE_BOW.get())
+                output.accept(ModWeapons.POISON_THROWING_DAGGER.get())
+                output.accept(ModWeapons.FROST_STAFF.get())
                 output.accept(ModWeapons.WITHER_MACE.get())
                 output.accept(ModWeapons.END_CRYSTAL_SWORD.get())
                 output.accept(ModWeapons.END_CRYSTAL_PICKAXE.get())
@@ -50,6 +54,7 @@ object ModCreativeModeTabs {
                 output.accept(ModWeapons.END_CRYSTAL_SHOVEL.get())
                 output.accept(ModWeapons.END_CRYSTAL_HOE.get())
                 output.accept(ModWeapons.END_CRYSTAL_SHIELD.get())
+                output.accept(ModItems.FIRE_BOW.get())
                 output.accept(ModItems.INFERNAL_CORE.get())
             }
             .build()
@@ -64,6 +69,7 @@ object ModCreativeModeTabs {
                 output.accept(ModArmor.END_CRYSTAL_CHESTPLATE.get())
                 output.accept(ModArmor.END_CRYSTAL_LEGGINGS.get())
                 output.accept(ModArmor.END_CRYSTAL_BOOTS.get())
+                output.accept(ModItems.WINGS_OF_WIND.get())
             }
             .build()
     })
@@ -77,7 +83,10 @@ object ModCreativeModeTabs {
                 output.accept(ModItems.MEADOW_SLIME_SPAWN_EGG.get())
                 output.accept(ModItems.SANDY_CRAB_SPAWN_EGG.get())
                 output.accept(ModItems.CAVE_GOBLIN_SPAWN_EGG.get())
+                output.accept(ModItems.GIANT_WASP_SPAWN_EGG.get())
+                output.accept(ModItems.ICE_ELEMENTAL_SPAWN_EGG.get())
                 output.accept(ModItems.SORROW_WRAITH_SPAWN_EGG.get())
+                output.accept(ModItems.SWAMP_SPIRIT_SPAWN_EGG.get())
                 output.accept(ModItems.TWIN_WITHER_SKELETON_SPAWN_EGG.get())
             }
             .build()
@@ -88,13 +97,13 @@ object ModCreativeModeTabs {
             .icon { ItemStack(ModBlocks.END_GRASS_BLOCK.get()) }
             .title(Component.translatable("itemGroup.divinesouls.blocks"))
             .displayItems { _, output ->
-                output.accept(ModBlocks.END_CRYSTAL_ORE.get())
                 output.accept(ModBlocks.END_GRASS_BLOCK.get())
+                output.accept(ModBlocks.END_CRYSTAL_ORE.get())
                 output.accept(ModBlocks.END_BUSH_GRASS.get())
                 output.accept(ModBlocks.WITHERED_END_BUSH.get())
                 output.accept(ModBlocks.END_WOOD_LOG.get())
-                output.accept(ModBlocks.END_WOOD_PLANKS.get())
                 output.accept(ModBlocks.END_WOOD_LEAVES.get())
+                output.accept(ModBlocks.END_WOOD_PLANKS.get())
                 output.accept(ModBlocks.END_SAPLING.get())
                 output.accept(ModBlocks.WITHER_SEAL_BLOCK.get())
             }

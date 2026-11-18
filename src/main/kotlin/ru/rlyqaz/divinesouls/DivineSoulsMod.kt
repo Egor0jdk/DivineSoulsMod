@@ -68,7 +68,7 @@ object DivineSoulsMod {
         ModArmorMaterials.register(modEventBus) // РЕГИСТРИРУЕМ МАТЕРИАЛЫ СТРОГО ДО КЛАССА БРОНИ!
         ModArmor.register(modEventBus)
 
-        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.ArmorEffectsHandler)
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.EndCrystalEquipmentHandler)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WardenBalanceHandler)
 
         NeoForge.EVENT_BUS.addListener { event: net.neoforged.neoforge.event.server.ServerStoppedEvent ->

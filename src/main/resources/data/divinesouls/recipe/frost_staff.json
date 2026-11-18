@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  C",
+    " D ",
+    "/  "
+  ],
+  "key": {
+    "C": {
+      "item": "divinesouls:ice_core"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "/": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:frost_staff"
+  }
+}

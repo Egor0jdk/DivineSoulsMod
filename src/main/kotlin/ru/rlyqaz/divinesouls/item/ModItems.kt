@@ -176,6 +176,57 @@ object ModItems {
         )
     }
 
+    // Эктоплазма — хардмодный трофей с Болотного духа для активации портала Древнего города
+    val ECTOPLASM: Supplier<Item> = registerItem("ectoplasm") {
+        Item(Item.Properties().rarity(net.minecraft.world.item.Rarity.RARE))
+    }
+
+    val SWAMP_SPIRIT_SPAWN_EGG: Supplier<Item> = registerItem("swamp_spirit_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ru.rlyqaz.divinesouls.entity.ModEntities.SWAMP_SPIRIT,
+            0x27C4D6,
+            0x0F3D4C,
+            Item.Properties()
+        )
+    }
+
+    val AWOKEN_WARDEN_SOUL: Supplier<Item> = registerItem("awoken_warden_soul") {
+        Item(Item.Properties().rarity(net.minecraft.world.item.Rarity.EPIC))
+    }
+
+    // Жало осы — выпадает с Гигантской осы, используется для крафта отравленных стрел
+    val WASP_STINGER: Supplier<Item> = registerItem("wasp_stinger") {
+        Item(Item.Properties())
+    }
+
+    val GIANT_WASP_SPAWN_EGG: Supplier<Item> = registerItem("giant_wasp_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ru.rlyqaz.divinesouls.entity.ModEntities.GIANT_WASP,
+            0xE3B41C,
+            0x1F1B18,
+            Item.Properties()
+        )
+    }
+
+    // Ледяное ядро — выпадает с Ледяного элементаля, идёт в крафт Ледяного посоха
+    val ICE_CORE: Supplier<Item> = registerItem("ice_core") {
+        Item(Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON))
+    }
+
+    // Визуальный предмет ледяного осколка для рендера снаряда (можно не добавлять в креатив-вкладку)
+    val ICE_SHARD_ITEM: Supplier<Item> = registerItem("ice_shard_item") {
+        Item(Item.Properties())
+    }
+
+    val ICE_ELEMENTAL_SPAWN_EGG: Supplier<Item> = registerItem("ice_elemental_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ru.rlyqaz.divinesouls.entity.ModEntities.ICE_ELEMENTAL,
+            0x7CD7F7,
+            0x2B6CB0,
+            Item.Properties()
+        )
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }

@@ -1,32 +1,35 @@
 package ru.rlyqaz.divinesouls.event
 
+import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerBossEvent
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.server.level.ServerPlayer
-import net.minecraft.network.chat.Component
 import net.minecraft.world.BossEvent
 import net.minecraft.world.damagesource.DamageTypes
 import net.minecraft.world.entity.ai.attributes.Attributes
+import net.minecraft.world.entity.item.ItemEntity
 import net.minecraft.world.entity.monster.warden.Warden
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.Level
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent
 import net.neoforged.neoforge.event.tick.PlayerTickEvent
 import ru.rlyqaz.divinesouls.DivineSoulsMod
-import java.util.concurrent.ConcurrentHashMap
+import ru.rlyqaz.divinesouls.item.ModItems
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 
-/**
- * ====================================================================
- * НАЗВАНИЕ МОДА: Divine Souls (1.21.1 NeoForge)
- * КЛАСС: WardenBalanceHandler (Динамический баланс и Boss Bar Вардена)
- * ИСПРАВЛЕНИЕ: Перехват эвента LivingDamageEvent для нёрфа звуковой волны
- * ====================================================================
- */
 object WardenBalanceHandler {
 
     private val activeBossEvents = ConcurrentHashMap<UUID, ServerBossEvent>()
+
+    private fun isHardmodeUnlocked(level: ServerLevel): Boolean {
+        val endLevel = level.server.getLevel(Level.END)
+        return endLevel?.dragonFight?.hasPreviouslyKilledDragon() ?: false
+    }
 
     @SubscribeEvent
     fun onWardenSpawn(event: EntityJoinLevelEvent) {
@@ -35,19 +38,19 @@ object WardenBalanceHandler {
 
         if (!level.isClientSide && entity is Warden) {
             val serverLevel = level as ServerLevel
-            val isDragonKilled = serverLevel.dragonFight?.saveData()?.previouslyKilled ?: false
+            val isDragonKilled = isHardmodeUnlocked(serverLevel)
 
             val maxHealthAttr = entity.getAttribute(Attributes.MAX_HEALTH)
             val attackDamageAttr = entity.getAttribute(Attributes.ATTACK_DAMAGE)
 
             if (isDragonKilled) {
                 maxHealthAttr?.baseValue = 500.0
-                attackDamageAttr?.baseValue = 30.0 // Каноничный лейтгейм-урон
+                attackDamageAttr?.baseValue = 30.0
                 entity.health = 500.0f
-                DivineSoulsMod.LOGGER.info("Divine Souls: Spawning a standard Warden (500 HP).")
+                DivineSoulsMod.LOGGER.info("Divine Souls: Spawning an Awoken Warden (500 HP).")
             } else {
-                maxHealthAttr?.baseValue = 200.0  // Оставляем честные 200 ХП
-                attackDamageAttr?.baseValue = 14.0 // 14 урона — штраф за то, что попался неповоротливому боссу
+                maxHealthAttr?.baseValue = 200.0
+                attackDamageAttr?.baseValue = 14.0
                 entity.health = 200.0f
                 DivineSoulsMod.LOGGER.info("Divine Souls: Spawning a weakened Warden (200 HP).")
             }
@@ -68,16 +71,40 @@ object WardenBalanceHandler {
         val attacker = damageSource.entity
         val level = event.entity.level()
 
-        // Проверяем, что урон наносит именно Варден и именно типом звуковой волны (Sonic Boom)
         if (!level.isClientSide && attacker is Warden && damageSource.`is`(DamageTypes.SONIC_BOOM)) {
             val serverLevel = level as ServerLevel
-            val isDragonKilled = serverLevel.dragonFight?.saveData()?.previouslyKilled ?: false
-
-            // ИСПРАВЛЕНИЕ ДЛЯ NEOFORGE 1.21.1:
-            // Лезем внутрь нового DamageContainer и принудительно выставляем урон 4.0f (2 сердца)
-            if (!isDragonKilled) {
-                // БАЛАНС ПОД ЩИТ: 6.0 единиц урона. Со щитом прилетит всего 1.5 сердца!
+            if (!isHardmodeUnlocked(serverLevel)) {
                 event.container.setNewDamage(6.0f)
+            }
+        }
+    }
+
+    // Подменяем обычную душу Вардена на Пробуждённую душу в хардмоде!
+    @SubscribeEvent
+    fun onWardenDrops(event: LivingDropsEvent) {
+        val warden = event.entity as? Warden ?: return
+        val serverLevel = warden.level() as? ServerLevel ?: return
+
+        if (isHardmodeUnlocked(serverLevel)) {
+            val iterator = event.drops.iterator()
+            var replaced = false
+            while (iterator.hasNext()) {
+                val dropEntity = iterator.next()
+                if (dropEntity.item.`is`(ModItems.WARDEN_SOUL.get())) {
+                    dropEntity.item = ItemStack(ModItems.AWOKEN_WARDEN_SOUL.get(), dropEntity.item.count)
+                    replaced = true
+                }
+            }
+            if (!replaced) {
+                event.drops.add(
+                    ItemEntity(
+                        serverLevel,
+                        warden.x,
+                        warden.y,
+                        warden.z,
+                        ItemStack(ModItems.AWOKEN_WARDEN_SOUL.get(), 1)
+                    )
+                )
             }
         }
     }
@@ -90,7 +117,6 @@ object WardenBalanceHandler {
         if (!level.isClientSide && player is ServerPlayer && player.tickCount % 5 == 0) {
             val serverLevel = level as ServerLevel
 
-            // Безопасный обход мапы через итератор, защищающий сервер от ConcurrentModificationException
             val iterator = activeBossEvents.entries.iterator()
             while (iterator.hasNext()) {
                 val entry = iterator.next()
@@ -98,7 +124,6 @@ object WardenBalanceHandler {
                 val bossEvent = entry.value
                 val warden = serverLevel.getEntity(wardenUuid)
 
-                // Проверяем жив ли Варден и НЕ закопался ли он под землю через !warden.isRemoved
                 if (warden is Warden && warden.isAlive && !warden.isRemoved) {
                     val healthPercent = warden.health / warden.maxHealth
                     bossEvent.progress = healthPercent.coerceIn(0.0f, 1.0f)
@@ -110,7 +135,6 @@ object WardenBalanceHandler {
                         bossEvent.removePlayer(player)
                     }
                 } else {
-                    // Если особь исчезла/закопалась — зачищаем бары у игроков и безопасно удаляем из мапы
                     bossEvent.removeAllPlayers()
                     iterator.remove()
                 }

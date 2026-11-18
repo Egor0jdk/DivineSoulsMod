@@ -23,6 +23,10 @@
   "item.divinesouls.wither_seal": "Wither Seal",
   "block.divinesouls.wither_seal_block": "Wither Seal Block",
   "item.divinesouls.wither_bone": "Wither Bone",
+  "item.divinesouls.ectoplasm": "Ectoplasm",
+  "item.divinesouls.awoken_warden_soul": "Awoken Warden Soul",
+  "item.divinesouls.wasp_stinger": "Wasp Stinger",
+  "item.divinesouls.ice_core": "Ice Core",
 
   "item.divinesouls.raw_crab_meat": "Raw Crab Meat",
   "item.divinesouls.cooked_crab_meat": "Cooked Crab Meat",
@@ -36,6 +40,8 @@
   "item.divinesouls.end_crystal_shield": "End Crystal Shield",
   "item.divinesouls.wither_mace": "Mace of Woe",
   "item.divinesouls.spiked_stone_club": "Spiked Stone Club",
+  "item.divinesouls.poison_throwing_dagger": "Poison Throwing Dagger",
+  "item.divinesouls.frost_staff": "Frost Staff",
 
   "item.divinesouls.end_crystal_helmet": "End Crystal Helmet",
   "item.divinesouls.end_crystal_chestplate": "End Crystal Chestplate",
@@ -43,12 +49,12 @@
   "item.divinesouls.end_crystal_boots": "End Crystal Boots",
 
   "itemGroup.divinesouls.items": "Divine Souls: Items",
-  "itemGroup.divinesouls.weapons": "Divine Souls: Weapons",
-  "itemGroup.divinesouls.armor": "Divine Souls: Armor",
-  "itemGroup.divinesouls.mobs": "Divine Souls: Mobs",
+  "itemGroup.divinesouls.weapons": "Divine Souls: Weapons & Tools",
+  "itemGroup.divinesouls.armor": "Divine Souls: Armor & Utilities",
+  "itemGroup.divinesouls.mobs": "Divine Souls: Spawn Eggs",
   "itemGroup.divinesouls.blocks": "Divine Souls: Blocks",
-  "itemGroup.divinesouls.summons": "Divine Souls: Summons",
-  "itemGroup.divinesouls.food": "Divine Souls: Food",
+  "itemGroup.divinesouls.summons": "Divine Souls: Summons & Activators",
+  "itemGroup.divinesouls.food": "Divine Souls: Food & Drinks",
 
   "entity.divinesouls.void_dragon": "Void Dragon",
   "entity.divinesouls.sorrow_wraith": "Sorrow Wraith",
@@ -56,14 +62,24 @@
   "entity.divinesouls.meadow_slime": "Meadow Slime",
   "entity.divinesouls.sandy_crab": "Sandy Crab",
   "entity.divinesouls.cave_goblin": "Cave Goblin",
+  "entity.divinesouls.swamp_spirit": "Swamp Spirit",
+  "entity.divinesouls.giant_wasp": "Giant Wasp",
+  "entity.divinesouls.poison_dagger": "Poison Throwing Dagger",
+  "entity.divinesouls.ice_elemental": "Ice Elemental",
+  "entity.divinesouls.ice_shard": "Ice Shard",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Sorrow Wraith Spawn Egg",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Wither Twins Spawn Egg",
   "item.divinesouls.meadow_slime_spawn_egg": "Meadow Slime Spawn Egg",
   "item.divinesouls.sandy_crab_spawn_egg": "Sandy Crab Spawn Egg",
   "item.divinesouls.cave_goblin_spawn_egg": "Cave Goblin Spawn Egg",
+  "item.divinesouls.swamp_spirit_spawn_egg": "Swamp Spirit Spawn Egg",
+  "item.divinesouls.giant_wasp_spawn_egg": "Giant Wasp Spawn Egg",
+  "item.divinesouls.ice_elemental_spawn_egg": "Ice Elemental Spawn Egg",
 
   "advancements.divinesouls.kill_warden.title": "Overthrowing the Gatekeeper",
   "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune",
+  "advancements.divinesouls.kill_wither.title": "Fall of the Wither",
+  "advancements.divinesouls.kill_wither.description": "Defeat the Wither to unlock the path to the End",
   "message.divinesouls.hardmode_unlocked": "The ancient souls of light and void have been released!"
 }

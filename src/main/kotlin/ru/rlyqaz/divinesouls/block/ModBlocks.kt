@@ -32,7 +32,13 @@ object ModBlocks {
 
     // 1. Кристальная руда Энда
     val END_CRYSTAL_ORE: Supplier<Block> = registerBlock("end_crystal_ore") {
-        Block(BlockBehaviour.Properties.of().destroyTime(5.0f).explosionResistance(6.0f).sound(SoundType.STONE))
+        Block(
+            BlockBehaviour.Properties.of()
+                .destroyTime(12.0f)
+                .explosionResistance(6.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.STONE)
+        )
     }
 
     // 2. Дёрн Края (Полный аналог Нилия: звуки камня/травы, требует кирку, превращается в эндерняк под сплошным блоком)

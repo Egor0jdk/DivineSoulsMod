@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "divinesouls:awoken_warden_soul"
+    },
+    {
+      "item": "divinesouls:ectoplasm"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "divinesouls:warden_soul"
+  }
+}
