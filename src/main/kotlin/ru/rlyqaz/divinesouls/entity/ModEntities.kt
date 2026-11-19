@@ -17,6 +17,7 @@ import ru.rlyqaz.divinesouls.entity.custom.GiantWaspEntity
 import ru.rlyqaz.divinesouls.entity.custom.PoisonDaggerEntity
 import ru.rlyqaz.divinesouls.entity.custom.IceElementalEntity
 import ru.rlyqaz.divinesouls.entity.custom.IceShardEntity
+import ru.rlyqaz.divinesouls.entity.custom.JungleSpiderEntity
 import java.util.function.Supplier
 
 /**
@@ -110,6 +111,13 @@ object ModEntities {
             .clientTrackingRange(6)
             .updateInterval(10)
             .build("ice_shard")
+    })
+
+    val JUNGLE_SPIDER: Supplier<EntityType<JungleSpiderEntity>> = REGISTRY.register("jungle_spider", Supplier {
+        EntityType.Builder.of(::JungleSpiderEntity, MobCategory.MONSTER)
+            .sized(1.25f, 0.8f)
+            .clientTrackingRange(8)
+            .build("jungle_spider")
     })
 
     fun register(eventBus: IEventBus) {

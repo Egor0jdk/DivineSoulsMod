@@ -227,6 +227,15 @@ object ModItems {
         )
     }
 
+    val JUNGLE_SPIDER_SPAWN_EGG: Supplier<Item> = registerItem("jungle_spider_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ru.rlyqaz.divinesouls.entity.ModEntities.JUNGLE_SPIDER,
+            0x2D6A2E,
+            0xB8E986,
+            Item.Properties()
+        )
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }

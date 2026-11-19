@@ -84,6 +84,7 @@ object ModCreativeModeTabs {
                 output.accept(ModItems.SANDY_CRAB_SPAWN_EGG.get())
                 output.accept(ModItems.CAVE_GOBLIN_SPAWN_EGG.get())
                 output.accept(ModItems.GIANT_WASP_SPAWN_EGG.get())
+                output.accept(ModItems.JUNGLE_SPIDER_SPAWN_EGG.get())
                 output.accept(ModItems.ICE_ELEMENTAL_SPAWN_EGG.get())
                 output.accept(ModItems.SORROW_WRAITH_SPAWN_EGG.get())
                 output.accept(ModItems.SWAMP_SPIRIT_SPAWN_EGG.get())

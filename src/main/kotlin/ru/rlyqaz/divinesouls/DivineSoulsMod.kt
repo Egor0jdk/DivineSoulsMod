@@ -50,6 +50,10 @@ object DivineSoulsMod {
         EndTreeFeature(NoneFeatureConfiguration.CODEC)
     }) as Supplier<Feature<NoneFeatureConfiguration>>
 
+    val SPIDER_NEST_FEATURE: Supplier<Feature<NoneFeatureConfiguration>> = FEATURES.register("spider_nest", Supplier<Feature<*>> {
+        ru.rlyqaz.divinesouls.worldgen.SpiderNestFeature(NoneFeatureConfiguration.CODEC)
+    }) as Supplier<Feature<NoneFeatureConfiguration>>
+
     init {
         val modEventBus: IEventBus = MOD_BUS
 
@@ -67,6 +71,9 @@ object DivineSoulsMod {
         ModCreativeModeTabs.register(modEventBus)
         ModArmorMaterials.register(modEventBus) // РЕГИСТРИРУЕМ МАТЕРИАЛЫ СТРОГО ДО КЛАССА БРОНИ!
         ModArmor.register(modEventBus)
+        ru.rlyqaz.divinesouls.mana.ModAttachments.register(modEventBus)
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.mana.ManaManager)
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.FrostStaffItem.Companion)
 
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.EndCrystalEquipmentHandler)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WardenBalanceHandler)
@@ -78,6 +85,10 @@ object DivineSoulsMod {
 
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.EndAuraHandler)
         NeoForge.EVENT_BUS.register(this)
+
+        if (net.neoforged.fml.loading.FMLEnvironment.dist.isClient) {
+            modEventBus.addListener(ru.rlyqaz.divinesouls.mana.ManaHudOverlay::registerGuiLayer)
+        }
 
         // Клиентский фикс анимации 2D-лука (ItemProperties) под 1.21.1
         modEventBus.addListener { event: net.neoforged.fml.event.lifecycle.FMLClientSetupEvent ->
@@ -150,6 +161,11 @@ object DivineSoulsMod {
                 ru.rlyqaz.divinesouls.network.DashAttackPayload.TYPE,
                 ru.rlyqaz.divinesouls.network.DashAttackPayload.STREAM_CODEC,
                 ru.rlyqaz.divinesouls.network.DashAttackPayload::handleServer
+            )
+            registrar.playToClient(
+                ru.rlyqaz.divinesouls.mana.ManaSyncPayload.TYPE,
+                ru.rlyqaz.divinesouls.mana.ManaSyncPayload.STREAM_CODEC,
+                ru.rlyqaz.divinesouls.mana.ManaSyncPayload::handleClient
             )
         }
 

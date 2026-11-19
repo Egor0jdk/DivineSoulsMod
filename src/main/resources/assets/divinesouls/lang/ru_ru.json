@@ -67,6 +67,7 @@
   "entity.divinesouls.poison_dagger": "Ядовитый метательный кинжал",
   "entity.divinesouls.ice_elemental": "Ледяной элементаль",
   "entity.divinesouls.ice_shard": "Ледяной осколок",
+  "entity.divinesouls.jungle_spider": "Джунглевый паук",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Яйцо призыва Духа Скорби",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Яйцо призыва Близнецов Иссушения",
@@ -76,7 +77,9 @@
   "item.divinesouls.swamp_spirit_spawn_egg": "Яйцо призыва болотного духа",
   "item.divinesouls.giant_wasp_spawn_egg": "Яйцо призыва гигантской осы",
   "item.divinesouls.ice_elemental_spawn_egg": "Яйцо призыва ледяного элементаля",
+  "item.divinesouls.jungle_spider_spawn_egg": "Яйцо призыва джунглевого паука",
 
+  "tooltip.divinesouls.mana_cost": "Расход маны: %s",
   "advancements.divinesouls.kill_warden.title": "Свержение Привратника",
   "advancements.divinesouls.kill_warden.description": "Одолейте Хранителя глубин и соберите его душу для создания Древней Руны",
   "advancements.divinesouls.kill_wither.title": "Падение Иссушителя",

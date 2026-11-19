@@ -24,6 +24,7 @@ import ru.rlyqaz.divinesouls.entity.client.PoisonDaggerRenderer
 import ru.rlyqaz.divinesouls.entity.client.IceElementalModel
 import ru.rlyqaz.divinesouls.entity.client.IceElementalRenderer
 import ru.rlyqaz.divinesouls.entity.client.IceShardRenderer
+import ru.rlyqaz.divinesouls.entity.client.JungleSpiderRenderer
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
@@ -33,6 +34,7 @@ import ru.rlyqaz.divinesouls.entity.custom.CaveGoblinEntity
 import ru.rlyqaz.divinesouls.entity.custom.SwampSpiritEntity
 import ru.rlyqaz.divinesouls.entity.custom.GiantWaspEntity
 import ru.rlyqaz.divinesouls.entity.custom.IceElementalEntity
+import ru.rlyqaz.divinesouls.entity.custom.JungleSpiderEntity
 
 object ModEntityEvents {
 
@@ -48,6 +50,7 @@ object ModEntityEvents {
             event.put(ModEntities.SWAMP_SPIRIT.get(), SwampSpiritEntity.createAttributes().build())
             event.put(ModEntities.GIANT_WASP.get(), GiantWaspEntity.createAttributes().build())
             event.put(ModEntities.ICE_ELEMENTAL.get(), IceElementalEntity.createAttributes().build())
+            event.put(ModEntities.JUNGLE_SPIDER.get(), JungleSpiderEntity.createAttributes().build())
         }
 
         // 2. Рендереры мобов
@@ -62,6 +65,7 @@ object ModEntityEvents {
             event.registerEntityRenderer(ModEntities.POISON_DAGGER.get(), ::PoisonDaggerRenderer)
             event.registerEntityRenderer(ModEntities.ICE_ELEMENTAL.get(), ::IceElementalRenderer)
             event.registerEntityRenderer(ModEntities.ICE_SHARD.get(), ::IceShardRenderer)
+            event.registerEntityRenderer(ModEntities.JUNGLE_SPIDER.get(), ::JungleSpiderRenderer)
         }
 
         // 3. 3D-слои моделей
@@ -138,6 +142,13 @@ object ModEntityEvents {
                 SpawnPlacementTypes.NO_RESTRICTIONS,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 IceElementalEntity::checkIceElementalSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.JUNGLE_SPIDER.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                JungleSpiderEntity::checkJungleSpiderSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
             )
         }

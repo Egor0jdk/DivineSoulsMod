@@ -5,15 +5,30 @@
   },
   "sorrow_wraith_ambient_2": {
     "category": "hostile",
-    "sounds": [ "divinesouls:mob/sorrow_wraith/ambient_2" ]
+    "sounds": [
+      {
+        "name": "divinesouls:mob/sorrow_wraith/ambient_2",
+        "volume": 1.35
+      }
+    ]
   },
   "sorrow_wraith_hurt": {
     "category": "hostile",
-    "sounds": [ "divinesouls:mob/sorrow_wraith/hurt" ]
+    "sounds": [
+      {
+        "name": "divinesouls:mob/sorrow_wraith/hurt",
+        "volume": 1.35
+      }
+    ]
   },
   "sorrow_wraith_death": {
     "category": "hostile",
-    "sounds": [ "divinesouls:mob/sorrow_wraith/death" ]
+    "sounds": [
+      {
+        "name": "divinesouls:mob/sorrow_wraith/death",
+        "volume": 1.35
+      }
+    ]
   },
 
   "sandy_crab_ambient": {
@@ -30,11 +45,25 @@
   },
   "ice_elemental_ambient": {
     "category": "hostile",
-    "sounds": [ "divinesouls:mob/ice_elemental/ambient" ]
+    "sounds": [
+      {
+        "name": "divinesouls:mob/ice_elemental/ambient_1",
+        "volume": 0.65
+      },
+      {
+        "name": "divinesouls:mob/ice_elemental/ambient_2",
+        "volume": 0.65
+      }
+    ]
   },
   "ice_elemental_hurt": {
     "category": "hostile",
-    "sounds": [ "divinesouls:mob/ice_elemental/hurt" ]
+    "sounds": [
+      {
+        "name": "divinesouls:mob/ice_elemental/hurt",
+        "volume": 0.7
+      }
+    ]
   },
   "ice_elemental_death": {
     "category": "hostile",

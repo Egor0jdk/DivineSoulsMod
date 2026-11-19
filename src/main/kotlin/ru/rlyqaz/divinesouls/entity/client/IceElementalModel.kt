@@ -31,7 +31,6 @@ class IceElementalModel<T : IceElementalEntity>(root: ModelPart) :
             val meshdefinition = MeshDefinition()
             val partdefinition = meshdefinition.root
 
-            // Центральное ледяное ядро-голова (8x8x8 пикселей, UV: 0, 0)
             partdefinition.addOrReplaceChild(
                 "head",
                 CubeListBuilder.create()
@@ -39,42 +38,83 @@ class IceElementalModel<T : IceElementalEntity>(root: ModelPart) :
                 PartPose.offset(0.0f, 12.0f, 0.0f)
             )
 
-            // Первая наклонная орбита (+35 градусов по Z) с 6 ледяными стержнями (UV: 32, 0)
             val ring1 = partdefinition.addOrReplaceChild(
                 "ring_1",
-                CubeListBuilder.create(),
-                PartPose.offsetAndRotation(0.0f, 12.0f, 0.0f, 0.0f, 0.0f, 0.6109f)
-            )
-
-            // Вторая пересекающаяся орбита (-35 градусов по Z) с 6 ледяными стержнями
-            val ring2 = partdefinition.addOrReplaceChild(
-                "ring_2",
-                CubeListBuilder.create(),
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-13.5f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
                 PartPose.offsetAndRotation(0.0f, 12.0f, 0.0f, 0.0f, 0.0f, -0.6109f)
             )
 
-            val radius = 12.5f
-            for (i in 0 until 6) {
-                val angle = (i * (2.0 * Math.PI / 6.0)).toFloat()
-                val rx = cos(angle) * radius
-                val rz = sin(angle) * radius
+            ring1.addOrReplaceChild(
+                "rod_1_5_r1",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(-6.25f, 0.0f, -10.8253f, 0.0f, 5.236f, 0.0f)
+            )
+            ring1.addOrReplaceChild(
+                "rod_1_4_r1",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(6.25f, 0.0f, -10.8253f, 0.0f, 4.1888f, 0.0f)
+            )
+            ring1.addOrReplaceChild(
+                "rod_1_3_r1",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(12.5f, 0.0f, 0.0f, 0.0f, 3.1416f, 0.0f)
+            )
+            ring1.addOrReplaceChild(
+                "rod_1_2_r1",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(6.25f, 0.0f, 10.8253f, 0.0f, 2.0944f, 0.0f)
+            )
+            ring1.addOrReplaceChild(
+                "rod_1_1_r1",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(-6.25f, 0.0f, 10.8253f, 0.0f, 1.0472f, 0.0f)
+            )
 
-                ring1.addOrReplaceChild(
-                    "rod_1_$i",
-                    CubeListBuilder.create()
-                        .texOffs(32, 0).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
-                    PartPose.offsetAndRotation(rx, 0.0f, rz, 0.0f, -angle, 0.0f)
-                )
+            val ring2 = partdefinition.addOrReplaceChild(
+                "ring_2",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-13.5f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(0.0f, 12.0f, 0.0f, 0.0f, 0.0f, 0.6109f)
+            )
 
-                ring2.addOrReplaceChild(
-                    "rod_2_$i",
-                    CubeListBuilder.create()
-                        .texOffs(32, 0).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
-                    PartPose.offsetAndRotation(rx, 0.0f, rz, 0.0f, -angle, 0.0f)
-                )
-            }
+            ring2.addOrReplaceChild(
+                "rod_2_5_r1",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(-6.25f, 0.0f, -10.8253f, 0.0f, 5.236f, 0.0f)
+            )
+            ring2.addOrReplaceChild(
+                "rod_2_4_r1",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(6.25f, 0.0f, -10.8253f, 0.0f, 4.1888f, 0.0f)
+            )
+            ring2.addOrReplaceChild(
+                "rod_2_3_r1",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(12.5f, 0.0f, 0.0f, 0.0f, 3.1416f, 0.0f)
+            )
+            ring2.addOrReplaceChild(
+                "rod_2_2_r1",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(6.25f, 0.0f, 10.8253f, 0.0f, 2.0944f, 0.0f)
+            )
+            ring2.addOrReplaceChild(
+                "rod_2_1_r1",
+                CubeListBuilder.create()
+                    .texOffs(0, 16).addBox(-1.0f, -4.5f, -1.0f, 2.0f, 9.0f, 2.0f, CubeDeformation.NONE),
+                PartPose.offsetAndRotation(-6.25f, 0.0f, 10.8253f, 0.0f, 1.0472f, 0.0f)
+            )
 
-            return LayerDefinition.create(meshdefinition, 64, 64)
+            return LayerDefinition.create(meshdefinition, 32, 32)
         }
     }
 

@@ -114,7 +114,7 @@ class IceElementalEntity(
         spawnGroupData: net.minecraft.world.entity.SpawnGroupData?
     ): net.minecraft.world.entity.SpawnGroupData? {
         val data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData)
-        setPos(x, y + 1.2, z)
+        setPos(x, y + 0.5, z)
         return data
     }
 

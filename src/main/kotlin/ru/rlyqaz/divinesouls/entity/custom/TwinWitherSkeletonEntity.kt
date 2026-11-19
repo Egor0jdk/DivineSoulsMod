@@ -91,6 +91,16 @@ class TwinWitherSkeletonEntity(
         this.goalSelector.addGoal(1, FireWaveSlamGoal(this))
     }
 
+    // Огненный страж крепости невосприимчив к заморозке и ледяному замедлению
+    override fun canFreeze(): Boolean = false
+
+    override fun canBeAffected(effectInstance: MobEffectInstance): Boolean {
+        if (effectInstance.effect == MobEffects.MOVEMENT_SLOWDOWN) {
+            return false
+        }
+        return super.canBeAffected(effectInstance)
+    }
+
     // Блокируем обычную ближнюю атаку, пока босс замахивается для огненной волны
     override fun doHurtTarget(target: net.minecraft.world.entity.Entity): Boolean {
         if (getSlamWindupTicks() > 0) {
