@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "divinesouls:end_wood_log",
-    "divinesouls:end_wood_planks"
+    "divinesouls:end_wood_planks",
+    "divinesouls:sculk_log",
+    "divinesouls:sculk_planks"
   ]
 }

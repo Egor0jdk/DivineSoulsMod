@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "planks",
+  "ingredients": [
+    { "item": "divinesouls:sculk_log" }
+  ],
+  "result": {
+    "id": "divinesouls:sculk_planks",
+    "count": 4
+  }
+}

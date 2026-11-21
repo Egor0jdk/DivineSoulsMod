@@ -196,6 +196,7 @@ object DivineSoulsMod {
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WitherSummonHandler)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.ElderGuardianBossBarHandler)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.worldgen.FortressTwinsInjector)
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.worldgen.SculkInfectionManager)
 
         LOGGER.info("Divine Souls: The main class has been successfully initialized under the name DivineSoulsMod!")
     }

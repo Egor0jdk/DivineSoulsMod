@@ -162,6 +162,86 @@ object ModBlocks {
         )
     }
 
+    // 10. Скалковый дёрн (добывается мотыгой, при разрушении даёт опыт)
+    val SCULK_GRASS_BLOCK: Supplier<Block> = registerBlock("sculk_grass_block") {
+        ru.rlyqaz.divinesouls.block.custom.SculkGrassBlock(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_CYAN)
+                .strength(0.6f, 0.6f)
+                .sound(SoundType.SCULK)
+        )
+    }
+
+    // 11. Скалковое бревно
+    val SCULK_LOG: Supplier<Block> = registerBlock("sculk_log") {
+        ru.rlyqaz.divinesouls.block.custom.SculkLogBlock(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLACK)
+                .instrument(net.minecraft.world.level.block.state.properties.NoteBlockInstrument.BASS)
+                .strength(2.0f)
+                .sound(SoundType.WOOD)
+                .ignitedByLava()
+        )
+    }
+
+    // 12. Скалковые доски
+    val SCULK_PLANKS: Supplier<Block> = registerBlock("sculk_planks") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_CYAN)
+                .instrument(net.minecraft.world.level.block.state.properties.NoteBlockInstrument.BASS)
+                .strength(2.0f, 3.0f)
+                .sound(SoundType.WOOD)
+                .ignitedByLava()
+        )
+    }
+
+    // 13. Скалковая листва
+    val SCULK_LEAVES: Supplier<Block> = registerBlock("sculk_leaves") {
+        ru.rlyqaz.divinesouls.block.custom.SculkLeavesBlock(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_CYAN)
+                .strength(0.2f)
+                .randomTicks()
+                .sound(SoundType.SCULK_VEIN)
+                .noOcclusion()
+                .isValidSpawn { _, _, _, _ -> false }
+                .isSuffocating { _, _, _ -> false }
+                .isViewBlocking { _, _, _ -> false }
+                .ignitedByLava()
+                .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)
+        )
+    }
+
+    // 14. Скалковая трава
+    val SCULK_GRASS: Supplier<Block> = registerBlock("sculk_grass") {
+        ru.rlyqaz.divinesouls.block.custom.SculkTallGrassBlock(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_CYAN)
+                .replaceable()
+                .noCollission()
+                .instabreak()
+                .sound(SoundType.SCULK_VEIN)
+                .offsetType(BlockBehaviour.OffsetType.XYZ)
+                .ignitedByLava()
+                .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)
+        )
+    }
+
+    // 15. Скалковый цветок (мягко светится в темноте)
+    val SCULK_FLOWER: Supplier<Block> = registerBlock("sculk_flower") {
+        ru.rlyqaz.divinesouls.block.custom.SculkFlowerBlock(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_LIGHT_BLUE)
+                .noCollission()
+                .instabreak()
+                .sound(SoundType.SCULK_VEIN)
+                .lightLevel { 7 }
+                .offsetType(BlockBehaviour.OffsetType.XZ)
+                .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)
+        )
+    }
+
     // ====================================================================
     // АВТОМАТИЧЕСКАЯ РЕГИСТРАЦИЯ БЛОКОВ И ИХ ПРЕДМЕТОВ (BLOCK ITEMS)
     // ====================================================================

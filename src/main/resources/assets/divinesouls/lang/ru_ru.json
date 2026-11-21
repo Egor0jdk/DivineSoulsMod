@@ -33,6 +33,12 @@
   "item.divinesouls.mana_crystal": "Кристалл маны",
   "item.divinesouls.astral_star": "Астральная звезда",
   "item.divinesouls.living_bark": "Живая кора",
+  "block.divinesouls.sculk_grass_block": "Скалковый дёрн",
+  "block.divinesouls.sculk_log": "Скалковое бревно",
+  "block.divinesouls.sculk_planks": "Скалковые доски",
+  "block.divinesouls.sculk_leaves": "Скалковая листва",
+  "block.divinesouls.sculk_grass": "Скалковая трава",
+  "block.divinesouls.sculk_flower": "Скалковый цветок",
 
   "item.divinesouls.raw_crab_meat": "Сырое крабовое мясо",
   "item.divinesouls.cooked_crab_meat": "Жареное крабовое мясо",

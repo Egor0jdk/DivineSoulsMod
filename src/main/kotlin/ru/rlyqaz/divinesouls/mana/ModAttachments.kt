@@ -38,6 +38,12 @@ object ModAttachments {
             .build()
     })
 
+    val SCULK_CHECKED: Supplier<AttachmentType<Boolean>> = ATTACHMENT_TYPES.register("sculk_checked", Supplier {
+        AttachmentType.builder(Supplier { false })
+            .serialize(Codec.BOOL)
+            .build()
+    })
+
     fun register(modEventBus: IEventBus) {
         ATTACHMENT_TYPES.register(modEventBus)
     }

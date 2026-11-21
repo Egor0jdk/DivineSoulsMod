@@ -111,12 +111,18 @@ object ModCreativeModeTabs {
             .title(Component.translatable("itemGroup.divinesouls.blocks"))
             .displayItems { _, output ->
                 output.accept(ModBlocks.END_GRASS_BLOCK.get())
+                output.accept(ModBlocks.SCULK_GRASS_BLOCK.get())
                 output.accept(ModBlocks.END_CRYSTAL_ORE.get())
                 output.accept(ModBlocks.END_BUSH_GRASS.get())
+                output.accept(ModBlocks.SCULK_GRASS.get())
                 output.accept(ModBlocks.WITHERED_END_BUSH.get())
+                output.accept(ModBlocks.SCULK_FLOWER.get())
                 output.accept(ModBlocks.END_WOOD_LOG.get())
+                output.accept(ModBlocks.SCULK_LOG.get())
                 output.accept(ModBlocks.END_WOOD_LEAVES.get())
+                output.accept(ModBlocks.SCULK_LEAVES.get())
                 output.accept(ModBlocks.END_WOOD_PLANKS.get())
+                output.accept(ModBlocks.SCULK_PLANKS.get())
                 output.accept(ModBlocks.END_SAPLING.get())
                 output.accept(ModBlocks.WITHER_SEAL_BLOCK.get())
             }

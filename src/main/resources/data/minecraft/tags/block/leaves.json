@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "divinesouls:end_wood_leaves"
+    "divinesouls:end_wood_leaves",
+    "divinesouls:sculk_leaves"
   ]
 }
