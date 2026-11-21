@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CCC",
+    "EFE",
+    "CCC"
+  ],
+  "key": {
+    "F": { "item": "divinesouls:sensor_fang" },
+    "E": { "item": "minecraft:echo_shard" },
+    "C": { "item": "divinesouls:sculk_chitin" }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:resonant_node"
+  }
+}

@@ -3,8 +3,8 @@
   "biomes": "#minecraft:is_overworld",
   "spawners": {
     "type": "divinesouls:cave_goblin",
-    "weight": 65,
+    "weight": 30,
     "minCount": 1,
-    "maxCount": 3
+    "maxCount": 2
   }
 }

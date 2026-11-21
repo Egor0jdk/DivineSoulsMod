@@ -29,6 +29,10 @@ import ru.rlyqaz.divinesouls.entity.client.ForestEntModel
 import ru.rlyqaz.divinesouls.entity.client.ForestEntRenderer
 import ru.rlyqaz.divinesouls.entity.client.VoidDragonModel
 import ru.rlyqaz.divinesouls.entity.client.VoidDragonRenderer
+import ru.rlyqaz.divinesouls.entity.client.SculkCrawlerModel
+import ru.rlyqaz.divinesouls.entity.client.SculkCrawlerRenderer
+import ru.rlyqaz.divinesouls.entity.client.SculkStalkerModel
+import ru.rlyqaz.divinesouls.entity.client.SculkStalkerRenderer
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
@@ -40,6 +44,8 @@ import ru.rlyqaz.divinesouls.entity.custom.GiantWaspEntity
 import ru.rlyqaz.divinesouls.entity.custom.IceElementalEntity
 import ru.rlyqaz.divinesouls.entity.custom.JungleSpiderEntity
 import ru.rlyqaz.divinesouls.entity.custom.ForestEntEntity
+import ru.rlyqaz.divinesouls.entity.custom.SculkCrawlerEntity
+import ru.rlyqaz.divinesouls.entity.custom.SculkStalkerEntity
 
 object ModEntityEvents {
 
@@ -57,6 +63,8 @@ object ModEntityEvents {
             event.put(ModEntities.ICE_ELEMENTAL.get(), IceElementalEntity.createAttributes().build())
             event.put(ModEntities.JUNGLE_SPIDER.get(), JungleSpiderEntity.createAttributes().build())
             event.put(ModEntities.FOREST_ENT.get(), ForestEntEntity.createAttributes().build())
+            event.put(ModEntities.SCULK_CRAWLER.get(), SculkCrawlerEntity.createAttributes().build())
+            event.put(ModEntities.SCULK_STALKER.get(), SculkStalkerEntity.createAttributes().build())
         }
 
         // 2. Рендереры мобов
@@ -74,6 +82,8 @@ object ModEntityEvents {
             event.registerEntityRenderer(ModEntities.JUNGLE_SPIDER.get(), ::JungleSpiderRenderer)
             event.registerEntityRenderer(ModEntities.FOREST_ENT.get(), ::ForestEntRenderer)
             event.registerEntityRenderer(ModEntities.VOID_DRAGON.get(), ::VoidDragonRenderer)
+            event.registerEntityRenderer(ModEntities.SCULK_CRAWLER.get(), ::SculkCrawlerRenderer)
+            event.registerEntityRenderer(ModEntities.SCULK_STALKER.get(), ::SculkStalkerRenderer)
         }
 
         // 3. 3D-слои моделей
@@ -104,6 +114,12 @@ object ModEntityEvents {
             }
             event.registerLayerDefinition(VoidDragonModel.LAYER_LOCATION) {
                 VoidDragonModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(SculkCrawlerModel.LAYER_LOCATION) {
+                SculkCrawlerModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(SculkStalkerModel.LAYER_LOCATION) {
+                SculkStalkerModel.createBodyLayer()
             }
         }
 
@@ -177,6 +193,20 @@ object ModEntityEvents {
                 SpawnPlacementTypes.NO_RESTRICTIONS,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 VoidDragonEntity::checkVoidDragonSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.SCULK_CRAWLER.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SculkCrawlerEntity::checkSculkCrawlerSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.SCULK_STALKER.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                SculkStalkerEntity::checkSculkStalkerSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
             )
         }

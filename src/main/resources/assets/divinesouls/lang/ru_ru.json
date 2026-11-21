@@ -39,6 +39,10 @@
   "block.divinesouls.sculk_leaves": "Скалковая листва",
   "block.divinesouls.sculk_grass": "Скалковая трава",
   "block.divinesouls.sculk_flower": "Скалковый цветок",
+  "item.divinesouls.sensor_fang": "Сенсорный клык",
+  "item.divinesouls.sculk_chitin": "Скалковый хитин",
+  "item.divinesouls.resonant_node": "Резонирующий узел",
+  "item.divinesouls.abyssal_heart": "Сердце Бездны",
 
   "item.divinesouls.raw_crab_meat": "Сырое крабовое мясо",
   "item.divinesouls.cooked_crab_meat": "Жареное крабовое мясо",
@@ -87,6 +91,8 @@
   "entity.divinesouls.ice_shard": "Ледяной осколок",
   "entity.divinesouls.jungle_spider": "Джунглевый паук",
   "entity.divinesouls.forest_ent": "Лесной энт",
+  "entity.divinesouls.sculk_crawler": "Скалковый ползун",
+  "entity.divinesouls.sculk_stalker": "Скалковый охотник",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Яйцо призыва Духа Скорби",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Яйцо призыва Близнецов Иссушения",
@@ -99,6 +105,8 @@
   "item.divinesouls.jungle_spider_spawn_egg": "Яйцо призыва джунглевого паука",
   "item.divinesouls.forest_ent_spawn_egg": "Яйцо призыва лесного энта",
   "item.divinesouls.void_dragon_spawn_egg": "Яйцо призыва дракона Пустоты",
+  "item.divinesouls.sculk_crawler_spawn_egg": "Яйцо призыва скалкового ползуна",
+  "item.divinesouls.sculk_stalker_spawn_egg": "Яйцо призыва скалкового охотника",
 
   "advancements.divinesouls.kill_warden.title": "Свержение Привратника",
   "advancements.divinesouls.kill_warden.description": "Одолейте Хранителя глубин и соберите его душу для создания Древней Руны",
@@ -109,6 +117,7 @@
   "tooltip.divinesouls.health_upgrade": "Навсегда увеличивает макс. здоровье на +%s сер. (до %s)",
   "tooltip.divinesouls.mana_upgrade": "Навсегда увеличивает макс. ману на +%s (до %s)",
   "message.divinesouls.upgrade_max_reached": "Достигнут предел этого уровня улучшения!",
-  "tooltip.divinesouls.living_bark_1": "+10% к скорости передвижения в инвентаре",
+  "tooltip.divinesouls.when_in_inventory": "Когда в инвентаре:",
+  "tooltip.divinesouls.living_bark_1": "+10% к скорости передвижения",
   "tooltip.divinesouls.living_bark_2": "+2.5 блока безопасного падения"
 }

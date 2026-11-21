@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "NXN",
+    "XWX",
+    "NXN"
+  ],
+  "key": {
+    "W": { "item": "divinesouls:awoken_warden_soul" },
+    "X": { "item": "divinesouls:ectoplasm" },
+    "N": { "item": "divinesouls:resonant_node" }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:abyssal_heart"
+  }
+}

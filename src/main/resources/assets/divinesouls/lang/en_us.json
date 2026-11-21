@@ -39,6 +39,10 @@
   "block.divinesouls.sculk_leaves": "Sculk Leaves",
   "block.divinesouls.sculk_grass": "Sculk Grass",
   "block.divinesouls.sculk_flower": "Sculk Flower",
+  "item.divinesouls.sensor_fang": "Sensor Fang",
+  "item.divinesouls.sculk_chitin": "Sculk Chitin",
+  "item.divinesouls.resonant_node": "Resonant Node",
+  "item.divinesouls.abyssal_heart": "Abyssal Heart",
 
   "item.divinesouls.raw_crab_meat": "Raw Crab Meat",
   "item.divinesouls.cooked_crab_meat": "Cooked Crab Meat",
@@ -87,6 +91,8 @@
   "entity.divinesouls.ice_shard": "Ice Shard",
   "entity.divinesouls.jungle_spider": "Jungle Spider",
   "entity.divinesouls.forest_ent": "Forest Ent",
+  "entity.divinesouls.sculk_crawler": "Sculk Crawler",
+  "entity.divinesouls.sculk_stalker": "Sculk Stalker",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Sorrow Wraith Spawn Egg",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Wither Twins Spawn Egg",
@@ -99,6 +105,8 @@
   "item.divinesouls.jungle_spider_spawn_egg": "Jungle Spider Spawn Egg",
   "item.divinesouls.forest_ent_spawn_egg": "Forest Ent Spawn Egg",
   "item.divinesouls.void_dragon_spawn_egg": "Void Dragon Spawn Egg",
+  "item.divinesouls.sculk_crawler_spawn_egg": "Sculk Crawler Spawn Egg",
+  "item.divinesouls.sculk_stalker_spawn_egg": "Sculk Stalker Spawn Egg",
 
   "advancements.divinesouls.kill_warden.title": "Overthrowing the Gatekeeper",
   "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune",
@@ -109,6 +117,7 @@
   "tooltip.divinesouls.health_upgrade": "Permanently increases max health by +%s hearts (up to %s)",
   "tooltip.divinesouls.mana_upgrade": "Permanently increases max mana by +%s (up to %s)",
   "message.divinesouls.upgrade_max_reached": "Maximum limit for this tier reached!",
-  "tooltip.divinesouls.living_bark_1": "+10% Movement Speed while in inventory",
+  "tooltip.divinesouls.when_in_inventory": "When in Inventory:",
+  "tooltip.divinesouls.living_bark_1": "+10% Movement Speed",
   "tooltip.divinesouls.living_bark_2": "+2.5 Safe Fall Distance"
 }

@@ -354,34 +354,69 @@ object SculkInfectionManager {
     }
 
     @SubscribeEvent
-    fun onBlockBreakCascadeSculkVein(event: net.neoforged.neoforge.event.level.BlockEvent.BreakEvent) {
+    fun onBlockBreakSmartSculkVein(event: net.neoforged.neoforge.event.level.BlockEvent.BreakEvent) {
         val level = event.level as? ServerLevel ?: return
-        var cursor = event.pos.below()
+        val brokenPos = event.pos
 
-        val supportDirs = listOf(
+        val horizDirs = listOf(
             net.minecraft.core.Direction.NORTH,
             net.minecraft.core.Direction.SOUTH,
             net.minecraft.core.Direction.EAST,
-            net.minecraft.core.Direction.WEST,
-            net.minecraft.core.Direction.DOWN
+            net.minecraft.core.Direction.WEST
         )
 
-        while (level.getBlockState(cursor).`is`(Blocks.SCULK_VEIN)) {
-            var hasAnchor = false
+        // 1. Если игрок сломал ствол/стену СБОКУ от sculk_vein — проверяем все 4 соседние жилы:
+        // если над соседней жилой висит другая sculk_vein, сохраняем нижнюю жилу висеть в воздухе!
+        for (dir in horizDirs) {
+            val veinPos = brokenPos.relative(dir)
+            val veinState = level.getBlockState(veinPos)
+            if (!veinState.`is`(Blocks.SCULK_VEIN)) continue
 
-            // Любой соседний блок сбоку или снизу (ствол, листва, земля), кроме воздуха, воды и самой жилы, держит гирлянду
-            for (dir in supportDirs) {
-                val neighborState = level.getBlockState(cursor.relative(dir))
+            val aboveState = level.getBlockState(veinPos.above())
+            if (aboveState.`is`(Blocks.SCULK_VEIN)) {
+                // На следующем тике (после того как ваниль попробует её снести) возвращаем висящий сегмент на место
+                val savedState = veinState
+                level.server.execute {
+                    if (level.getBlockState(veinPos).isAir && level.getBlockState(veinPos.above()).`is`(Blocks.SCULK_VEIN)) {
+                        level.setBlock(veinPos, savedState, 3)
+                    }
+                }
+            }
+        }
+
+        // 2. Если сломали саму верхнюю sculk_vein (или опору над гирляндой) — каскадно осыпаем висящий хвост вниз
+        var cursor = brokenPos.below()
+        while (level.getBlockState(cursor).`is`(Blocks.SCULK_VEIN)) {
+            var hasSideAnchor = false
+            for (dir in horizDirs) {
+                val neighborPos = cursor.relative(dir)
+                if (neighborPos == brokenPos) continue
+                val neighborState = level.getBlockState(neighborPos)
                 if (!neighborState.isAir &&
                     !neighborState.`is`(Blocks.SCULK_VEIN) &&
                     neighborState.fluidState.isEmpty
                 ) {
-                    hasAnchor = true
+                    hasSideAnchor = true
                     break
                 }
             }
 
-            if (hasAnchor) break
+            if (hasSideAnchor) break
+
+            val belowState = level.getBlockState(cursor.below())
+            val hasFloor = !belowState.isAir &&
+                    !belowState.`is`(Blocks.SCULK_VEIN) &&
+                    belowState.fluidState.isEmpty
+
+            if (hasFloor) {
+                val floorVein = Blocks.SCULK_VEIN.defaultBlockState()
+                    .setValue(
+                        net.minecraft.world.level.block.MultifaceBlock.getFaceProperty(net.minecraft.core.Direction.DOWN),
+                        true
+                    )
+                level.setBlock(cursor, floorVein, 3)
+                break
+            }
 
             level.destroyBlock(cursor, false)
             cursor = cursor.below()

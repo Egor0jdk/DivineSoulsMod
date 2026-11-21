@@ -300,6 +300,44 @@ object ModItems {
         )
     }
 
+    // Сенсорный клык (дроп со Скалкового ползуна -> центр Резонирующего ядра)
+    val SENSOR_FANG: Supplier<Item> = registerItem("sensor_fang") {
+        Item(Item.Properties().rarity(Rarity.UNCOMMON))
+    }
+
+    // Скалковый хитин (дроп со Скалкового охотника -> углы Резонирующего ядра)
+    val SCULK_CHITIN: Supplier<Item> = registerItem("sculk_chitin") {
+        Item(Item.Properties().rarity(Rarity.UNCOMMON))
+    }
+
+    // Резонирующий узел (угловой компонент активатора портала: Сенсорный клык + Эхо-осколки + Скалковый хитин)
+    val RESONANT_NODE: Supplier<Item> = registerItem("resonant_node") {
+        Item(Item.Properties().rarity(Rarity.RARE))
+    }
+
+    // Сердце Бездны (финальный активатор портала Древнего города)
+    val ABYSSAL_HEART: Supplier<Item> = registerItem("abyssal_heart") {
+        Item(Item.Properties().stacksTo(1).rarity(Rarity.EPIC))
+    }
+
+    val SCULK_CRAWLER_SPAWN_EGG: Supplier<Item> = registerItem("sculk_crawler_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.SCULK_CRAWLER,
+            0x0B1E26,
+            0x29DFEB,
+            Item.Properties()
+        )
+    }
+
+    val SCULK_STALKER_SPAWN_EGG: Supplier<Item> = registerItem("sculk_stalker_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.SCULK_STALKER,
+            0x091318,
+            0x18B5C4,
+            Item.Properties()
+        )
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }

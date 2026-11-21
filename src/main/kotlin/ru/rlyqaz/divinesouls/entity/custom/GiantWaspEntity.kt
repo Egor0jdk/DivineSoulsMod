@@ -53,13 +53,28 @@ class GiantWaspEntity(
             random: RandomSource
         ): Boolean {
             if (level.difficulty == Difficulty.PEACEFUL) return false
-            // Спавнится в джунглях днём и ночью (наземно или в кронах)
-            if (pos.y < 60) return false
+            if (pos.y < 60 || !level.getBlockState(pos).isAir) return false
+
+            // Не спавнимся над водой или в воде
+            if (!level.getFluidState(pos).isEmpty || !level.getFluidState(pos.below()).isEmpty) return false
+
+            // Проверяем, что в пределах 4 блоков вниз есть земля, дерево или листва (а не открытый океан)
+            var hasSolidOrLeavesBelow = false
+            for (dy in 1..4) {
+                val belowState = level.getBlockState(pos.below(dy))
+                if (!belowState.fluidState.isEmpty) return false
+                if (!belowState.isAir) {
+                    hasSolidOrLeavesBelow = true
+                    break
+                }
+            }
+            if (!hasSolidOrLeavesBelow) return false
+
             val nearbyWasps = level.getEntitiesOfClass(
                 GiantWaspEntity::class.java,
                 net.minecraft.world.phys.AABB(pos).inflate(32.0)
             )
-            return nearbyWasps.size < 2 && level.getBlockState(pos).isAir
+            return nearbyWasps.size < 2
         }
     }
 

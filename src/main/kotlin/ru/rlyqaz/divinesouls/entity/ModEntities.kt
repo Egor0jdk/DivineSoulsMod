@@ -19,6 +19,8 @@ import ru.rlyqaz.divinesouls.entity.custom.IceElementalEntity
 import ru.rlyqaz.divinesouls.entity.custom.IceShardEntity
 import ru.rlyqaz.divinesouls.entity.custom.JungleSpiderEntity
 import ru.rlyqaz.divinesouls.entity.custom.ForestEntEntity
+import ru.rlyqaz.divinesouls.entity.custom.SculkCrawlerEntity
+import ru.rlyqaz.divinesouls.entity.custom.SculkStalkerEntity
 import java.util.function.Supplier
 
 /**
@@ -126,6 +128,20 @@ object ModEntities {
             .sized(1.0f, 4.0f)
             .clientTrackingRange(10)
             .build("forest_ent")
+    })
+
+    val SCULK_CRAWLER: Supplier<EntityType<SculkCrawlerEntity>> = REGISTRY.register("sculk_crawler", Supplier {
+        EntityType.Builder.of(::SculkCrawlerEntity, MobCategory.MONSTER)
+            .sized(1.15f, 0.75f)
+            .clientTrackingRange(10)
+            .build("sculk_crawler")
+    })
+
+    val SCULK_STALKER: Supplier<EntityType<SculkStalkerEntity>> = REGISTRY.register("sculk_stalker", Supplier {
+        EntityType.Builder.of(::SculkStalkerEntity, MobCategory.MONSTER)
+            .sized(0.85f, 1.95f)
+            .clientTrackingRange(12)
+            .build("sculk_stalker")
     })
 
     fun register(eventBus: IEventBus) {

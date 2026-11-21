@@ -48,8 +48,19 @@ class CaveGoblinEntity(
             pos: BlockPos,
             random: RandomSource
         ): Boolean {
-            // Спавнится строго под землёй (ниже Y=45 и без прямого неба)
+            // 1. Строго под землёй (ниже Y=45 и без прямого неба)
             if (pos.y >= 45 || level.canSeeSky(pos)) return false
+
+            // 2. В Тёмных глубинах никто лишний не спавнится (сохраняем ванильную тишину для Вардена и ползунов)
+            if (level.getBiome(pos).`is`(net.minecraft.world.level.biome.Biomes.DEEP_DARK)) return false
+
+            // 3. Не спавним толпами: максимум 2 гоблина в радиусе 36 блоков
+            val nearby = level.getEntitiesOfClass(
+                CaveGoblinEntity::class.java,
+                net.minecraft.world.phys.AABB(pos).inflate(36.0)
+            )
+            if (nearby.size >= 2) return false
+
             return checkMonsterSpawnRules(type, level, spawnType, pos, random)
         }
     }

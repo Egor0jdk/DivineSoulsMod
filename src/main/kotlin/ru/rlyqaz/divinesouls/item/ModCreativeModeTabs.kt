@@ -29,6 +29,9 @@ object ModCreativeModeTabs {
                 output.accept(ModItems.END_CRYSTAL_GEM.get())
                 output.accept(ModItems.DRAGON_SOUL_SHARD.get())
                 output.accept(ModItems.ECTOPLASM.get())
+                output.accept(ModItems.SENSOR_FANG.get())
+                output.accept(ModItems.SCULK_CHITIN.get())
+                output.accept(ModItems.RESONANT_NODE.get())
                 output.accept(ModItems.ANCIENT_EYE.get())
                 output.accept(ModItems.ANCIENT_EYE_SHARD.get())
                 output.accept(ModItems.WARDEN_SOUL.get())
@@ -99,8 +102,10 @@ object ModCreativeModeTabs {
                 output.accept(ModItems.ICE_ELEMENTAL_SPAWN_EGG.get())
                 output.accept(ModItems.FOREST_ENT_SPAWN_EGG.get())
                 output.accept(ModItems.SORROW_WRAITH_SPAWN_EGG.get())
-                output.accept(ModItems.SWAMP_SPIRIT_SPAWN_EGG.get())
                 output.accept(ModItems.VOID_DRAGON_SPAWN_EGG.get())
+                output.accept(ModItems.SWAMP_SPIRIT_SPAWN_EGG.get())
+                output.accept(ModItems.SCULK_STALKER_SPAWN_EGG.get())
+                output.accept(ModItems.SCULK_CRAWLER_SPAWN_EGG.get())
                 output.accept(ModItems.TWIN_WITHER_SKELETON_SPAWN_EGG.get())
             }
             .build()
@@ -137,6 +142,7 @@ object ModCreativeModeTabs {
             .displayItems { _, output ->
                 output.accept(ModItems.ANCIENT_RUNE.get()) // Руна уехала сюда
                 output.accept(ModItems.WITHER_CORE.get())
+                output.accept(ModItems.ABYSSAL_HEART.get())
                 output.accept(ModItems.LIFE_CRYSTAL.get())
                 output.accept(ModItems.LIFE_FRUIT.get())
                 output.accept(ModItems.DIVINE_HEART.get())

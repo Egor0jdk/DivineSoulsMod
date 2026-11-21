@@ -61,6 +61,11 @@ class LivingBarkItem(properties: Properties) : Item(properties) {
         tooltipComponents: MutableList<Component>,
         tooltipFlag: TooltipFlag
     ) {
+        tooltipComponents.add(Component.empty())
+        tooltipComponents.add(
+            Component.translatable("tooltip.divinesouls.when_in_inventory")
+                .withStyle(ChatFormatting.GRAY)
+        )
         tooltipComponents.add(
             Component.translatable("tooltip.divinesouls.living_bark_1")
                 .withStyle(ChatFormatting.GREEN)
