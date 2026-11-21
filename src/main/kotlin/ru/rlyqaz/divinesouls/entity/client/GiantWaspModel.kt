@@ -69,7 +69,7 @@ class GiantWaspModel<T : GiantWaspEntity>(root: ModelPart) :
             partdefinition.addOrReplaceChild(
                 "right_wing",
                 CubeListBuilder.create()
-                    .texOffs(24, 16).addBox(-9.0f, 0.0f, -3.0f, 9.0f, 0.0f, 6.0f, CubeDeformation.NONE),
+                    .texOffs(24, 22).mirror().addBox(-9.0f, 0.0f, -3.0f, 9.0f, 0.0f, 6.0f, CubeDeformation.NONE),
                 PartPose.offset(-3.0f, 6.0f, 3.0f)
             )
 

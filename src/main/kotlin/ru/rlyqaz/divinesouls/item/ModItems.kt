@@ -291,6 +291,15 @@ object ModItems {
         )
     }
 
+    val VOID_DRAGON_SPAWN_EGG: Supplier<Item> = registerItem("void_dragon_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.VOID_DRAGON,
+            0x140E1C,
+            0x9B30FF,
+            Item.Properties()
+        )
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }

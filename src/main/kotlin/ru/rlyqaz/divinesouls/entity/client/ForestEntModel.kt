@@ -49,7 +49,6 @@ class ForestEntModel(root: ModelPart) : EntityModel<ForestEntEntity>() {
                 PartPose.offset(0.0f, -18.0f, 0.0f)
             )
 
-            // Возвращаем исходные пивоты +7.0f и -7.0f, чтобы руки стояли снаружи торса
             body.addOrReplaceChild(
                 "left_arm",
                 CubeListBuilder.create()
@@ -61,7 +60,7 @@ class ForestEntModel(root: ModelPart) : EntityModel<ForestEntEntity>() {
             body.addOrReplaceChild(
                 "right_arm",
                 CubeListBuilder.create()
-                    .texOffs(102, 101)
+                    .texOffs(124, 101).mirror()
                     .addBox(-5.0f, -2.0f, -3.0f, 5.0f, 22.0f, 6.0f, CubeDeformation(0.0f)),
                 PartPose.offset(-7.0f, -15.0f, 0.0f)
             )
@@ -77,7 +76,7 @@ class ForestEntModel(root: ModelPart) : EntityModel<ForestEntEntity>() {
             root.addOrReplaceChild(
                 "right_leg",
                 CubeListBuilder.create()
-                    .texOffs(0, 125)
+                    .texOffs(26, 125).mirror()
                     .addBox(-3.0f, 0.0f, -3.5f, 6.0f, 12.0f, 7.0f, CubeDeformation(0.0f)),
                 PartPose.offset(-4.0f, 12.0f, 0.0f)
             )

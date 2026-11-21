@@ -37,15 +37,13 @@ class CaveGoblinModel<T : CaveGoblinEntity>(root: ModelPart) : EntityModel<T>(),
                 PartPose.offset(0.0f, 8.0f, 0.0f)
             )
 
-            // Правое ухо: крепится к виску (-4.0) и согнуто НАЗАД к затылку под 45 градусов
             head.addOrReplaceChild(
                 "right_ear",
                 CubeListBuilder.create()
-                    .texOffs(30, 0).addBox(-3.0f, -2.0f, 0.0f, 3.0f, 4.0f, 0.0f, CubeDeformation.NONE),
+                    .texOffs(24, 0).mirror().addBox(-3.0f, -2.0f, 0.0f, 3.0f, 4.0f, 0.0f, CubeDeformation.NONE),
                 PartPose.offsetAndRotation(-4.0f, -4.0f, -1.0f, 0.0f, 0.7854f, 0.0f)
             )
 
-            // Левое ухо: крепится к виску (+4.0) и согнуто НАЗАД к затылку под 45 градусов
             head.addOrReplaceChild(
                 "left_ear",
                 CubeListBuilder.create()
@@ -63,8 +61,8 @@ class CaveGoblinModel<T : CaveGoblinEntity>(root: ModelPart) : EntityModel<T>(),
             partdefinition.addOrReplaceChild(
                 "right_arm",
                 CubeListBuilder.create()
-                    .texOffs(49, 13).addBox(-3.0f, -2.0f, -1.5f, 3.0f, 8.0f, 3.0f, CubeDeformation.NONE)
-                    .texOffs(16, 28).addBox(-3.5f, -2.0f, -2.0f, 4.0f, 8.0f, 4.0f, CubeDeformation.NONE),
+                    .texOffs(33, 13).mirror().addBox(-3.0f, -2.0f, -1.5f, 3.0f, 8.0f, 3.0f, CubeDeformation.NONE)
+                    .texOffs(0, 28).mirror().addBox(-3.5f, -2.0f, -2.0f, 4.0f, 8.0f, 4.0f, CubeDeformation.NONE),
                 PartPose.offset(-4.0f, 10.0f, 0.0f)
             )
 
@@ -79,8 +77,8 @@ class CaveGoblinModel<T : CaveGoblinEntity>(root: ModelPart) : EntityModel<T>(),
             partdefinition.addOrReplaceChild(
                 "right_leg",
                 CubeListBuilder.create()
-                    .texOffs(49, 29).addBox(-1.5f, 0.0f, -1.5f, 3.0f, 8.0f, 3.0f, CubeDeformation.NONE)
-                    .texOffs(48, 0).addBox(-2.0f, 0.0f, -2.0f, 4.0f, 8.0f, 4.0f, CubeDeformation.NONE),
+                    .texOffs(33, 29).mirror().addBox(-1.5f, 0.0f, -1.5f, 3.0f, 8.0f, 3.0f, CubeDeformation.NONE)
+                    .texOffs(32, 0).mirror().addBox(-2.0f, 0.0f, -2.0f, 4.0f, 8.0f, 4.0f, CubeDeformation.NONE),
                 PartPose.offset(-2.0f, 16.0f, 0.0f)
             )
 

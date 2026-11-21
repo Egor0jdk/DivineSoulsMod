@@ -1,8 +1,9 @@
 {
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "bottom": "minecraft:block/sculk",
-    "side": "divinesouls:block/sculk_grass_block_side",
-    "top": "divinesouls:block/sculk_grass_block_top"
+    "particle": "minecraft:block/sculk_catalyst_top",
+    "bottom": "minecraft:block/sculk_catalyst_top",
+    "top": "divinesouls:block/sculk_grass_block_top",
+    "side": "divinesouls:block/sculk_grass_block_side"
   }
 }

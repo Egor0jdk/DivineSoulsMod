@@ -1,8 +1,14 @@
 package ru.rlyqaz.divinesouls.worldgen
 
+import net.minecraft.ChatFormatting
+import net.minecraft.commands.Commands
 import net.minecraft.core.BlockPos
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.network.chat.ClickEvent
+import net.minecraft.network.chat.Component
 import net.minecraft.server.level.ServerLevel
 import net.minecraft.tags.BlockTags
+import net.minecraft.world.entity.MobSpawnType
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon
 import net.minecraft.world.level.ChunkPos
 import net.minecraft.world.level.Level
@@ -13,8 +19,11 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.chunk.LevelChunk
 import net.minecraft.world.level.levelgen.Heightmap
 import net.neoforged.bus.api.SubscribeEvent
+import net.neoforged.neoforge.event.RegisterCommandsEvent
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent
+import net.neoforged.neoforge.event.entity.living.MobSpawnEvent
 import net.neoforged.neoforge.event.level.ChunkEvent
+import net.neoforged.neoforge.event.tick.LevelTickEvent
 import ru.rlyqaz.divinesouls.block.ModBlocks
 import ru.rlyqaz.divinesouls.mana.ModAttachments
 import kotlin.math.cos
@@ -23,6 +32,7 @@ import kotlin.math.sin
 object SculkInfectionManager {
 
     private const val SPAWN_SAFE_RADIUS_SQ = 220.0 * 220.0
+    private val pendingChunks = ArrayDeque<ChunkPos>()
 
     private fun isWorldHardmode(level: ServerLevel): Boolean {
         val endLevel = level.server.getLevel(Level.END)
@@ -34,9 +44,8 @@ object SculkInfectionManager {
      */
     fun isSculkBiomeAt(seed: Long, blockX: Int, blockZ: Int): Boolean {
         val distSq = blockX.toDouble() * blockX.toDouble() + blockZ.toDouble() * blockZ.toDouble()
-        if (distSq.compareTo(SPAWN_SAFE_RADIUS_SQ) == -1) return false
+        if (distSq < SPAWN_SAFE_RADIUS_SQ) return false
 
-        // Обрезаем seed по модулю, чтобы избежать переполнения точности Double в sin/cos
         val seedOffset = ((seed xor 0x5DEECE66DL) % 100000L).toDouble() * 0.05
         val x = blockX.toDouble() * 0.005 + seedOffset
         val z = blockZ.toDouble() * 0.005 - seedOffset
@@ -46,7 +55,7 @@ object SculkInfectionManager {
         val wave3 = cos(x * 4.3 - z * 3.7) * 0.2
         val combined = wave1 + wave2 + wave3
 
-        return combined.compareTo(0.55) == 1
+        return combined > 0.55
     }
 
     @SubscribeEvent
@@ -61,11 +70,22 @@ object SculkInfectionManager {
 
         chunk.setData(attachment, true)
         chunk.isUnsaved = true
+        pendingChunks.addLast(chunk.pos)
+    }
 
-        // Выполняем на следующем тике сервера, когда чанк на 100% встал в мир (убирает deadlock!)
-        level.server.execute {
-            if (level.hasChunk(chunk.pos.x, chunk.pos.z)) {
+    @SubscribeEvent
+    fun onLevelTick(event: LevelTickEvent.Post) {
+        val level = event.level as? ServerLevel ?: return
+        if (level.dimension() != Level.OVERWORLD) return
+        if (pendingChunks.isEmpty()) return
+
+        var processed = 0
+        while (pendingChunks.isNotEmpty() && processed < 3) {
+            val pos = pendingChunks.removeFirst()
+            if (level.hasChunk(pos.x, pos.z)) {
+                val chunk = level.getChunk(pos.x, pos.z)
                 infectChunkSurface(level, chunk)
+                processed++
             }
         }
     }
@@ -96,7 +116,7 @@ object SculkInfectionManager {
                         if (!chunk.getData(attachment)) {
                             chunk.setData(attachment, true)
                             chunk.isUnsaved = true
-                            infectChunkSurface(level, chunk)
+                            pendingChunks.addLast(chunk.pos)
                         }
                     }
                 }
@@ -119,8 +139,8 @@ object SculkInfectionManager {
                 if (!isSculkBiomeAt(seed, worldX, worldZ)) continue
 
                 val topY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, localX, localZ)
-                val minScanY = (topY - 12).coerceAtLeast(level.minBuildHeight + 1)
-                val maxScanY = (topY + 4).coerceAtMost(level.maxBuildHeight - 1)
+                val minScanY = (topY - 32).coerceAtLeast(level.minBuildHeight + 1)
+                val maxScanY = (topY + 32).coerceAtMost(level.maxBuildHeight - 1)
 
                 var dirtConvertedCount = 0
 
@@ -128,7 +148,6 @@ object SculkInfectionManager {
                     mutablePos.set(worldX, y, worldZ)
                     val state = chunk.getBlockState(mutablePos)
                     if (state.isAir) continue
-
                     // 1. Листва деревьев -> Скалковая листва
                     if (state.`is`(BlockTags.LEAVES)) {
                         var newLeaves = ModBlocks.SCULK_LEAVES.get().defaultBlockState()
@@ -139,6 +158,36 @@ object SculkInfectionManager {
                             newLeaves = newLeaves.setValue(LeavesBlock.PERSISTENT, state.getValue(LeavesBlock.PERSISTENT))
                         }
                         chunk.setBlockState(mutablePos, newLeaves, false)
+                        level.chunkSource.blockChanged(mutablePos.immutable())
+                        changedAny = true
+                        continue
+                    }
+
+                    // 1.5. Лианы -> Ванильные скалковые жилы (minecraft:sculk_vein)
+                    if (state.`is`(Blocks.VINE)) {
+                        var veinState = Blocks.SCULK_VEIN.defaultBlockState()
+                        var hasSupport = false
+                        val dirs = listOf(
+                            net.minecraft.core.Direction.UP,
+                            net.minecraft.core.Direction.NORTH,
+                            net.minecraft.core.Direction.EAST,
+                            net.minecraft.core.Direction.SOUTH,
+                            net.minecraft.core.Direction.WEST
+                        )
+                        for (dir in dirs) {
+                            val vineProp = net.minecraft.world.level.block.VineBlock.getPropertyForFace(dir)
+                            val veinProp = net.minecraft.world.level.block.MultifaceBlock.getFaceProperty(dir)
+                            if (state.getValue(vineProp)) {
+                                veinState = veinState.setValue(veinProp, true)
+                                hasSupport = true
+                            }
+                        }
+                        chunk.setBlockState(
+                            mutablePos,
+                            if (hasSupport) veinState else Blocks.AIR.defaultBlockState(),
+                            false
+                        )
+                        level.chunkSource.blockChanged(mutablePos.immutable())
                         changedAny = true
                         continue
                     }
@@ -150,6 +199,7 @@ object SculkInfectionManager {
                             newLog = newLog.setValue(RotatedPillarBlock.AXIS, state.getValue(RotatedPillarBlock.AXIS))
                         }
                         chunk.setBlockState(mutablePos, newLog, false)
+                        level.chunkSource.blockChanged(mutablePos.immutable())
                         changedAny = true
                         continue
                     }
@@ -157,6 +207,7 @@ object SculkInfectionManager {
                     // 3. Цветы -> Скалковый цветок
                     if (state.`is`(BlockTags.FLOWERS)) {
                         chunk.setBlockState(mutablePos, ModBlocks.SCULK_FLOWER.get().defaultBlockState(), false)
+                        level.chunkSource.blockChanged(mutablePos.immutable())
                         changedAny = true
                         continue
                     }
@@ -164,6 +215,7 @@ object SculkInfectionManager {
                     // 4. Трава, папоротники и кусты -> Скалковая трава
                     if (isReplaceableFoliage(state)) {
                         chunk.setBlockState(mutablePos, ModBlocks.SCULK_GRASS.get().defaultBlockState(), false)
+                        level.chunkSource.blockChanged(mutablePos.immutable())
                         changedAny = true
                         continue
                     }
@@ -171,6 +223,7 @@ object SculkInfectionManager {
                     // 5. Верхний дёрн -> Скалковый дёрн
                     if (state.`is`(Blocks.GRASS_BLOCK) || state.`is`(Blocks.PODZOL) || state.`is`(Blocks.MYCELIUM)) {
                         chunk.setBlockState(mutablePos, ModBlocks.SCULK_GRASS_BLOCK.get().defaultBlockState(), false)
+                        level.chunkSource.blockChanged(mutablePos.immutable())
                         dirtConvertedCount = 0
                         changedAny = true
                         continue
@@ -180,6 +233,7 @@ object SculkInfectionManager {
                     if (state.`is`(Blocks.DIRT) || state.`is`(Blocks.COARSE_DIRT) || state.`is`(Blocks.ROOTED_DIRT)) {
                         if (dirtConvertedCount.compareTo(3) == -1) {
                             chunk.setBlockState(mutablePos, Blocks.SCULK.defaultBlockState(), false)
+                            level.chunkSource.blockChanged(mutablePos.immutable())
                             dirtConvertedCount++
                             changedAny = true
                         } else {
@@ -197,15 +251,6 @@ object SculkInfectionManager {
 
         if (changedAny) {
             chunk.isUnsaved = true
-            // Переотправляем обновлённый чанк ближайшим игрокам одним пакетом (без лагов!)
-            val packet = net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket(
-                chunk, level.lightEngine, null, null
-            )
-            for (player in level.players()) {
-                if (player.chunkPosition().getChessboardDistance(chunkPos) <= level.server.playerList.viewDistance) {
-                    player.connection.send(packet)
-                }
-            }
         }
     }
 
@@ -219,57 +264,69 @@ object SculkInfectionManager {
     }
 
     @SubscribeEvent
-    fun onRegisterCommands(event: net.neoforged.neoforge.event.RegisterCommandsEvent) {
+    fun onRegisterCommands(event: RegisterCommandsEvent) {
         event.dispatcher.register(
-            net.minecraft.commands.Commands.literal("findsculk")
+            Commands.literal("findsculk")
                 .requires { it.hasPermission(2) }
                 .executes { ctx ->
                     val source = ctx.source
                     val level = source.level
+
+                    if (!isWorldHardmode(level)) {
+                        source.sendFailure(Component.literal("Hardmode is not active yet (defeat the Ender Dragon first)"))
+                        return@executes 0
+                    }
+
                     val startPos = BlockPos.containing(source.position)
                     val seed = level.seed
-
+                    val generator = level.chunkSource.generator
+                    val randomState = level.chunkSource.randomState()
                     var foundPos: BlockPos? = null
-                    // Ищем по спирали с шагом 32 блока в радиусе до 4000 блоков
-                    search@ for (radius in 32..4000 step 32) {
-                        for (dx in -radius..radius step 32) {
+
+                    search@ for (radius in 64..4000 step 64) {
+                        for (dx in -radius..radius step 64) {
                             for (dz in listOf(-radius, radius)) {
                                 val checkX = startPos.x + dx
                                 val checkZ = startPos.z + dz
                                 if (isSculkBiomeAt(seed, checkX, checkZ)) {
-                                    foundPos = BlockPos(checkX, 90, checkZ)
-                                    break@search
+                                    val surfaceY = generator.getBaseHeight(
+                                        checkX, checkZ, Heightmap.Types.WORLD_SURFACE_WG, level, randomState
+                                    )
+                                    if (surfaceY > level.seaLevel + 1) {
+                                        foundPos = BlockPos(checkX, surfaceY + 2, checkZ)
+                                        break@search
+                                    }
                                 }
                             }
                         }
-                        for (dz in -radius..radius step 32) {
+                        for (dz in -radius..radius step 64) {
                             for (dx in listOf(-radius, radius)) {
                                 val checkX = startPos.x + dx
                                 val checkZ = startPos.z + dz
                                 if (isSculkBiomeAt(seed, checkX, checkZ)) {
-                                    foundPos = BlockPos(checkX, 90, checkZ)
-                                    break@search
+                                    val surfaceY = generator.getBaseHeight(
+                                        checkX, checkZ, Heightmap.Types.WORLD_SURFACE_WG, level, randomState
+                                    )
+                                    if (surfaceY > level.seaLevel + 1) {
+                                        foundPos = BlockPos(checkX, surfaceY + 2, checkZ)
+                                        break@search
+                                    }
                                 }
                             }
                         }
                     }
 
                     if (foundPos != null) {
-                        val tpCmd = "/tp @s ${foundPos.x} ~ ${foundPos.z}"
-                        val msg = net.minecraft.network.chat.Component.literal(
-                            "Nearest Sculk Biome: [${foundPos.x}, ${foundPos.z}] (click to teleport)"
+                        val tpCmd = "/tp @s ${foundPos.x} ${foundPos.y} ${foundPos.z}"
+                        val msg = Component.literal(
+                            "Nearest Sculk Biome: [${foundPos.x}, ${foundPos.y}, ${foundPos.z}] (click to teleport)"
                         ).withStyle { style ->
-                            style.withColor(net.minecraft.ChatFormatting.AQUA)
-                                .withClickEvent(
-                                    net.minecraft.network.chat.ClickEvent(
-                                        net.minecraft.network.chat.ClickEvent.Action.SUGGEST_COMMAND,
-                                        tpCmd
-                                    )
-                                )
+                            style.withColor(ChatFormatting.AQUA)
+                                .withClickEvent(ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, tpCmd))
                         }
                         source.sendSuccess({ msg }, false)
                     } else {
-                        source.sendFailure(net.minecraft.network.chat.Component.literal("No skulk biome found within a 4000-block radius"))
+                        source.sendFailure(Component.literal("No dry-land Sculk biome found within 4000 blocks"))
                     }
                     1
                 }
@@ -277,29 +334,57 @@ object SculkInfectionManager {
     }
 
     @SubscribeEvent
-    fun onNaturalSpawnCheck(event: net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck) {
-        // Фильтруем только естественный спавн мира (не яйца призыва и не спавнеры)
-        if (event.spawnType != net.minecraft.world.entity.MobSpawnType.NATURAL &&
-            event.spawnType != net.minecraft.world.entity.MobSpawnType.CHUNK_GENERATION
+    fun onNaturalSpawnCheck(event: MobSpawnEvent.PositionCheck) {
+        if (event.spawnType != MobSpawnType.NATURAL &&
+            event.spawnType != MobSpawnType.CHUNK_GENERATION
         ) return
 
         val serverLevel = event.level.level
         if (serverLevel.dimension() != Level.OVERWORLD) return
         if (!isWorldHardmode(serverLevel)) return
 
-        val pos = net.minecraft.core.BlockPos.containing(event.x, event.y, event.z)
-        val groundState = serverLevel.getBlockState(pos.below())
-        val inSculkZone = isSculkBiomeAt(serverLevel.seed, pos.x, pos.z) ||
-                groundState.`is`(ModBlocks.SCULK_GRASS_BLOCK.get()) ||
-                groundState.`is`(Blocks.SCULK)
+        val x = net.minecraft.util.Mth.floor(event.x)
+        val z = net.minecraft.util.Mth.floor(event.z)
+        if (!isSculkBiomeAt(serverLevel.seed, x, z)) return
 
-        if (!inSculkZone) return
-
-        // Запрещаем спавн всех ванильных мобов (зомби, скелеты, криперы, животные),
-        // оставляя пространство только для кастомных мобов нашего мода!
-        val namespace = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(event.entity.type).namespace
+        val namespace = BuiltInRegistries.ENTITY_TYPE.getKey(event.entity.type).namespace
         if (namespace == "minecraft") {
-            event.result = net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck.Result.FAIL
+            event.result = MobSpawnEvent.PositionCheck.Result.FAIL
+        }
+    }
+
+    @SubscribeEvent
+    fun onBlockBreakCascadeSculkVein(event: net.neoforged.neoforge.event.level.BlockEvent.BreakEvent) {
+        val level = event.level as? ServerLevel ?: return
+        var cursor = event.pos.below()
+
+        val supportDirs = listOf(
+            net.minecraft.core.Direction.NORTH,
+            net.minecraft.core.Direction.SOUTH,
+            net.minecraft.core.Direction.EAST,
+            net.minecraft.core.Direction.WEST,
+            net.minecraft.core.Direction.DOWN
+        )
+
+        while (level.getBlockState(cursor).`is`(Blocks.SCULK_VEIN)) {
+            var hasAnchor = false
+
+            // Любой соседний блок сбоку или снизу (ствол, листва, земля), кроме воздуха, воды и самой жилы, держит гирлянду
+            for (dir in supportDirs) {
+                val neighborState = level.getBlockState(cursor.relative(dir))
+                if (!neighborState.isAir &&
+                    !neighborState.`is`(Blocks.SCULK_VEIN) &&
+                    neighborState.fluidState.isEmpty
+                ) {
+                    hasAnchor = true
+                    break
+                }
+            }
+
+            if (hasAnchor) break
+
+            level.destroyBlock(cursor, false)
+            cursor = cursor.below()
         }
     }
 }

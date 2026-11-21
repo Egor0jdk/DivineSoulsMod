@@ -165,9 +165,9 @@ object ModBlocks {
     // 10. Скалковый дёрн (добывается мотыгой, при разрушении даёт опыт)
     val SCULK_GRASS_BLOCK: Supplier<Block> = registerBlock("sculk_grass_block") {
         ru.rlyqaz.divinesouls.block.custom.SculkGrassBlock(
-            BlockBehaviour.Properties.of()
-                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_CYAN)
-                .strength(0.6f, 0.6f)
+            BlockBehaviour.Properties.ofFullCopy(Blocks.GRASS_BLOCK)
+                .randomTicks()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLACK)
                 .sound(SoundType.SCULK)
         )
     }

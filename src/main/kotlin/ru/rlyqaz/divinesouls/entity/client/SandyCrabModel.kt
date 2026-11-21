@@ -27,7 +27,6 @@ class SandyCrabModel(root: ModelPart) : EntityModel<SandyCrabEntity>() {
             val meshdefinition = MeshDefinition()
             val partdefinition = meshdefinition.root
 
-            // Единый ровный прямоугольный панцирь (12 x 5 x 10 пикселей)
             partdefinition.addOrReplaceChild(
                 "body",
                 CubeListBuilder.create()
@@ -35,11 +34,10 @@ class SandyCrabModel(root: ModelPart) : EntityModel<SandyCrabEntity>() {
                 PartPose.offset(0.0f, 21.0f, 0.0f)
             )
 
-            // Две аккуратные клешни спереди (UV из Blockbench: 18, 15 и 0, 15)
             partdefinition.addOrReplaceChild(
                 "right_claw",
                 CubeListBuilder.create()
-                    .texOffs(18, 15).addBox(-2.0f, -1.5f, -5.0f, 4.0f, 3.0f, 5.0f, CubeDeformation.NONE),
+                    .texOffs(0, 15).mirror().addBox(-2.0f, -1.5f, -5.0f, 4.0f, 3.0f, 5.0f, CubeDeformation.NONE),
                 PartPose.offset(-4.0f, 19.5f, -5.0f)
             )
 
@@ -50,28 +48,25 @@ class SandyCrabModel(root: ModelPart) : EntityModel<SandyCrabEntity>() {
                 PartPose.offset(4.0f, 19.5f, -5.0f)
             )
 
-            // 6 паучьих лапок с индивидуальными UV-координатами из Blockbench
-            // Правые лапы (X = -5.5)
             partdefinition.addOrReplaceChild(
                 "right_front_leg",
                 CubeListBuilder.create()
-                    .texOffs(18, 27).addBox(-7.0f, -1.0f, -1.0f, 7.0f, 2.0f, 2.0f, CubeDeformation.NONE),
+                    .texOffs(0, 23).mirror().addBox(-7.0f, -1.0f, -1.0f, 7.0f, 2.0f, 2.0f, CubeDeformation.NONE),
                 PartPose.offset(-5.5f, 19.5f, -2.0f)
             )
             partdefinition.addOrReplaceChild(
                 "right_middle_leg",
                 CubeListBuilder.create()
-                    .texOffs(0, 31).addBox(-7.0f, -1.0f, -1.0f, 7.0f, 2.0f, 2.0f, CubeDeformation.NONE),
+                    .texOffs(18, 23).mirror().addBox(-7.0f, -1.0f, -1.0f, 7.0f, 2.0f, 2.0f, CubeDeformation.NONE),
                 PartPose.offset(-5.5f, 19.5f, 0.0f)
             )
             partdefinition.addOrReplaceChild(
                 "right_hind_leg",
                 CubeListBuilder.create()
-                    .texOffs(18, 31).addBox(-7.0f, -1.0f, -1.0f, 7.0f, 2.0f, 2.0f, CubeDeformation.NONE),
+                    .texOffs(0, 27).mirror().addBox(-7.0f, -1.0f, -1.0f, 7.0f, 2.0f, 2.0f, CubeDeformation.NONE),
                 PartPose.offset(-5.5f, 19.5f, 2.0f)
             )
 
-            // Левые лапы (X = +5.5)
             partdefinition.addOrReplaceChild(
                 "left_front_leg",
                 CubeListBuilder.create()

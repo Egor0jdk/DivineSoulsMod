@@ -27,6 +27,8 @@ import ru.rlyqaz.divinesouls.entity.client.IceShardRenderer
 import ru.rlyqaz.divinesouls.entity.client.JungleSpiderRenderer
 import ru.rlyqaz.divinesouls.entity.client.ForestEntModel
 import ru.rlyqaz.divinesouls.entity.client.ForestEntRenderer
+import ru.rlyqaz.divinesouls.entity.client.VoidDragonModel
+import ru.rlyqaz.divinesouls.entity.client.VoidDragonRenderer
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
@@ -71,6 +73,7 @@ object ModEntityEvents {
             event.registerEntityRenderer(ModEntities.ICE_SHARD.get(), ::IceShardRenderer)
             event.registerEntityRenderer(ModEntities.JUNGLE_SPIDER.get(), ::JungleSpiderRenderer)
             event.registerEntityRenderer(ModEntities.FOREST_ENT.get(), ::ForestEntRenderer)
+            event.registerEntityRenderer(ModEntities.VOID_DRAGON.get(), ::VoidDragonRenderer)
         }
 
         // 3. 3D-слои моделей
@@ -98,6 +101,9 @@ object ModEntityEvents {
             }
             event.registerLayerDefinition(ForestEntModel.LAYER_LOCATION) {
                 ForestEntModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(VoidDragonModel.LAYER_LOCATION) {
+                VoidDragonModel.createBodyLayer()
             }
         }
 
@@ -164,6 +170,13 @@ object ModEntityEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 ForestEntEntity::checkForestEntSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.VOID_DRAGON.get(),
+                SpawnPlacementTypes.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                VoidDragonEntity::checkVoidDragonSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
             )
         }

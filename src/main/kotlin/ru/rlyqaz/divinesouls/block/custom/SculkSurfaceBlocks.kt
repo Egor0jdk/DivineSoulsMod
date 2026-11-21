@@ -17,17 +17,121 @@ import net.minecraft.world.phys.shapes.CollisionContext
 import net.minecraft.world.phys.shapes.VoxelShape
 import ru.rlyqaz.divinesouls.block.ModBlocks
 
-class SculkGrassBlock(properties: Properties) : Block(properties) {
-    override fun spawnAfterBreak(
-        state: BlockState,
-        level: ServerLevel,
-        pos: BlockPos,
-        stack: ItemStack,
-        dropExperience: Boolean
+class SculkGrassBlock(properties: Properties) : Block(properties), net.minecraft.world.level.block.BonemealableBlock {
+
+    companion object {
+        private fun canBeGrass(
+            state: net.minecraft.world.level.block.state.BlockState,
+            level: net.minecraft.world.level.LevelReader,
+            pos: net.minecraft.core.BlockPos
+        ): Boolean {
+            val abovePos = pos.above()
+            val aboveState = level.getBlockState(abovePos)
+            if (aboveState.`is`(net.minecraft.world.level.block.Blocks.SNOW) &&
+                aboveState.getValue(net.minecraft.world.level.block.SnowLayerBlock.LAYERS) == 1
+            ) {
+                return true
+            }
+            if (aboveState.fluidState.amount == 8) {
+                return false
+            }
+            val lightBlocked = net.minecraft.world.level.lighting.LightEngine.getLightBlockInto(
+                level, state, pos, aboveState, abovePos,
+                net.minecraft.core.Direction.UP, aboveState.getLightBlock(level, abovePos)
+            )
+            return lightBlocked < level.maxLightLevel
+        }
+
+        private fun canPropagate(
+            state: net.minecraft.world.level.block.state.BlockState,
+            level: net.minecraft.world.level.LevelReader,
+            pos: net.minecraft.core.BlockPos
+        ): Boolean {
+            return canBeGrass(state, level, pos) &&
+                    !level.getFluidState(pos.above()).`is`(net.minecraft.tags.FluidTags.WATER)
+        }
+    }
+
+    override fun isRandomlyTicking(state: net.minecraft.world.level.block.state.BlockState): Boolean = true
+
+    override fun randomTick(
+        state: net.minecraft.world.level.block.state.BlockState,
+        level: net.minecraft.server.level.ServerLevel,
+        pos: net.minecraft.core.BlockPos,
+        random: net.minecraft.util.RandomSource
     ) {
-        super.spawnAfterBreak(state, level, pos, stack, dropExperience)
-        if (dropExperience) {
-            tryDropExperience(level, pos, stack, ConstantInt.of(1))
+        if (!canBeGrass(state, level, pos)) {
+            if (!level.isAreaLoaded(pos, 1)) return
+            level.setBlockAndUpdate(pos, net.minecraft.world.level.block.Blocks.SCULK.defaultBlockState())
+            return
+        }
+
+        if (!level.isAreaLoaded(pos, 3)) return
+
+        if (level.getMaxLocalRawBrightness(pos.above()) >= 9) {
+            val defaultGrass = this.defaultBlockState()
+            repeat(4) {
+                val targetPos = pos.offset(
+                    random.nextInt(3) - 1,
+                    random.nextInt(5) - 3,
+                    random.nextInt(3) - 1
+                )
+                if (level.getBlockState(targetPos).`is`(net.minecraft.world.level.block.Blocks.SCULK) &&
+                    canPropagate(defaultGrass, level, targetPos)
+                ) {
+                    level.setBlockAndUpdate(targetPos, defaultGrass)
+                }
+            }
+        }
+    }
+
+    override fun isValidBonemealTarget(
+        level: net.minecraft.world.level.LevelReader,
+        pos: net.minecraft.core.BlockPos,
+        state: net.minecraft.world.level.block.state.BlockState
+    ): Boolean = level.getBlockState(pos.above()).isAir
+
+    override fun isBonemealSuccess(
+        level: net.minecraft.world.level.Level,
+        random: net.minecraft.util.RandomSource,
+        pos: net.minecraft.core.BlockPos,
+        state: net.minecraft.world.level.block.state.BlockState
+    ): Boolean = true
+
+    override fun performBonemeal(
+        level: net.minecraft.server.level.ServerLevel,
+        random: net.minecraft.util.RandomSource,
+        pos: net.minecraft.core.BlockPos,
+        state: net.minecraft.world.level.block.state.BlockState
+    ) {
+        val aboveStart = pos.above()
+        val sculkGrassState = ru.rlyqaz.divinesouls.block.ModBlocks.SCULK_GRASS.get().defaultBlockState()
+        val sculkFlowerState = ru.rlyqaz.divinesouls.block.ModBlocks.SCULK_FLOWER.get().defaultBlockState()
+
+        outer@ for (attempt in 0 until 48) {
+            var targetPos = aboveStart
+            val steps = attempt / 16
+            var step = 0
+            while (step < steps) {
+                targetPos = targetPos.offset(
+                    random.nextInt(3) - 1,
+                    (random.nextInt(3) - 1) * random.nextInt(3) / 2,
+                    random.nextInt(3) - 1
+                )
+                if (!level.getBlockState(targetPos.below()).`is`(this) ||
+                    level.getBlockState(targetPos).isCollisionShapeFullBlock(level, targetPos)
+                ) {
+                    continue@outer
+                }
+                step++
+            }
+
+            if (level.getBlockState(targetPos).isAir && level.getBlockState(targetPos.below()).`is`(this)) {
+                val plantToPlace = if (random.nextInt(6) == 0) sculkFlowerState else sculkGrassState
+                if (plantToPlace.canSurvive(level, targetPos)) {
+                    level.setBlock(targetPos, plantToPlace, 3)
+                }
+            }
         }
     }
 }

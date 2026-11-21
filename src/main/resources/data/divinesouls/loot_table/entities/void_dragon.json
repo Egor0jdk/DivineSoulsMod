@@ -1,0 +1,47 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "divinesouls:end_crystal_gem"
+        }
+      ],
+      "conditions": [
+        { "condition": "minecraft:killed_by_player" },
+        {
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "unenchanted_chance": 0.2,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.25,
+            "per_level_above_first": 0.05
+          },
+          "enchantment": "minecraft:looting"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:ender_pearl",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "min": 1.0, "max": 2.0, "type": "minecraft:uniform" }
+            },
+            {
+              "function": "minecraft:enchanted_count_increase",
+              "enchantment": "minecraft:looting",
+              "count": { "min": 0.0, "max": 1.0, "type": "minecraft:uniform" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
