@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "divinesouls:sculk_grass_block",
+    "divinesouls:sculk_log",
+    "divinesouls:sculk_planks",
+    "divinesouls:sculk_leaves",
+    "divinesouls:sculk_grass",
+    "divinesouls:sculk_flower"
+  ]
+}

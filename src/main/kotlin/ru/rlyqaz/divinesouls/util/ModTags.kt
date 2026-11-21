@@ -1,6 +1,5 @@
 package ru.rlyqaz.divinesouls.util
 
-import net.minecraft.core.registries.Registries
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.tags.BlockTags
 import net.minecraft.tags.ItemTags
@@ -9,17 +8,11 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.level.block.Block
 import ru.rlyqaz.divinesouls.DivineSoulsMod
 
-/**
- * ====================================================================
- * НАЗВАНИЕ МОДА: Divine Souls (1.21.1 NeoForge)
- * КЛАСС: ModTags (Кастомные теги блоков и предметов)
- * ====================================================================
- */
 object ModTags {
 
     object Blocks {
-        // Пример создания кастомного тега для твоих блоков Края (если понадобится в будущем)
         val END_LOGS: TagKey<Block> = createTag("end_logs")
+        val SCULK_SURFACE_BLOCKS: TagKey<Block> = createTag("sculk_surface_blocks")
 
         private fun createTag(name: String): TagKey<Block> {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, name))
@@ -27,8 +20,9 @@ object ModTags {
     }
 
     object Items {
-        // Пример создания кастомного тега для предметов
-        val TRANSFORMABLE_ITEMS: TagKey<Item> = createTag("transformable_items")
+        val MAGIC_STAFFS: TagKey<Item> = createTag("magic_staffs")
+        val SOULS: TagKey<Item> = createTag("souls")
+        val STAT_UPGRADES: TagKey<Item> = createTag("stat_upgrades")
 
         private fun createTag(name: String): TagKey<Item> {
             return ItemTags.create(ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, name))

@@ -275,4 +275,31 @@ object SculkInfectionManager {
                 }
         )
     }
+
+    @SubscribeEvent
+    fun onNaturalSpawnCheck(event: net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck) {
+        // Фильтруем только естественный спавн мира (не яйца призыва и не спавнеры)
+        if (event.spawnType != net.minecraft.world.entity.MobSpawnType.NATURAL &&
+            event.spawnType != net.minecraft.world.entity.MobSpawnType.CHUNK_GENERATION
+        ) return
+
+        val serverLevel = event.level.level
+        if (serverLevel.dimension() != Level.OVERWORLD) return
+        if (!isWorldHardmode(serverLevel)) return
+
+        val pos = net.minecraft.core.BlockPos.containing(event.x, event.y, event.z)
+        val groundState = serverLevel.getBlockState(pos.below())
+        val inSculkZone = isSculkBiomeAt(serverLevel.seed, pos.x, pos.z) ||
+                groundState.`is`(ModBlocks.SCULK_GRASS_BLOCK.get()) ||
+                groundState.`is`(Blocks.SCULK)
+
+        if (!inSculkZone) return
+
+        // Запрещаем спавн всех ванильных мобов (зомби, скелеты, криперы, животные),
+        // оставляя пространство только для кастомных мобов нашего мода!
+        val namespace = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(event.entity.type).namespace
+        if (namespace == "minecraft") {
+            event.result = net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck.Result.FAIL
+        }
+    }
 }

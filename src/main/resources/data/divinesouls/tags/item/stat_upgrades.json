@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "divinesouls:life_crystal",
+    "divinesouls:life_fruit",
+    "divinesouls:divine_heart",
+    "divinesouls:mana_crystal",
+    "divinesouls:astral_star"
+  ]
+}
