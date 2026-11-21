@@ -22,6 +22,7 @@ object ModCreativeModeTabs {
             .displayItems { _, output ->
                 output.accept(ModItems.WASP_STINGER.get())
                 output.accept(ModItems.ICE_CORE.get())
+                output.accept(ModItems.LIVING_BARK.get())
                 output.accept(ModItems.WITHER_BONE.get())
                 output.accept(ModItems.NETHER_ESSENCE.get())
                 output.accept(ModItems.END_WOOD_STICK.get())
@@ -45,8 +46,6 @@ object ModCreativeModeTabs {
             .title(Component.translatable("itemGroup.divinesouls.weapons"))
             .displayItems { _, output ->
                 output.accept(ModWeapons.SPIKED_STONE_CLUB.get())
-                output.accept(ModWeapons.POISON_THROWING_DAGGER.get())
-                output.accept(ModWeapons.FROST_STAFF.get())
                 output.accept(ModWeapons.WITHER_MACE.get())
                 output.accept(ModWeapons.END_CRYSTAL_SWORD.get())
                 output.accept(ModWeapons.END_CRYSTAL_PICKAXE.get())
@@ -54,8 +53,20 @@ object ModCreativeModeTabs {
                 output.accept(ModWeapons.END_CRYSTAL_SHOVEL.get())
                 output.accept(ModWeapons.END_CRYSTAL_HOE.get())
                 output.accept(ModWeapons.END_CRYSTAL_SHIELD.get())
+                output.accept(ModWeapons.FROST_STAFF.get())
+                output.accept(ModWeapons.END_STAFF.get())
+                output.accept(ModWeapons.POISON_THROWING_DAGGER.get())
                 output.accept(ModItems.FIRE_BOW.get())
                 output.accept(ModItems.INFERNAL_CORE.get())
+                // Стрелы маны (I и II)
+                output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
+                    net.minecraft.world.item.Items.TIPPED_ARROW,
+                    ru.rlyqaz.divinesouls.potion.ModPotions.MANA_POTION
+                ))
+                output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
+                    net.minecraft.world.item.Items.TIPPED_ARROW,
+                    ru.rlyqaz.divinesouls.potion.ModPotions.STRONG_MANA_POTION
+                ))
             }
             .build()
     })
@@ -86,6 +97,7 @@ object ModCreativeModeTabs {
                 output.accept(ModItems.GIANT_WASP_SPAWN_EGG.get())
                 output.accept(ModItems.JUNGLE_SPIDER_SPAWN_EGG.get())
                 output.accept(ModItems.ICE_ELEMENTAL_SPAWN_EGG.get())
+                output.accept(ModItems.FOREST_ENT_SPAWN_EGG.get())
                 output.accept(ModItems.SORROW_WRAITH_SPAWN_EGG.get())
                 output.accept(ModItems.SWAMP_SPIRIT_SPAWN_EGG.get())
                 output.accept(ModItems.TWIN_WITHER_SKELETON_SPAWN_EGG.get())
@@ -118,6 +130,11 @@ object ModCreativeModeTabs {
             .displayItems { _, output ->
                 output.accept(ModItems.ANCIENT_RUNE.get()) // Руна уехала сюда
                 output.accept(ModItems.WITHER_CORE.get())
+                output.accept(ModItems.LIFE_CRYSTAL.get())
+                output.accept(ModItems.LIFE_FRUIT.get())
+                output.accept(ModItems.DIVINE_HEART.get())
+                output.accept(ModItems.MANA_CRYSTAL.get())
+                output.accept(ModItems.ASTRAL_STAR.get())
             }
             .build()
     })
@@ -129,6 +146,33 @@ object ModCreativeModeTabs {
             .displayItems { _, output ->
                 output.accept(ModItems.RAW_CRAB_MEAT.get())
                 output.accept(ModItems.COOKED_CRAB_MEAT.get())
+                // Обычные зелья маны (I и II)
+                output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
+                    net.minecraft.world.item.Items.POTION,
+                    ru.rlyqaz.divinesouls.potion.ModPotions.MANA_POTION
+                ))
+                output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
+                    net.minecraft.world.item.Items.POTION,
+                    ru.rlyqaz.divinesouls.potion.ModPotions.STRONG_MANA_POTION
+                ))
+                // Взрывные зелья маны (I и II)
+                output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
+                    net.minecraft.world.item.Items.SPLASH_POTION,
+                    ru.rlyqaz.divinesouls.potion.ModPotions.MANA_POTION
+                ))
+                output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
+                    net.minecraft.world.item.Items.SPLASH_POTION,
+                    ru.rlyqaz.divinesouls.potion.ModPotions.STRONG_MANA_POTION
+                ))
+                // Туманные зелья маны (I и II)
+                output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
+                    net.minecraft.world.item.Items.LINGERING_POTION,
+                    ru.rlyqaz.divinesouls.potion.ModPotions.MANA_POTION
+                ))
+                output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
+                    net.minecraft.world.item.Items.LINGERING_POTION,
+                    ru.rlyqaz.divinesouls.potion.ModPotions.STRONG_MANA_POTION
+                ))
             }
             .build()
     })

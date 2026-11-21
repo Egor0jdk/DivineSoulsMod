@@ -34,6 +34,8 @@ object ModSounds {
     val ICE_ELEMENTAL_DEATH: DeferredHolder<SoundEvent, SoundEvent> = registerSound("ice_elemental_death")
     val ICE_ELEMENTAL_SHOOT: DeferredHolder<SoundEvent, SoundEvent> = registerSound("ice_elemental_shoot")
 
+    val END_STAFF_SHOOT: Supplier<SoundEvent> = registerSound("end_staff_shoot")
+
     fun register(eventBus: IEventBus) {
         REGISTRY.register(eventBus)
     }

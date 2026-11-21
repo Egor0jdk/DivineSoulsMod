@@ -137,6 +137,12 @@ object ModWeapons {
         )
     }
 
+    val END_STAFF: Supplier<Item> = registerWeapon("end_staff") {
+        ru.rlyqaz.divinesouls.item.custom.EndStaffItem(
+            Item.Properties().durability(750).rarity(Rarity.RARE)
+        )
+    }
+
     // Хелпер для чистой регистрации
     private fun <T : Item> registerWeapon(name: String, itemSupplier: () -> T): Supplier<T> {
         return REGISTRY.register(name, itemSupplier)

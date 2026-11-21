@@ -12,14 +12,16 @@ import java.util.function.Supplier
 data class ManaData(
     val mana: Int = 100,
     val maxMana: Int = 100,
-    val regenDelayTicks: Int = 0
+    val regenDelayTicks: Int = 0,
+    val bonusHealth: Float = 0.0f
 ) {
     companion object {
         val CODEC: Codec<ManaData> = RecordCodecBuilder.create { instance ->
             instance.group(
                 Codec.INT.fieldOf("mana").forGetter { it.mana },
                 Codec.INT.fieldOf("maxMana").forGetter { it.maxMana },
-                Codec.INT.fieldOf("regenDelayTicks").forGetter { it.regenDelayTicks }
+                Codec.INT.fieldOf("regenDelayTicks").forGetter { it.regenDelayTicks },
+                Codec.FLOAT.optionalFieldOf("bonusHealth", 0.0f).forGetter { it.bonusHealth }
             ).apply(instance, ::ManaData)
         }
     }
@@ -32,7 +34,7 @@ object ModAttachments {
     val MANA: Supplier<AttachmentType<ManaData>> = ATTACHMENT_TYPES.register("mana", Supplier {
         AttachmentType.builder(Supplier { ManaData() })
             .serialize(ManaData.CODEC)
-            .copyOnDeath() // Максимум маны сохраняется после смерти!
+            .copyOnDeath()
             .build()
     })
 

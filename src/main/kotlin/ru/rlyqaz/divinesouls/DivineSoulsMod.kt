@@ -74,6 +74,8 @@ object DivineSoulsMod {
         ru.rlyqaz.divinesouls.mana.ModAttachments.register(modEventBus)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.mana.ManaManager)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.FrostStaffItem.Companion)
+        ru.rlyqaz.divinesouls.potion.ModPotions.register(modEventBus)
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.potion.ModPotions)
 
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.item.custom.EndCrystalEquipmentHandler)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WardenBalanceHandler)
@@ -88,6 +90,21 @@ object DivineSoulsMod {
 
         if (net.neoforged.fml.loading.FMLEnvironment.dist.isClient) {
             modEventBus.addListener(ru.rlyqaz.divinesouls.mana.ManaHudOverlay::registerGuiLayer)
+        }
+
+        modEventBus.addListener { event: net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent ->
+            if (event.tabKey.location().namespace == "minecraft") {
+                val allStacks = event.parentEntries + event.searchEntries
+                val toRemove = allStacks.filter { stack ->
+                    val contents = stack.get(net.minecraft.core.component.DataComponents.POTION_CONTENTS)
+                    val potionHolder = contents?.potion()?.orElse(null)
+                    potionHolder == ru.rlyqaz.divinesouls.potion.ModPotions.MANA_POTION ||
+                            potionHolder == ru.rlyqaz.divinesouls.potion.ModPotions.STRONG_MANA_POTION
+                }
+                toRemove.forEach {
+                    event.remove(it, net.minecraft.world.item.CreativeModeTab.TabVisibility.PARENT_TAB_ONLY)
+                }
+            }
         }
 
         // Клиентский фикс анимации 2D-лука (ItemProperties) под 1.21.1

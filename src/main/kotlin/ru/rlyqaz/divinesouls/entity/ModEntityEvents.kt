@@ -25,6 +25,8 @@ import ru.rlyqaz.divinesouls.entity.client.IceElementalModel
 import ru.rlyqaz.divinesouls.entity.client.IceElementalRenderer
 import ru.rlyqaz.divinesouls.entity.client.IceShardRenderer
 import ru.rlyqaz.divinesouls.entity.client.JungleSpiderRenderer
+import ru.rlyqaz.divinesouls.entity.client.ForestEntModel
+import ru.rlyqaz.divinesouls.entity.client.ForestEntRenderer
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
@@ -35,6 +37,7 @@ import ru.rlyqaz.divinesouls.entity.custom.SwampSpiritEntity
 import ru.rlyqaz.divinesouls.entity.custom.GiantWaspEntity
 import ru.rlyqaz.divinesouls.entity.custom.IceElementalEntity
 import ru.rlyqaz.divinesouls.entity.custom.JungleSpiderEntity
+import ru.rlyqaz.divinesouls.entity.custom.ForestEntEntity
 
 object ModEntityEvents {
 
@@ -51,6 +54,7 @@ object ModEntityEvents {
             event.put(ModEntities.GIANT_WASP.get(), GiantWaspEntity.createAttributes().build())
             event.put(ModEntities.ICE_ELEMENTAL.get(), IceElementalEntity.createAttributes().build())
             event.put(ModEntities.JUNGLE_SPIDER.get(), JungleSpiderEntity.createAttributes().build())
+            event.put(ModEntities.FOREST_ENT.get(), ForestEntEntity.createAttributes().build())
         }
 
         // 2. Рендереры мобов
@@ -66,6 +70,7 @@ object ModEntityEvents {
             event.registerEntityRenderer(ModEntities.ICE_ELEMENTAL.get(), ::IceElementalRenderer)
             event.registerEntityRenderer(ModEntities.ICE_SHARD.get(), ::IceShardRenderer)
             event.registerEntityRenderer(ModEntities.JUNGLE_SPIDER.get(), ::JungleSpiderRenderer)
+            event.registerEntityRenderer(ModEntities.FOREST_ENT.get(), ::ForestEntRenderer)
         }
 
         // 3. 3D-слои моделей
@@ -90,6 +95,9 @@ object ModEntityEvents {
             }
             event.registerLayerDefinition(IceElementalModel.LAYER_LOCATION) {
                 IceElementalModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(ForestEntModel.LAYER_LOCATION) {
+                ForestEntModel.createBodyLayer()
             }
         }
 
@@ -149,6 +157,13 @@ object ModEntityEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 JungleSpiderEntity::checkJungleSpiderSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.FOREST_ENT.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                ForestEntEntity::checkForestEntSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
             )
         }

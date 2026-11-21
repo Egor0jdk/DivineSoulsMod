@@ -80,11 +80,11 @@ object EndCrystalEquipmentHandler {
                 if (attackStrength < 0.5f) return
 
                 // Шанс и урон масштабируются от заполненности шкалы (на 100% шкалы = 30% шанс и 5.0 урона)
-                val procChance = 0.30f * attackStrength
+                val procChance = 0.35f * attackStrength
                 if (player.random.nextFloat() < procChance) {
                     val serverLevel = level as ServerLevel
                     val pos = target.blockPosition()
-                    val bonusDamage = 5.0f * attackStrength
+                    val bonusDamage = 5.5f * attackStrength
 
                     target.hurt(serverLevel.damageSources().magic(), bonusDamage)
 

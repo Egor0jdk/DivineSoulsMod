@@ -26,10 +26,10 @@ object ModArmorMaterials {
     val END_CRYSTAL: Holder<ArmorMaterial> = REGISTRY.register("end_crystal", Supplier<ArmorMaterial> {
         // Создаем мапы прочности и защиты вручную без абстрактных хелперов, чтобы Котлин не терял типы
         val durabilityMap = EnumMap<ArmorItem.Type, Int>(ArmorItem.Type::class.java).apply {
-            put(ArmorItem.Type.BOOTS, 13 * 45)
-            put(ArmorItem.Type.LEGGINGS, 15 * 45)
-            put(ArmorItem.Type.CHESTPLATE, 16 * 45)
-            put(ArmorItem.Type.HELMET, 11 * 45)
+            put(ArmorItem.Type.BOOTS, 13 * 52)
+            put(ArmorItem.Type.LEGGINGS, 15 * 52)
+            put(ArmorItem.Type.CHESTPLATE, 16 * 52)
+            put(ArmorItem.Type.HELMET, 11 * 52)
         }
 
         val defenseMap = EnumMap<ArmorItem.Type, Int>(ArmorItem.Type::class.java).apply {
@@ -52,8 +52,8 @@ object ModArmorMaterials {
             SoundEvents.ARMOR_EQUIP_NETHERITE,
             Supplier<Ingredient> { Ingredient.of(ModItems.END_CRYSTAL_GEM.get()) },
             layers,
-            4.0f,
-            0.2f // Твои 20% антиотбрасывания по канону
+            4.5f,
+            0.225f // Твои 20% антиотбрасывания по канону
         )
     })
 

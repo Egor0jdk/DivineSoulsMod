@@ -32,31 +32,29 @@ object ManaHudOverlay {
         val holdsMagicWeapon = player.mainHandItem.item is BaseMagicStaffItem ||
                 player.offhandItem.item is BaseMagicStaffItem
 
-        // Показываем шкалу, когда игрок держит магическое оружие или когда мана не полная
         if (!holdsMagicWeapon && data.mana == data.maxMana) return
 
         val totalStars = (data.maxMana / 10).coerceAtLeast(1)
         val screenWidth = guiGraphics.guiWidth()
         val screenHeight = guiGraphics.guiHeight()
 
-        // Правый нижний угол экрана (аккуратно у правого края, не перекрывая хотбар)
         val rightMargin = screenWidth - 10
-        val startY = screenHeight - 18
+        val baseY = screenHeight - 18
 
         for (i in 0 until totalStars) {
-            // Считаем справа налево (как иконки голода и брони в Minecraft)
-            val x = rightMargin - (i + 1) * 9
+            val col = i % 10
+            val row = i / 10
+            val x = rightMargin - (col + 1) * 9
+            val y = baseY - row * 10
             val starThreshold = i * 10
 
-            // 1. Фон — пустая звёздочка (9x9)
-            guiGraphics.blit(STAR_EMPTY, x, startY, 0f, 0f, 9, 9, 9, 9)
+            guiGraphics.blit(STAR_EMPTY, x, y, 0f, 0f, 9, 9, 9, 9)
 
-            // 2. Заполнение — полная или половинка звёздочки
             val diff = data.mana - starThreshold
             if (diff.compareTo(10) != -1) {
-                guiGraphics.blit(STAR_FULL, x, startY, 0f, 0f, 9, 9, 9, 9)
+                guiGraphics.blit(STAR_FULL, x, y, 0f, 0f, 9, 9, 9, 9)
             } else if (diff.compareTo(5) != -1) {
-                guiGraphics.blit(STAR_HALF, x, startY, 0f, 0f, 9, 9, 9, 9)
+                guiGraphics.blit(STAR_HALF, x, y, 0f, 0f, 9, 9, 9, 9)
             }
         }
     }

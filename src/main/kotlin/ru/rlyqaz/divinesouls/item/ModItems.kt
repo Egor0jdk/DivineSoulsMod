@@ -236,6 +236,61 @@ object ModItems {
         )
     }
 
+    val LIFE_CRYSTAL: Supplier<Item> = registerItem("life_crystal") {
+        ru.rlyqaz.divinesouls.item.custom.HealthUpgradeItem(
+            Item.Properties().stacksTo(16).rarity(net.minecraft.world.item.Rarity.RARE),
+            healthGain = 2.0f,
+            maxBonusHealthCap = 10.0f
+        )
+    }
+
+    val LIFE_FRUIT: Supplier<Item> = registerItem("life_fruit") {
+        ru.rlyqaz.divinesouls.item.custom.HealthUpgradeItem(
+            Item.Properties().stacksTo(16).rarity(net.minecraft.world.item.Rarity.RARE),
+            healthGain = 2.0f,
+            maxBonusHealthCap = 20.0f
+        )
+    }
+
+    val DIVINE_HEART: Supplier<Item> = registerItem("divine_heart") {
+        ru.rlyqaz.divinesouls.item.custom.HealthUpgradeItem(
+            Item.Properties().stacksTo(16).rarity(net.minecraft.world.item.Rarity.EPIC),
+            healthGain = 4.0f,
+            maxBonusHealthCap = 40.0f
+        )
+    }
+
+    val MANA_CRYSTAL: Supplier<Item> = registerItem("mana_crystal") {
+        ru.rlyqaz.divinesouls.item.custom.ManaUpgradeItem(
+            Item.Properties().stacksTo(16).rarity(net.minecraft.world.item.Rarity.RARE),
+            manaGain = 10,
+            maxManaCap = 150
+        )
+    }
+
+    val ASTRAL_STAR: Supplier<Item> = registerItem("astral_star") {
+        ru.rlyqaz.divinesouls.item.custom.ManaUpgradeItem(
+            Item.Properties().stacksTo(16).rarity(net.minecraft.world.item.Rarity.EPIC),
+            manaGain = 10,
+            maxManaCap = 200
+        )
+    }
+
+    val LIVING_BARK: Supplier<Item> = registerItem("living_bark") {
+        ru.rlyqaz.divinesouls.item.custom.LivingBarkItem(
+            Item.Properties().stacksTo(1).rarity(net.minecraft.world.item.Rarity.UNCOMMON)
+        )
+    }
+
+    val FOREST_ENT_SPAWN_EGG: Supplier<Item> = registerItem("forest_ent_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ru.rlyqaz.divinesouls.entity.ModEntities.FOREST_ENT,
+            0x4A3219,
+            0x3B7A28,
+            Item.Properties()
+        )
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }

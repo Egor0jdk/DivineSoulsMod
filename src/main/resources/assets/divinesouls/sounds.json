@@ -72,5 +72,14 @@
   "ice_elemental_shoot": {
     "category": "hostile",
     "sounds": [ "divinesouls:mob/ice_elemental/shoot" ]
+  },
+  "end_staff_shoot": {
+    "category": "player",
+    "sounds": [
+      {
+        "name": "divinesouls:item/end_staff_shoot",
+        "volume": 1.0
+      }
+    ]
   }
 }
