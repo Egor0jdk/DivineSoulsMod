@@ -8,8 +8,6 @@ import net.minecraft.sounds.SoundSource
 import net.minecraft.stats.Stats
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResultHolder
-import net.minecraft.world.effect.MobEffectInstance
-import net.minecraft.world.effect.MobEffects
 import net.minecraft.world.entity.EquipmentSlotGroup
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.ai.attributes.AttributeModifier
@@ -76,7 +74,6 @@ class LightSpearItem(properties: Properties) : SwordItem(
     override fun use(level: Level, player: Player, hand: InteractionHand): InteractionResultHolder<ItemStack> {
         val stack = player.getItemInHand(hand)
 
-        // Включаем состояние выпада (копьё мгновенно выставляется остриём вперёд)
         player.startUsingItem(hand)
         player.cooldowns.addCooldown(this, 50)
 
@@ -107,7 +104,6 @@ class LightSpearItem(properties: Properties) : SwordItem(
             for (target in targets) {
                 target.hurt(serverLevel.damageSources().playerAttack(player), 11.0f)
                 target.knockback(0.55, -look.x, -look.z)
-                target.addEffect(MobEffectInstance(MobEffects.GLOWING, 80, 0), player)
             }
 
             serverLevel.playSound(
@@ -125,10 +121,16 @@ class LightSpearItem(properties: Properties) : SwordItem(
 
     override fun onUseTick(level: Level, livingEntity: LivingEntity, stack: ItemStack, remainingUseDuration: Int) {
         val elapsed = getUseDuration(stack, livingEntity) - remainingUseDuration
-        // Через 8 тиков (0.4 сек, конец рывка) мгновенно возвращаем копьё в обычное положение
         if (elapsed >= 16) {
             livingEntity.stopUsingItem()
         }
+    }
+
+    override fun hurtEnemy(stack: ItemStack, target: LivingEntity, attacker: LivingEntity): Boolean {
+        if (attacker.isUsingItem && attacker.useItem == stack) {
+            attacker.stopUsingItem()
+        }
+        return super.hurtEnemy(stack, target, attacker)
     }
 
     override fun isValidRepairItem(toRepair: ItemStack, repair: ItemStack): Boolean {

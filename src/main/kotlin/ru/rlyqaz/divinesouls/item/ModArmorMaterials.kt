@@ -24,14 +24,6 @@ object ModArmorMaterials {
 
     // Твой хардкорный кристальный сет Края
     val END_CRYSTAL: Holder<ArmorMaterial> = REGISTRY.register("end_crystal", Supplier<ArmorMaterial> {
-        // Создаем мапы прочности и защиты вручную без абстрактных хелперов, чтобы Котлин не терял типы
-        val durabilityMap = EnumMap<ArmorItem.Type, Int>(ArmorItem.Type::class.java).apply {
-            put(ArmorItem.Type.BOOTS, 13 * 52)
-            put(ArmorItem.Type.LEGGINGS, 15 * 52)
-            put(ArmorItem.Type.CHESTPLATE, 16 * 52)
-            put(ArmorItem.Type.HELMET, 11 * 52)
-        }
-
         val defenseMap = EnumMap<ArmorItem.Type, Int>(ArmorItem.Type::class.java).apply {
             put(ArmorItem.Type.BOOTS, 4)
             put(ArmorItem.Type.LEGGINGS, 7)
@@ -39,9 +31,7 @@ object ModArmorMaterials {
             put(ArmorItem.Type.HELMET, 4)
         }
 
-        // ТОТ САМЫЙ РАБОЧИЙ ФИКС: Передаем 3 аргумента в Layer!
-        // "" (пустой суффикс) и true чинят отображение на сервере и не ломают типы Котлина.
-        val layers = listOf<ArmorMaterial.Layer>(
+        val layers = listOf(
             ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, "end_crystal"), "", true)
         )
 
@@ -53,7 +43,7 @@ object ModArmorMaterials {
             Supplier<Ingredient> { Ingredient.of(ModItems.END_CRYSTAL_GEM.get()) },
             layers,
             4.5f,
-            0.225f // Твои 20% антиотбрасывания по канону
+            0.225f
         )
     })
 

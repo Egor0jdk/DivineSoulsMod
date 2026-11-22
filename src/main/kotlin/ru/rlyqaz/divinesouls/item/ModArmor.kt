@@ -17,24 +17,40 @@ import java.util.function.Supplier
 object ModArmor {
     private val REGISTRY: DeferredRegister.Items = DivineSoulsMod.ITEMS
 
-    // Шлем
+    // Шлем (11 * 52 = 572 прочности)
     val END_CRYSTAL_HELMET: Supplier<Item> = registerArmor("end_crystal_helmet") {
-        EndCrystalArmorItem(ModArmorMaterials.END_CRYSTAL, ArmorItem.Type.HELMET, Item.Properties())
+        EndCrystalArmorItem(
+            ModArmorMaterials.END_CRYSTAL,
+            ArmorItem.Type.HELMET,
+            Item.Properties().durability(ArmorItem.Type.HELMET.getDurability(52))
+        )
     }
 
-    // Нагрудник
+    // Нагрудник (16 * 52 = 832 прочности)
     val END_CRYSTAL_CHESTPLATE: Supplier<Item> = registerArmor("end_crystal_chestplate") {
-        EndCrystalArmorItem(ModArmorMaterials.END_CRYSTAL, ArmorItem.Type.CHESTPLATE, Item.Properties())
+        EndCrystalArmorItem(
+            ModArmorMaterials.END_CRYSTAL,
+            ArmorItem.Type.CHESTPLATE,
+            Item.Properties().durability(ArmorItem.Type.CHESTPLATE.getDurability(52))
+        )
     }
 
-    // Поножи
+    // Поножи (15 * 52 = 780 прочности)
     val END_CRYSTAL_LEGGINGS: Supplier<Item> = registerArmor("end_crystal_leggings") {
-        EndCrystalArmorItem(ModArmorMaterials.END_CRYSTAL, ArmorItem.Type.LEGGINGS, Item.Properties())
+        EndCrystalArmorItem(
+            ModArmorMaterials.END_CRYSTAL,
+            ArmorItem.Type.LEGGINGS,
+            Item.Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(52))
+        )
     }
 
-    // Ботинки (Зафиксировал имя поля под ID предмета)
+    // Ботинки (13 * 52 = 676 прочности)
     val END_CRYSTAL_BOOTS: Supplier<Item> = registerArmor("end_crystal_boots") {
-        EndCrystalArmorItem(ModArmorMaterials.END_CRYSTAL, ArmorItem.Type.BOOTS, Item.Properties())
+        EndCrystalArmorItem(
+            ModArmorMaterials.END_CRYSTAL,
+            ArmorItem.Type.BOOTS,
+            Item.Properties().durability(ArmorItem.Type.BOOTS.getDurability(52))
+        )
     }
 
     private fun <T : Item> registerArmor(name: String, itemSupplier: () -> T): Supplier<T> {

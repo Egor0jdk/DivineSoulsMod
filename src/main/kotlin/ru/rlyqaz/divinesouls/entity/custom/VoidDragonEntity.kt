@@ -338,13 +338,20 @@ class VoidDragonEntity(
             val mouthPos = Vec3(dragon.x, dragon.eyeY - 0.1, dragon.z).add(dir.scale(0.9))
             val maxRange = 9.5
 
-            for (step in 1..10) {
-                val dist = step * 0.9
-                val spread = step * 0.11
-                val p = mouthPos.add(dir.scale(dist))
-                level.sendParticles(ParticleTypes.DRAGON_BREATH, p.x, p.y, p.z, 2, spread, spread, spread, 0.02)
-                if (step % 2 == 0) {
-                    level.sendParticles(ParticleTypes.PORTAL, p.x, p.y, p.z, 1, spread, spread, spread, 0.05)
+            // Выпускаем направленную струю из пасти вперёд (при count = 0 параметры xDist/yDist/zDist задают вектор скорости!)
+            for (i in 0 until 8) {
+                val spreadX = (dragon.random.nextDouble() - 0.5) * 0.28
+                val spreadY = (dragon.random.nextDouble() - 0.5) * 0.28
+                val spreadZ = (dragon.random.nextDouble() - 0.5) * 0.28
+                val speed = 0.55 + dragon.random.nextDouble() * 0.35
+
+                val vx = (dir.x + spreadX) * speed
+                val vy = (dir.y + spreadY) * speed
+                val vz = (dir.z + spreadZ) * speed
+
+                level.sendParticles(ParticleTypes.DRAGON_BREATH, mouthPos.x, mouthPos.y, mouthPos.z, 0, vx, vy, vz, 1.0)
+                if (i % 2 == 0) {
+                    level.sendParticles(ParticleTypes.PORTAL, mouthPos.x, mouthPos.y, mouthPos.z, 0, vx * 1.15, vy * 1.15, vz * 1.15, 1.0)
                 }
             }
 
@@ -370,31 +377,56 @@ class VoidDragonEntity(
     }
 
     /**
-     * Патрулирование на большой высоте (7–16 блоков над поверхностью острова)
+     * Непрерывное патрулирование на высоте 7–16 блоков над поверхностью островов
      */
     private class HighAltitudeHoverGoal(private val dragon: VoidDragonEntity) : Goal() {
+        private var waypoint = Vec3.ZERO
+        private var repathTimer = 0
+
         init {
             flags = EnumSet.of(Flag.MOVE)
         }
 
-        override fun canUse(): Boolean {
-            return dragon.target == null && (!dragon.moveControl.hasWanted() || dragon.random.nextInt(40) == 0)
-        }
+        override fun canUse(): Boolean = dragon.target == null
+
+        override fun canContinueToUse(): Boolean = dragon.target == null
 
         override fun start() {
-            val level = dragon.level()
-            val targetX = dragon.x + (dragon.random.nextDouble() - 0.5) * 24.0
-            val targetZ = dragon.z + (dragon.random.nextDouble() - 0.5) * 24.0
-            val groundY = level.getHeight(
-                net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                targetX.toInt(),
-                targetZ.toInt()
-            )
-            // Если под точкой есть остров (groundY > 10), летим на 7..16 блоков выше поверхности; иначе держим Y = 72..88
-            val baseHeight = if (groundY.compareTo(10) == 1) groundY.toDouble() else 65.0
-            val desiredY = baseHeight + 7.0 + dragon.random.nextDouble() * 9.0
+            pickNewWaypoint()
+        }
 
-            dragon.moveControl.setWantedPosition(targetX, desiredY, targetZ, 1.0)
+        override fun tick() {
+            if (repathTimer != 0) {
+                repathTimer--
+            }
+
+            if (repathTimer == 0 || dragon.position().distanceToSqr(waypoint).compareTo(9.0) == -1 || dragon.horizontalCollision) {
+                pickNewWaypoint()
+            }
+
+            dragon.moveControl.setWantedPosition(waypoint.x, waypoint.y, waypoint.z, 1.1)
+        }
+
+        private fun pickNewWaypoint() {
+            repathTimer = 70 + dragon.random.nextInt(50)
+            val level = dragon.level()
+
+            // Ищем точку над сушей (4 попытки), чтобы дракон красиво патрулировал над островами
+            for (attempt in 0 until 4) {
+                val candX = dragon.x + (dragon.random.nextDouble() - 0.5) * 32.0
+                val candZ = dragon.z + (dragon.random.nextDouble() - 0.5) * 32.0
+                val groundY = level.getHeight(
+                    net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    candX.toInt(),
+                    candZ.toInt()
+                )
+                if (groundY.compareTo(10) == 1 || attempt == 3) {
+                    val baseY = if (groundY.compareTo(10) == 1) groundY.toDouble() else 66.0
+                    val desiredY = baseY + 7.0 + dragon.random.nextDouble() * 9.0
+                    waypoint = Vec3(candX, desiredY, candZ)
+                    return
+                }
+            }
         }
     }
 }
