@@ -43,6 +43,7 @@
   "item.divinesouls.sculk_chitin": "Скалковый хитин",
   "item.divinesouls.resonant_node": "Резонирующий узел",
   "item.divinesouls.abyssal_heart": "Сердце Бездны",
+  "item.divinesouls.unicorn_horn": "Рог единорога",
 
   "item.divinesouls.raw_crab_meat": "Сырое крабовое мясо",
   "item.divinesouls.cooked_crab_meat": "Жареное крабовое мясо",
@@ -64,6 +65,7 @@
   "item.divinesouls.frost_staff": "Ледяной посох",
   "item.divinesouls.end_staff": "Посох Энда",
   "item.minecraft.tipped_arrow.effect.mana_potion": "Стрела маны",
+  "item.divinesouls.light_spear": "Световое копьё",
 
   "item.divinesouls.end_crystal_helmet": "Шлем из самоцвета Энда",
   "item.divinesouls.end_crystal_chestplate": "Нагрудник из самоцвета Энда",
@@ -93,6 +95,10 @@
   "entity.divinesouls.forest_ent": "Лесной энт",
   "entity.divinesouls.sculk_crawler": "Скалковый ползун",
   "entity.divinesouls.sculk_stalker": "Скалковый охотник",
+  "entity.divinesouls.unicorn": "Единорог",
+  "entity.divinesouls.astral_wanderer": "Астральный скиталец",
+  "entity.divinesouls.lava_golem": "Лавовый голем",
+  "entity.divinesouls.purpur_guardian": "Пурпуровый страж",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Яйцо призыва Духа Скорби",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Яйцо призыва Близнецов Иссушения",
@@ -107,6 +113,10 @@
   "item.divinesouls.void_dragon_spawn_egg": "Яйцо призыва дракона Пустоты",
   "item.divinesouls.sculk_crawler_spawn_egg": "Яйцо призыва скалкового ползуна",
   "item.divinesouls.sculk_stalker_spawn_egg": "Яйцо призыва скалкового охотника",
+  "item.divinesouls.unicorn_spawn_egg": "Яйцо призыва единорога",
+  "item.divinesouls.astral_wanderer_spawn_egg": "Яйцо призыва астрального скитальца",
+  "item.divinesouls.lava_golem_spawn_egg": "Яйцо призыва лавового голема",
+  "item.divinesouls.purpur_guardian_spawn_egg": "Яйцо призыва пурпурового стража",
 
   "advancements.divinesouls.kill_warden.title": "Свержение Привратника",
   "advancements.divinesouls.kill_warden.description": "Одолейте Хранителя глубин и соберите его душу для создания Древней Руны",

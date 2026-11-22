@@ -143,6 +143,15 @@ object ModWeapons {
         )
     }
 
+    // Световое копьё (из Рога единорога, +1.5 блока дальности атаки и световой выпад на ПКМ)
+    val LIGHT_SPEAR: Supplier<Item> = registerWeapon("light_spear") {
+        ru.rlyqaz.divinesouls.item.custom.LightSpearItem(
+            Item.Properties()
+                .durability(650)
+                .rarity(Rarity.RARE)
+        )
+    }
+
     // Хелпер для чистой регистрации
     private fun <T : Item> registerWeapon(name: String, itemSupplier: () -> T): Supplier<T> {
         return REGISTRY.register(name, itemSupplier)

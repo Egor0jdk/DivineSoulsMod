@@ -1,0 +1,14 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": [
+    "minecraft:nether_wastes",
+    "minecraft:crimson_forest",
+    "minecraft:warped_forest"
+  ],
+  "spawners": {
+    "type": "divinesouls:lava_golem",
+    "weight": 28,
+    "minCount": 1,
+    "maxCount": 1
+  }
+}

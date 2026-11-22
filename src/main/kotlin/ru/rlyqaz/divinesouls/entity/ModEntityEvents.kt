@@ -33,6 +33,14 @@ import ru.rlyqaz.divinesouls.entity.client.SculkCrawlerModel
 import ru.rlyqaz.divinesouls.entity.client.SculkCrawlerRenderer
 import ru.rlyqaz.divinesouls.entity.client.SculkStalkerModel
 import ru.rlyqaz.divinesouls.entity.client.SculkStalkerRenderer
+import ru.rlyqaz.divinesouls.entity.client.UnicornModel
+import ru.rlyqaz.divinesouls.entity.client.UnicornRenderer
+import ru.rlyqaz.divinesouls.entity.client.AstralWandererModel
+import ru.rlyqaz.divinesouls.entity.client.AstralWandererRenderer
+import ru.rlyqaz.divinesouls.entity.client.LavaGolemModel
+import ru.rlyqaz.divinesouls.entity.client.LavaGolemRenderer
+import ru.rlyqaz.divinesouls.entity.client.PurpurGuardianModel
+import ru.rlyqaz.divinesouls.entity.client.PurpurGuardianRenderer
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
@@ -46,6 +54,10 @@ import ru.rlyqaz.divinesouls.entity.custom.JungleSpiderEntity
 import ru.rlyqaz.divinesouls.entity.custom.ForestEntEntity
 import ru.rlyqaz.divinesouls.entity.custom.SculkCrawlerEntity
 import ru.rlyqaz.divinesouls.entity.custom.SculkStalkerEntity
+import ru.rlyqaz.divinesouls.entity.custom.UnicornEntity
+import ru.rlyqaz.divinesouls.entity.custom.AstralWandererEntity
+import ru.rlyqaz.divinesouls.entity.custom.LavaGolemEntity
+import ru.rlyqaz.divinesouls.entity.custom.PurpurGuardianEntity
 
 object ModEntityEvents {
 
@@ -65,6 +77,10 @@ object ModEntityEvents {
             event.put(ModEntities.FOREST_ENT.get(), ForestEntEntity.createAttributes().build())
             event.put(ModEntities.SCULK_CRAWLER.get(), SculkCrawlerEntity.createAttributes().build())
             event.put(ModEntities.SCULK_STALKER.get(), SculkStalkerEntity.createAttributes().build())
+            event.put(ModEntities.UNICORN.get(), UnicornEntity.createAttributes().build())
+            event.put(ModEntities.ASTRAL_WANDERER.get(), AstralWandererEntity.createAttributes().build())
+            event.put(ModEntities.LAVA_GOLEM.get(), LavaGolemEntity.createAttributes().build())
+            event.put(ModEntities.PURPUR_GUARDIAN.get(), PurpurGuardianEntity.createAttributes().build())
         }
 
         // 2. Рендереры мобов
@@ -84,6 +100,10 @@ object ModEntityEvents {
             event.registerEntityRenderer(ModEntities.VOID_DRAGON.get(), ::VoidDragonRenderer)
             event.registerEntityRenderer(ModEntities.SCULK_CRAWLER.get(), ::SculkCrawlerRenderer)
             event.registerEntityRenderer(ModEntities.SCULK_STALKER.get(), ::SculkStalkerRenderer)
+            event.registerEntityRenderer(ModEntities.UNICORN.get(), ::UnicornRenderer)
+            event.registerEntityRenderer(ModEntities.ASTRAL_WANDERER.get(), ::AstralWandererRenderer)
+            event.registerEntityRenderer(ModEntities.LAVA_GOLEM.get(), ::LavaGolemRenderer)
+            event.registerEntityRenderer(ModEntities.PURPUR_GUARDIAN.get(), ::PurpurGuardianRenderer)
         }
 
         // 3. 3D-слои моделей
@@ -120,6 +140,18 @@ object ModEntityEvents {
             }
             event.registerLayerDefinition(SculkStalkerModel.LAYER_LOCATION) {
                 SculkStalkerModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(UnicornModel.LAYER_LOCATION) {
+                UnicornModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(AstralWandererModel.LAYER_LOCATION) {
+                AstralWandererModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(LavaGolemModel.LAYER_LOCATION) {
+                LavaGolemModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(PurpurGuardianModel.LAYER_LOCATION) {
+                PurpurGuardianModel.createBodyLayer()
             }
         }
 
@@ -207,6 +239,27 @@ object ModEntityEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 SculkStalkerEntity::checkSculkStalkerSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.UNICORN.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                UnicornEntity::checkUnicornSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.ASTRAL_WANDERER.get(),
+                SpawnPlacementTypes.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                AstralWandererEntity::checkAstralWandererSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.LAVA_GOLEM.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                LavaGolemEntity::checkLavaGolemSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
             )
         }

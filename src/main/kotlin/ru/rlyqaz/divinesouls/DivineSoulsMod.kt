@@ -134,6 +134,12 @@ object DivineSoulsMod {
                     if (entity != null && entity.isUsingItem && entity.useItem == stack) 1.0f else 0.0f
                 }
 
+                net.minecraft.client.renderer.item.ItemProperties.register(
+                    ModWeapons.LIGHT_SPEAR.get(),
+                    net.minecraft.resources.ResourceLocation.withDefaultNamespace("thrusting")
+                ) { stack, _, entity, _ ->
+                    if (entity != null && entity.isUsingItem && entity.useItem == stack) 1.0f else 0.0f
+                }
             }
         }
 
@@ -168,6 +174,21 @@ object DivineSoulsMod {
                     }
                 },
                 ModWeapons.END_CRYSTAL_SHIELD.get()
+            )
+            event.registerItem(
+                object : net.neoforged.neoforge.client.extensions.common.IClientItemExtensions {
+                    override fun getArmPose(
+                        entityLiving: net.minecraft.world.entity.LivingEntity,
+                        hand: net.minecraft.world.InteractionHand,
+                        itemStack: net.minecraft.world.item.ItemStack
+                    ): net.minecraft.client.model.HumanoidModel.ArmPose? {
+                        if (entityLiving.isUsingItem && entityLiving.usedItemHand == hand) {
+                            return net.minecraft.client.model.HumanoidModel.ArmPose.CROSSBOW_HOLD
+                        }
+                        return null
+                    }
+                },
+                ModWeapons.LIGHT_SPEAR.get()
             )
         }
 

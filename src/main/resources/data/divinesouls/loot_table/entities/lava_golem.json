@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "divinesouls:nether_essence",
+          "functions": [
+            { "function": "minecraft:set_count", "count": 1 }
+          ]
+        }
+      ],
+      "conditions": [
+        { "condition": "minecraft:killed_by_player" },
+        {
+          "condition": "minecraft:random_chance_with_enchanted_bonus",
+          "unenchanted_chance": 0.10,
+          "enchanted_chance": {
+            "type": "minecraft:linear",
+            "base": 0.13,
+            "per_level_above_first": 0.03
+          },
+          "enchantment": "minecraft:looting"
+        }
+      ]
+    }
+  ]
+}

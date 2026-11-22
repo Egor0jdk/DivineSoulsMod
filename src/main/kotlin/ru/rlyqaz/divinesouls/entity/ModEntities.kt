@@ -21,6 +21,10 @@ import ru.rlyqaz.divinesouls.entity.custom.JungleSpiderEntity
 import ru.rlyqaz.divinesouls.entity.custom.ForestEntEntity
 import ru.rlyqaz.divinesouls.entity.custom.SculkCrawlerEntity
 import ru.rlyqaz.divinesouls.entity.custom.SculkStalkerEntity
+import ru.rlyqaz.divinesouls.entity.custom.UnicornEntity
+import ru.rlyqaz.divinesouls.entity.custom.AstralWandererEntity
+import ru.rlyqaz.divinesouls.entity.custom.LavaGolemEntity
+import ru.rlyqaz.divinesouls.entity.custom.PurpurGuardianEntity
 import java.util.function.Supplier
 
 /**
@@ -142,6 +146,35 @@ object ModEntities {
             .sized(0.85f, 1.95f)
             .clientTrackingRange(12)
             .build("sculk_stalker")
+    })
+
+    val UNICORN: Supplier<EntityType<UnicornEntity>> = REGISTRY.register("unicorn", Supplier {
+        EntityType.Builder.of(::UnicornEntity, MobCategory.MONSTER)
+            .sized(1.35f, 1.6f)
+            .clientTrackingRange(12)
+            .build("unicorn")
+    })
+
+    val ASTRAL_WANDERER: Supplier<EntityType<AstralWandererEntity>> = REGISTRY.register("astral_wanderer", Supplier {
+        EntityType.Builder.of(::AstralWandererEntity, MobCategory.MONSTER)
+            .sized(0.75f, 1.85f)
+            .clientTrackingRange(12)
+            .build("astral_wanderer")
+    })
+
+    val LAVA_GOLEM: Supplier<EntityType<LavaGolemEntity>> = REGISTRY.register("lava_golem", Supplier {
+        EntityType.Builder.of(::LavaGolemEntity, MobCategory.MONSTER)
+            .sized(1.85f, 2.95f)
+            .fireImmune()
+            .clientTrackingRange(12)
+            .build("lava_golem")
+    })
+
+    val PURPUR_GUARDIAN: Supplier<EntityType<PurpurGuardianEntity>> = REGISTRY.register("purpur_guardian", Supplier {
+        EntityType.Builder.of(::PurpurGuardianEntity, MobCategory.MONSTER)
+            .sized(1.05f, 2.25f)
+            .clientTrackingRange(12)
+            .build("purpur_guardian")
     })
 
     fun register(eventBus: IEventBus) {

@@ -43,6 +43,7 @@
   "item.divinesouls.sculk_chitin": "Sculk Chitin",
   "item.divinesouls.resonant_node": "Resonant Node",
   "item.divinesouls.abyssal_heart": "Abyssal Heart",
+  "item.divinesouls.unicorn_horn": "Unicorn Horn",
 
   "item.divinesouls.raw_crab_meat": "Raw Crab Meat",
   "item.divinesouls.cooked_crab_meat": "Cooked Crab Meat",
@@ -64,6 +65,7 @@
   "item.divinesouls.frost_staff": "Frost Staff",
   "item.divinesouls.end_staff": "End Staff",
   "item.minecraft.tipped_arrow.effect.mana_potion": "Arrow of Mana",
+  "item.divinesouls.light_spear": "Light Spear",
 
   "item.divinesouls.end_crystal_helmet": "End Gem Helmet",
   "item.divinesouls.end_crystal_chestplate": "End Gem Chestplate",
@@ -93,6 +95,10 @@
   "entity.divinesouls.forest_ent": "Forest Ent",
   "entity.divinesouls.sculk_crawler": "Sculk Crawler",
   "entity.divinesouls.sculk_stalker": "Sculk Stalker",
+  "entity.divinesouls.unicorn": "Unicorn",
+  "entity.divinesouls.astral_wanderer": "Astral Wanderer",
+  "entity.divinesouls.lava_golem": "Lava Golem",
+  "entity.divinesouls.purpur_guardian": "Purpur Guardian",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Sorrow Wraith Spawn Egg",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Wither Twins Spawn Egg",
@@ -107,6 +113,10 @@
   "item.divinesouls.void_dragon_spawn_egg": "Void Dragon Spawn Egg",
   "item.divinesouls.sculk_crawler_spawn_egg": "Sculk Crawler Spawn Egg",
   "item.divinesouls.sculk_stalker_spawn_egg": "Sculk Stalker Spawn Egg",
+  "item.divinesouls.unicorn_spawn_egg": "Unicorn Spawn Egg",
+  "item.divinesouls.astral_wanderer_spawn_egg": "Astral Wanderer Spawn Egg",
+  "item.divinesouls.lava_golem_spawn_egg": "Lava Golem Spawn Egg",
+  "item.divinesouls.purpur_guardian_spawn_egg": "Purpur Guardian Spawn Egg",
 
   "advancements.divinesouls.kill_warden.title": "Overthrowing the Gatekeeper",
   "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune",

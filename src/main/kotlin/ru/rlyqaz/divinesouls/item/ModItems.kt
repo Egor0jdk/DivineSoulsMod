@@ -338,6 +338,46 @@ object ModItems {
         )
     }
 
+    val UNICORN_HORN: Supplier<Item> = registerItem("unicorn_horn") {
+        Item(Item.Properties().rarity(Rarity.RARE))
+    }
+
+    val UNICORN_SPAWN_EGG: Supplier<Item> = registerItem("unicorn_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.UNICORN,
+            0xF8FAFC,
+            0x93C5FD,
+            Item.Properties()
+        )
+    }
+
+    val ASTRAL_WANDERER_SPAWN_EGG: Supplier<Item> = registerItem("astral_wanderer_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.ASTRAL_WANDERER,
+            0x38BDF8,
+            0xFDE047,
+            Item.Properties()
+        )
+    }
+
+    val LAVA_GOLEM_SPAWN_EGG: Supplier<Item> = registerItem("lava_golem_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.LAVA_GOLEM,
+            0x27272A,
+            0xF97316,
+            Item.Properties()
+        )
+    }
+
+    val PURPUR_GUARDIAN_SPAWN_EGG: Supplier<Item> = registerItem("purpur_guardian_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.PURPUR_GUARDIAN,
+            0xA855F7,
+            0xE879F9,
+            Item.Properties()
+        )
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }
