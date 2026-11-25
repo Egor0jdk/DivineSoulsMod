@@ -248,7 +248,9 @@ object ModItems {
         ru.rlyqaz.divinesouls.item.custom.HealthUpgradeItem(
             Item.Properties().stacksTo(16).rarity(net.minecraft.world.item.Rarity.RARE),
             healthGain = 2.0f,
-            maxBonusHealthCap = 20.0f
+            maxBonusHealthCap = 20.0f,
+            requiredPreviousBonus = 10.0f,
+            isEdibleFruit = true
         )
     }
 
@@ -256,7 +258,8 @@ object ModItems {
         ru.rlyqaz.divinesouls.item.custom.HealthUpgradeItem(
             Item.Properties().stacksTo(16).rarity(net.minecraft.world.item.Rarity.EPIC),
             healthGain = 4.0f,
-            maxBonusHealthCap = 40.0f
+            maxBonusHealthCap = 40.0f,
+            requiredPreviousBonus = 20.0f
         )
     }
 
@@ -272,7 +275,8 @@ object ModItems {
         ru.rlyqaz.divinesouls.item.custom.ManaUpgradeItem(
             Item.Properties().stacksTo(16).rarity(net.minecraft.world.item.Rarity.EPIC),
             manaGain = 10,
-            maxManaCap = 200
+            maxManaCap = 200,
+            requiredPreviousMana = 150
         )
     }
 
@@ -375,6 +379,90 @@ object ModItems {
             0xA855F7,
             0xE879F9,
             Item.Properties()
+        )
+    }
+
+    // Астральная пыль (дроп с Астрального скитальца -> крафт Кристалла маны)
+    val ASTRAL_DUST: Supplier<Item> = registerItem("astral_dust") {
+        Item(Item.Properties().rarity(Rarity.UNCOMMON))
+    }
+
+    // Осколок кристалла жизни (добывается из красных кристаллов на островах Энда -> крафт Кристалла жизни)
+    val LIFE_CRYSTAL_SHARD: Supplier<Item> = registerItem("life_crystal_shard") {
+        Item(Item.Properties().rarity(Rarity.UNCOMMON))
+    }
+
+    // Яйцо призыва ванильного Иллюзора (добавляется в ванильную вкладку Яиц призыва)
+    val ILLUSIONER_SPAWN_EGG: Supplier<Item> = registerItem("illusioner_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            { net.minecraft.world.entity.EntityType.ILLUSIONER },
+            0x1E3A8A,
+            0x94A3B8,
+            Item.Properties()
+        )
+    }
+
+    // Кузнечный шаблон улучшения незеритовой брони в броню Самоцвета Энда
+    val END_CRYSTAL_UPGRADE_SMITHING_TEMPLATE: Supplier<Item> = registerItem("end_crystal_upgrade_smithing_template") {
+        net.minecraft.world.item.SmithingTemplateItem(
+            net.minecraft.network.chat.Component.translatable("item.divinesouls.smithing_template.end_crystal_upgrade.applies_to")
+                .withStyle(net.minecraft.ChatFormatting.BLUE),
+            net.minecraft.network.chat.Component.translatable("item.divinesouls.smithing_template.end_crystal_upgrade.ingredients")
+                .withStyle(net.minecraft.ChatFormatting.BLUE),
+            net.minecraft.network.chat.Component.translatable("upgrade.divinesouls.end_crystal_upgrade")
+                .withStyle(net.minecraft.ChatFormatting.GRAY),
+            net.minecraft.network.chat.Component.translatable("item.divinesouls.smithing_template.end_crystal_upgrade.base_slot_description"),
+            net.minecraft.network.chat.Component.translatable("item.divinesouls.smithing_template.end_crystal_upgrade.additions_slot_description"),
+            listOf(
+                net.minecraft.resources.ResourceLocation.withDefaultNamespace("item/empty_armor_slot_helmet"),
+                net.minecraft.resources.ResourceLocation.withDefaultNamespace("item/empty_armor_slot_chestplate"),
+                net.minecraft.resources.ResourceLocation.withDefaultNamespace("item/empty_armor_slot_leggings"),
+                net.minecraft.resources.ResourceLocation.withDefaultNamespace("item/empty_armor_slot_boots")
+            ),
+            listOf(
+                net.minecraft.resources.ResourceLocation.withDefaultNamespace("item/empty_slot_diamond")
+            )
+        )
+    }
+
+    // 1. Базовый корпус искателя (как в Calamity) — остаётся до 64
+    val LOCATOR_CORE: Supplier<Item> = registerItem("locator_core") {
+        Item(Item.Properties().rarity(Rarity.COMMON))
+    }
+
+    // 2. Искатель Древнего города (Скалк вокруг ядра) — стак до 16
+    val ANCIENT_CITY_LOCATOR: Supplier<Item> = registerItem("ancient_city_locator") {
+        ru.rlyqaz.divinesouls.item.custom.SingleUseLocatorItem(
+            properties = Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON),
+            tooltipKey = "tooltip.divinesouls.ancient_city_locator",
+            structureTag = net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.STRUCTURE,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, "ancient_city_locator")
+            )
+        )
+    }
+
+    // 3. Искатель Болота (Эссенция Незера + грязь вокруг ядра) — стак до 16
+    val SWAMP_LOCATOR: Supplier<Item> = registerItem("swamp_locator") {
+        ru.rlyqaz.divinesouls.item.custom.SingleUseLocatorItem(
+            properties = Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON),
+            tooltipKey = "tooltip.divinesouls.swamp_locator",
+            biomeTag = net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.BIOME,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, "swamp_locator")
+            )
+        )
+    }
+
+    // 4. Искатель Города Энда (8 Самоцветов Энда вокруг ядра) — стак до 16
+    val END_CITY_LOCATOR: Supplier<Item> = registerItem("end_city_locator") {
+        ru.rlyqaz.divinesouls.item.custom.SingleUseLocatorItem(
+            properties = Item.Properties().stacksTo(16).rarity(Rarity.RARE),
+            tooltipKey = "tooltip.divinesouls.end_city_locator",
+            structureTag = net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.STRUCTURE,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, "end_city_locator")
+            )
         )
     }
 

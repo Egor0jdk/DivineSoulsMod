@@ -54,6 +54,10 @@ object DivineSoulsMod {
         ru.rlyqaz.divinesouls.worldgen.SpiderNestFeature(NoneFeatureConfiguration.CODEC)
     }) as Supplier<Feature<NoneFeatureConfiguration>>
 
+    val LIFE_CRYSTAL_FEATURE: Supplier<Feature<NoneFeatureConfiguration>> = FEATURES.register("life_crystal_cluster", Supplier<Feature<*>> {
+        ru.rlyqaz.divinesouls.worldgen.LifeCrystalFeature(NoneFeatureConfiguration.CODEC)
+    }) as Supplier<Feature<NoneFeatureConfiguration>>
+
     init {
         val modEventBus: IEventBus = MOD_BUS
 
@@ -83,6 +87,7 @@ object DivineSoulsMod {
         NeoForge.EVENT_BUS.addListener { event: net.neoforged.neoforge.event.server.ServerStoppedEvent ->
             ru.rlyqaz.divinesouls.event.WardenBalanceHandler.clearAllBars()
             ru.rlyqaz.divinesouls.worldgen.FortressTwinsInjector.clearQueue()
+            ru.rlyqaz.divinesouls.worldgen.PillagerOutpostIllusionerInjector.clearQueue()
         }
 
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.EndAuraHandler)
@@ -104,6 +109,9 @@ object DivineSoulsMod {
                 toRemove.forEach {
                     event.remove(it, net.minecraft.world.item.CreativeModeTab.TabVisibility.PARENT_TAB_ONLY)
                 }
+            }
+            if (event.tabKey == net.minecraft.world.item.CreativeModeTabs.SPAWN_EGGS) {
+                event.accept(ModItems.ILLUSIONER_SPAWN_EGG.get())
             }
         }
 
@@ -217,6 +225,7 @@ object DivineSoulsMod {
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.WitherSummonHandler)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.event.ElderGuardianBossBarHandler)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.worldgen.FortressTwinsInjector)
+        NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.worldgen.PillagerOutpostIllusionerInjector)
         NeoForge.EVENT_BUS.register(ru.rlyqaz.divinesouls.worldgen.SculkInfectionManager)
 
         LOGGER.info("Divine Souls: The main class has been successfully initialized under the name DivineSoulsMod!")

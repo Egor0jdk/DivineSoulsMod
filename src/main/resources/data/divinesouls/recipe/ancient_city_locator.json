@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "###",
+    "#C#",
+    "###"
+  ],
+  "key": {
+    "#": { "item": "minecraft:sculk" },
+    "C": { "item": "divinesouls:locator_core" }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:ancient_city_locator"
+  }
+}

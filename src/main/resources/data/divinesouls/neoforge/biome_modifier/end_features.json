@@ -8,7 +8,8 @@
   ],
   "features": [
     "divinesouls:end_oasis",
-    "divinesouls:end_tree"
+    "divinesouls:end_tree",
+    "divinesouls:life_crystal_cluster"
   ],
   "step": "vegetal_decoration"
 }

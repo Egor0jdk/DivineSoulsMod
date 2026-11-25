@@ -41,6 +41,18 @@ object ModBlocks {
         )
     }
 
+    // Блок Самоцвета Энда (9 самоцветов Энда)
+    val END_CRYSTAL_BLOCK: Supplier<Block> = registerBlock("end_crystal_block") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_PURPLE)
+                .strength(6.0f, 12.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.METAL)
+                .lightLevel { 6 }
+        )
+    }
+
     // 2. Дёрн Края (Полный аналог Нилия: звуки камня/травы, требует кирку, превращается в эндерняк под сплошным блоком)
     val END_GRASS_BLOCK: Supplier<Block> = registerBlock("end_grass_block") {
         val endGrassSound = SoundType(
@@ -239,6 +251,68 @@ object ModBlocks {
                 .lightLevel { 7 }
                 .offsetType(BlockBehaviour.OffsetType.XZ)
                 .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)
+        )
+    }
+
+    // 16. Красный кристалл жизни (генерируется на поверхности дальних островов Энда)
+    val LIFE_CRYSTAL_CLUSTER: Supplier<Block> = registerBlock("life_crystal_cluster") {
+        object : Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_RED)
+                .strength(1.5f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.AMETHYST_CLUSTER)
+                .lightLevel { 9 }
+                .noOcclusion()
+                .noCollission()
+        ) {
+            private val SHAPE: VoxelShape = box(3.0, 0.0, 3.0, 13.0, 13.0, 13.0)
+
+            override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = SHAPE
+
+            override fun canSurvive(state: BlockState, level: net.minecraft.world.level.LevelReader, pos: BlockPos): Boolean {
+                val below = pos.below()
+                return level.getBlockState(below).isFaceSturdy(level, below, net.minecraft.core.Direction.UP)
+            }
+
+            override fun updateShape(
+                state: BlockState,
+                direction: net.minecraft.core.Direction,
+                neighborState: BlockState,
+                level: net.minecraft.world.level.LevelAccessor,
+                pos: BlockPos,
+                neighborPos: BlockPos
+            ): BlockState {
+                if (direction == net.minecraft.core.Direction.DOWN && !state.canSurvive(level, pos)) {
+                    return Blocks.AIR.defaultBlockState()
+                }
+                return super.updateShape(state, direction, neighborState, level, pos, neighborPos)
+            }
+        }
+    }
+
+    // 17. Мембрана портала Бездны (активируется Сердцем Бездны при установленной Голове Дракона на пьедестале)
+    val ABYSS_PORTAL: Supplier<Block> = REGISTRY.register("abyss_portal", Supplier {
+        ru.rlyqaz.divinesouls.block.custom.AbyssPortalBlock(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_CYAN)
+                .noCollission()
+                .strength(-1.0f, 3600000.0f)
+                .sound(SoundType.GLASS)
+                .lightLevel { 12 }
+                .noLootTable()
+        )
+    })
+
+    // 18. Пьедестал Бездны (генерируется перед порталом Древнего города под Голову Эндер-дракона)
+    val ABYSS_PEDESTAL: Supplier<Block> = registerBlock("abyss_pedestal") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.DEEPSLATE)
+                .strength(15.0f, 1200.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.DEEPSLATE_BRICKS)
+                .lightLevel { 5 }
         )
     }
 

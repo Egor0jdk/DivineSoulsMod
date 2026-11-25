@@ -25,6 +25,7 @@ import ru.rlyqaz.divinesouls.entity.custom.UnicornEntity
 import ru.rlyqaz.divinesouls.entity.custom.AstralWandererEntity
 import ru.rlyqaz.divinesouls.entity.custom.LavaGolemEntity
 import ru.rlyqaz.divinesouls.entity.custom.PurpurGuardianEntity
+import ru.rlyqaz.divinesouls.entity.custom.LocatorEyeEntity
 import java.util.function.Supplier
 
 /**
@@ -175,6 +176,14 @@ object ModEntities {
             .sized(1.05f, 2.25f)
             .clientTrackingRange(12)
             .build("purpur_guardian")
+    })
+
+    val LOCATOR_EYE: Supplier<EntityType<LocatorEyeEntity>> = REGISTRY.register("locator_eye", Supplier {
+        EntityType.Builder.of(::LocatorEyeEntity, MobCategory.MISC)
+            .sized(0.25f, 0.25f)
+            .clientTrackingRange(4)
+            .updateInterval(4)
+            .build("locator_eye")
     })
 
     fun register(eventBus: IEventBus) {

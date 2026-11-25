@@ -104,6 +104,9 @@ object ModEntityEvents {
             event.registerEntityRenderer(ModEntities.ASTRAL_WANDERER.get(), ::AstralWandererRenderer)
             event.registerEntityRenderer(ModEntities.LAVA_GOLEM.get(), ::LavaGolemRenderer)
             event.registerEntityRenderer(ModEntities.PURPUR_GUARDIAN.get(), ::PurpurGuardianRenderer)
+            event.registerEntityRenderer(ModEntities.LOCATOR_EYE.get()) { ctx ->
+                net.minecraft.client.renderer.entity.ThrownItemRenderer(ctx, 1.0f, true)
+            }
         }
 
         // 3. 3D-слои моделей

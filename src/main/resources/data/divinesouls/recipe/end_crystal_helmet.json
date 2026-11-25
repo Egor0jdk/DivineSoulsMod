@@ -1,16 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "GGG",
-    "G G"
-  ],
-  "key": {
-    "G": {
-      "item": "divinesouls:end_crystal_gem"
-    }
-  },
-  "result": {
-    "count": 1,
-    "id": "divinesouls:end_crystal_helmet"
-  }
+  "type": "minecraft:smithing_transform",
+  "addition": { "item": "divinesouls:dragon_soul_shard" },
+  "base": { "item": "minecraft:netherite_helmet" },
+  "result": { "id": "divinesouls:end_crystal_helmet" },
+  "template": { "item": "divinesouls:end_crystal_upgrade_smithing_template" }
 }

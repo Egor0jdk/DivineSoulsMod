@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "divinesouls:end_crystal_block" }
+  ],
+  "result": {
+    "count": 9,
+    "id": "divinesouls:end_crystal_gem"
+  }
+}

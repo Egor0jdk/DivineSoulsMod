@@ -18,16 +18,16 @@ import ru.rlyqaz.divinesouls.item.ModItems
 
 class EndStaffItem(properties: Properties) : BaseMagicStaffItem(
     properties = properties,
-    manaCost = 35,
-    cooldownTicks = 25,
+    manaCost = 50,
+    cooldownTicks = 35,
     repairItem = ModItems.END_CRYSTAL_GEM
 ) {
 
     companion object {
-        private const val MAX_RANGE = 38.0
-        private const val DIRECT_DAMAGE = 14.0f
-        private const val SPLASH_DAMAGE = 6.0f
-        private const val SPLASH_RADIUS = 2.5
+        private const val MAX_RANGE = 32.0
+        private const val DIRECT_DAMAGE = 12.0f
+        private const val SPLASH_DAMAGE = 5.0f
+        private const val SPLASH_RADIUS = 2.4
     }
 
     override fun castSpell(level: Level, player: Player, hand: InteractionHand, stack: ItemStack) {

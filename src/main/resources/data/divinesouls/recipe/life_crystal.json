@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "SPS",
+    " S "
+  ],
+  "key": {
+    "S": { "item": "divinesouls:life_crystal_shard" },
+    "P": {
+      "type": "neoforge:components",
+      "items": "minecraft:potion",
+      "components": {
+        "minecraft:potion_contents": {
+          "potion": "minecraft:healing"
+        }
+      }
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:life_crystal"
+  }
+}

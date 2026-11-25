@@ -1,16 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "G G",
-    "G G"
-  ],
-  "key": {
-    "G": {
-      "item": "divinesouls:end_crystal_gem"
-    }
-  },
-  "result": {
-    "count": 1,
-    "id": "divinesouls:end_crystal_boots"
-  }
+  "type": "minecraft:smithing_transform",
+  "addition": { "item": "divinesouls:dragon_soul_shard" },
+  "base": { "item": "minecraft:netherite_boots" },
+  "result": { "id": "divinesouls:end_crystal_boots" },
+  "template": { "item": "divinesouls:end_crystal_upgrade_smithing_template" }
 }

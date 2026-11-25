@@ -1,17 +1,15 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "pattern": [
-    "GG",
+    "GA",
     "GR",
     " R"
   ],
   "key": {
-    "G": {
-      "item": "divinesouls:end_crystal_gem"
-    },
-    "R": {
-      "item": "divinesouls:end_wood_stick"
-    }
+    "G": { "item": "divinesouls:end_crystal_gem" },
+    "A": { "item": "minecraft:netherite_axe" },
+    "R": { "item": "divinesouls:end_wood_stick" }
   },
   "result": {
     "count": 1,

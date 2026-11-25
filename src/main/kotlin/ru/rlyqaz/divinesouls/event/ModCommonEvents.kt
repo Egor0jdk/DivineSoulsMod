@@ -145,4 +145,63 @@ object ModCommonEvents {
             net.minecraft.world.item.alchemy.Potions.POISON
         )
     }
+
+    // 6. НЕВЕСОМЫЕ ДУШИ (КАК В TERRARIA): при дропе с моба слегка разлетаются, при броске игроком (Q) летят вперёд и зависают
+    @SubscribeEvent
+    fun onSoulItemJoin(event: net.neoforged.neoforge.event.entity.EntityJoinLevelEvent) {
+        val itemEntity = event.entity as? net.minecraft.world.entity.item.ItemEntity ?: return
+        if (itemEntity.item.`is`(ru.rlyqaz.divinesouls.util.ModTags.Items.SOULS)) {
+            itemEntity.isNoGravity = true
+            // Если предмет выбросил игрок (Q) — оставляем его вектор броска вперёд; рандомим только дроп с мобов
+            if (!event.level.isClientSide && itemEntity.owner == null) {
+                val rand = event.level.random
+                val vx = (rand.nextDouble() - 0.5) * 0.24
+                val vy = (rand.nextDouble() - 0.5) * 0.16
+                val vz = (rand.nextDouble() - 0.5) * 0.24
+                itemEntity.setDeltaMovement(vx, vy, vz)
+            }
+        }
+    }
+
+    @SubscribeEvent
+    fun onSoulItemTick(event: net.neoforged.neoforge.event.tick.EntityTickEvent.Post) {
+        val itemEntity = event.entity as? net.minecraft.world.entity.item.ItemEntity ?: return
+        if (!itemEntity.isNoGravity) return
+        if (itemEntity.item.`is`(ru.rlyqaz.divinesouls.util.ModTags.Items.SOULS)) {
+            // Плавно тормозим разлёт за ~0.5 сек, после чего душа парит и крутится на месте
+            if (itemEntity.deltaMovement.lengthSqr() > 0.0001) {
+                itemEntity.deltaMovement = itemEntity.deltaMovement.scale(0.84)
+            }
+        }
+    }
+
+    // 7. СОХРАНЕНИЕ ЗАЧАРОВАНИЙ ПРИ ПЕРЕКОВКЕ НЕЗЕРИТОВЫХ ИНСТРУМЕНТОВ В ИНСТРУМЕНТЫ САМОЦВЕТА ЭНДА
+    @SubscribeEvent
+    fun onEndCrystalToolCrafted(event: net.neoforged.neoforge.event.entity.player.PlayerEvent.ItemCraftedEvent) {
+        val crafted = event.crafting
+        val requiredNetherite = when (crafted.item) {
+            ru.rlyqaz.divinesouls.item.ModWeapons.END_CRYSTAL_SWORD.get() -> net.minecraft.world.item.Items.NETHERITE_SWORD
+            ru.rlyqaz.divinesouls.item.ModWeapons.END_CRYSTAL_PICKAXE.get() -> net.minecraft.world.item.Items.NETHERITE_PICKAXE
+            ru.rlyqaz.divinesouls.item.ModWeapons.END_CRYSTAL_AXE.get() -> net.minecraft.world.item.Items.NETHERITE_AXE
+            ru.rlyqaz.divinesouls.item.ModWeapons.END_CRYSTAL_SHOVEL.get() -> net.minecraft.world.item.Items.NETHERITE_SHOVEL
+            ru.rlyqaz.divinesouls.item.ModWeapons.END_CRYSTAL_HOE.get() -> net.minecraft.world.item.Items.NETHERITE_HOE
+            else -> return
+        }
+
+        val matrix = event.inventory
+        for (slot in 0 until matrix.containerSize) {
+            val ingredient = matrix.getItem(slot)
+            if (ingredient.`is`(requiredNetherite)) {
+                val enchants = ingredient.get(net.minecraft.core.component.DataComponents.ENCHANTMENTS)
+                if (enchants != null && !enchants.isEmpty) {
+                    crafted.set(net.minecraft.core.component.DataComponents.ENCHANTMENTS, enchants)
+                }
+                val customName = ingredient.get(net.minecraft.core.component.DataComponents.CUSTOM_NAME)
+                if (customName != null) {
+                    crafted.set(net.minecraft.core.component.DataComponents.CUSTOM_NAME, customName)
+                }
+                break
+            }
+        }
+    }
 }

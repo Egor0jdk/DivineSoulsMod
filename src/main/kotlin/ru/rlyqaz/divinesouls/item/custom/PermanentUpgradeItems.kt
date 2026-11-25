@@ -21,12 +21,34 @@ import ru.rlyqaz.divinesouls.mana.ModAttachments
 class HealthUpgradeItem(
     properties: Properties,
     private val healthGain: Float,
-    private val maxBonusHealthCap: Float
+    private val maxBonusHealthCap: Float,
+    private val requiredPreviousBonus: Float = 0.0f,
+    private val isEdibleFruit: Boolean = false
 ) : Item(properties) {
+
+    override fun getUseDuration(stack: ItemStack, entity: net.minecraft.world.entity.LivingEntity): Int {
+        return if (isEdibleFruit) 24 else 0
+    }
+
+    override fun getUseAnimation(stack: ItemStack): net.minecraft.world.item.UseAnim {
+        return if (isEdibleFruit) net.minecraft.world.item.UseAnim.EAT else net.minecraft.world.item.UseAnim.NONE
+    }
 
     override fun use(level: Level, player: Player, hand: InteractionHand): InteractionResultHolder<ItemStack> {
         val stack = player.getItemInHand(hand)
         val data = player.getData(ModAttachments.MANA.get())
+
+        if (requiredPreviousBonus.compareTo(0.0f) == 1 && data.bonusHealth.compareTo(requiredPreviousBonus) == -1) {
+            if (!level.isClientSide) {
+                val reqHearts = ((20.0f + requiredPreviousBonus) / 2.0f).toInt()
+                player.displayClientMessage(
+                    Component.translatable("message.divinesouls.health_tier_locked", reqHearts)
+                        .withStyle(ChatFormatting.RED),
+                    true
+                )
+            }
+            return InteractionResultHolder.fail(stack)
+        }
 
         if (data.bonusHealth.compareTo(maxBonusHealthCap) != -1) {
             if (!level.isClientSide) {
@@ -39,12 +61,44 @@ class HealthUpgradeItem(
             return InteractionResultHolder.fail(stack)
         }
 
+        // Если это Фрукт жизни — запускаем анимацию поедания (24 тика = 1.2 сек)
+        if (isEdibleFruit) {
+            player.startUsingItem(hand)
+            return InteractionResultHolder.consume(stack)
+        }
+
+        applyHealthUpgrade(level, player, stack)
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide())
+    }
+
+    override fun finishUsingItem(
+        stack: ItemStack,
+        level: Level,
+        livingEntity: net.minecraft.world.entity.LivingEntity
+    ): ItemStack {
+        if (isEdibleFruit && livingEntity is Player) {
+            val data = livingEntity.getData(ModAttachments.MANA.get())
+            if (data.bonusHealth.compareTo(maxBonusHealthCap) == -1) {
+                applyHealthUpgrade(level, livingEntity, stack)
+            }
+        }
+        return stack
+    }
+
+    private fun applyHealthUpgrade(level: Level, player: Player, stack: ItemStack) {
         if (!level.isClientSide && player is ServerPlayer) {
+            val data = player.getData(ModAttachments.MANA.get())
             val newBonus = (data.bonusHealth + healthGain).coerceAtMost(maxBonusHealthCap)
             player.setData(ModAttachments.MANA.get(), data.copy(bonusHealth = newBonus))
             ManaManager.applyBonusHealth(player)
             player.heal(healthGain)
 
+            if (isEdibleFruit) {
+                level.playSound(
+                    null, player.x, player.y, player.z,
+                    SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.7f, 1.15f
+                )
+            }
             level.playSound(
                 null, player.x, player.y, player.z,
                 SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8f, 1.35f
@@ -60,8 +114,6 @@ class HealthUpgradeItem(
             }
             player.awardStat(Stats.ITEM_USED.get(this))
         }
-
-        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide())
     }
 
     override fun appendHoverText(
@@ -83,12 +135,25 @@ class HealthUpgradeItem(
 class ManaUpgradeItem(
     properties: Properties,
     private val manaGain: Int,
-    private val maxManaCap: Int
+    private val maxManaCap: Int,
+    private val requiredPreviousMana: Int = 0
 ) : Item(properties) {
 
     override fun use(level: Level, player: Player, hand: InteractionHand): InteractionResultHolder<ItemStack> {
         val stack = player.getItemInHand(hand)
         val data = player.getData(ModAttachments.MANA.get())
+
+        // Запрещаем перепрыгивать прошлый тир Маны
+        if (requiredPreviousMana != 0 && data.maxMana.compareTo(requiredPreviousMana) == -1) {
+            if (!level.isClientSide) {
+                player.displayClientMessage(
+                    Component.translatable("message.divinesouls.mana_tier_locked", requiredPreviousMana)
+                        .withStyle(ChatFormatting.RED),
+                    true
+                )
+            }
+            return InteractionResultHolder.fail(stack)
+        }
 
         if (data.maxMana.compareTo(maxManaCap) != -1) {
             if (!level.isClientSide) {

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RIR",
+    "IAI",
+    "RIR"
+  ],
+  "key": {
+    "R": { "item": "minecraft:redstone" },
+    "I": { "item": "minecraft:copper_ingot" },
+    "A": { "item": "minecraft:amethyst_shard" }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:locator_core"
+  }
+}

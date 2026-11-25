@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "#T#",
+    "#E#",
+    "###"
+  ],
+  "key": {
+    "#": { "item": "divinesouls:end_crystal_gem" },
+    "T": { "item": "minecraft:netherite_upgrade_smithing_template" },
+    "E": { "item": "minecraft:end_stone" }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:end_crystal_upgrade_smithing_template"
+  }
+}

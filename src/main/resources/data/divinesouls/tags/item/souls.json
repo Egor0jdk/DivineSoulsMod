@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "minecraft:nether_star",
     "divinesouls:warden_soul",
     "divinesouls:awoken_warden_soul",
     "divinesouls:burning_soul",

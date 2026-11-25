@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "axis=x": { "model": "divinesouls:block/abyss_portal_ns" },
+    "axis=z": { "model": "divinesouls:block/abyss_portal_ew" }
+  }
+}
