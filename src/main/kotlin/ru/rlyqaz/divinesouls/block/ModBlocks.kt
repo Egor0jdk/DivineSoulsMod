@@ -317,6 +317,169 @@ object ModBlocks {
     }
 
     // ====================================================================
+    // БЛОКИ ИЗМЕРЕНИЯ THE ABYSS (БЕЗДНА)
+    // ====================================================================
+
+    // 19. Камень Бездны (основа потолка, парящих террас и сталактитов; дропает Булыжник Бездны без Шёлкового касания)
+    val ABYSSAL_STONE: Supplier<Block> = registerBlock("abyssal_stone") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLUE)
+                .strength(3.5f, 9.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.DEEPSLATE)
+        )
+    }
+
+    // 20. Булыжник Бездны (дроп с Камня Бездны)
+    val ABYSSAL_COBBLESTONE: Supplier<Block> = registerBlock("abyssal_cobblestone") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLUE)
+                .strength(4.0f, 9.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.DEEPSLATE)
+        )
+    }
+
+    // Породное вкрапление Бездны (аналог туфа/андезита внутри массива Камня Бездны)
+    val ABYSSAL_TUFF: Supplier<Block> = registerBlock("abyssal_tuff") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLACK)
+                .strength(3.0f, 8.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.TUFF)
+        )
+    }
+
+    // 21. Мицелий Бездны (фиолетово-индиговый светящийся дёрн на редких грибных островках Бездны)
+    val ABYSSAL_MYCELIUM: Supplier<Block> = registerBlock("abyssal_mycelium") {
+        object : Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_PURPLE)
+                .strength(2.5f, 6.0f)
+                .requiresCorrectToolForDrops()
+                .randomTicks()
+                .lightLevel { 5 }
+                .sound(SoundType.NYLIUM)
+        ) {
+            override fun randomTick(state: BlockState, level: ServerLevel, pos: BlockPos, random: RandomSource) {
+                val abovePos = pos.above()
+                if (level.getBlockState(abovePos).isSolidRender(level, abovePos)) {
+                    level.setBlockAndUpdate(pos, ABYSSAL_STONE.get().defaultBlockState())
+                }
+            }
+        }
+    }
+
+    // 22. Светящаяся лоза Бездны (свисает с потолка, сталактитов и нижних краёв островов; можно лазать!)
+    val ABYSSAL_VINE: Supplier<Block> = registerBlock("abyssal_vine") {
+        object : Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_PURPLE)
+                .instabreak()
+                .noCollission()
+                .lightLevel { 11 }
+                .sound(SoundType.WEEPING_VINES)
+                .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)
+        ) {
+            private val SHAPE: VoxelShape = box(3.0, 0.0, 3.0, 13.0, 16.0, 13.0)
+
+            override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = SHAPE
+
+            override fun canSurvive(state: BlockState, level: net.minecraft.world.level.LevelReader, pos: BlockPos): Boolean {
+                val above = pos.above()
+                val aboveState = level.getBlockState(above)
+                return aboveState.`is`(this) || aboveState.isFaceSturdy(level, above, net.minecraft.core.Direction.DOWN)
+            }
+
+            override fun updateShape(
+                state: BlockState,
+                direction: net.minecraft.core.Direction,
+                neighborState: BlockState,
+                level: net.minecraft.world.level.LevelAccessor,
+                pos: BlockPos,
+                neighborPos: BlockPos
+            ): BlockState {
+                if (direction == net.minecraft.core.Direction.UP && !state.canSurvive(level, pos)) {
+                    return Blocks.AIR.defaultBlockState()
+                }
+                return super.updateShape(state, direction, neighborState, level, pos, neighborPos)
+            }
+        }
+    }
+
+    // 23. Ножка гигантского гриба Бездны
+    val ABYSSAL_MUSHROOM_STEM: Supplier<Block> = registerBlock("abyssal_mushroom_stem") {
+        RotatedPillarBlock(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.TERRACOTTA_PURPLE)
+                .strength(1.5f)
+                .sound(SoundType.STEM)
+        )
+    }
+
+    // 24. Светящаяся шляпка гигантского гриба Бездны
+    val ABYSSAL_MUSHROOM_CAP: Supplier<Block> = registerBlock("abyssal_mushroom_cap") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_MAGENTA)
+                .strength(1.2f)
+                .lightLevel { 12 }
+                .sound(SoundType.FUNGUS)
+        )
+    }
+
+    // 25. Малый гриб Бездны (растёт на Мицелии Бездны; удобрение костной мукой вырастит гигантский гриб!)
+    val ABYSSAL_MUSHROOM: Supplier<Block> = registerBlock("abyssal_mushroom") {
+        object : Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_MAGENTA)
+                .instabreak()
+                .noCollission()
+                .lightLevel { 8 }
+                .sound(SoundType.FUNGUS)
+                .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)
+        ), BonemealableBlock {
+            private val SHAPE: VoxelShape = box(4.0, 0.0, 4.0, 12.0, 10.0, 12.0)
+
+            override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = SHAPE
+
+            override fun canSurvive(state: BlockState, level: net.minecraft.world.level.LevelReader, pos: BlockPos): Boolean {
+                val below = level.getBlockState(pos.below())
+                return below.`is`(ABYSSAL_MYCELIUM.get()) || below.`is`(Blocks.MYCELIUM)
+            }
+
+            override fun updateShape(
+                state: BlockState,
+                direction: net.minecraft.core.Direction,
+                neighborState: BlockState,
+                level: net.minecraft.world.level.LevelAccessor,
+                pos: BlockPos,
+                neighborPos: BlockPos
+            ): BlockState {
+                if (direction == net.minecraft.core.Direction.DOWN && !state.canSurvive(level, pos)) {
+                    return Blocks.AIR.defaultBlockState()
+                }
+                return super.updateShape(state, direction, neighborState, level, pos, neighborPos)
+            }
+
+            override fun isValidBonemealTarget(level: net.minecraft.world.level.LevelReader, pos: BlockPos, state: BlockState): Boolean {
+                return level.getBlockState(pos.below()).`is`(ABYSSAL_MYCELIUM.get())
+            }
+
+            override fun isBonemealSuccess(level: net.minecraft.world.level.Level, random: RandomSource, pos: BlockPos, state: BlockState): Boolean {
+                return random.nextFloat() < 0.45f
+            }
+
+            override fun performBonemeal(level: ServerLevel, random: RandomSource, pos: BlockPos, state: BlockState) {
+                ru.rlyqaz.divinesouls.worldgen.AbyssalMushroomFeature.growGiantMushroom(level, pos, random)
+            }
+        }
+    }
+
+    // ====================================================================
     // АВТОМАТИЧЕСКАЯ РЕГИСТРАЦИЯ БЛОКОВ И ИХ ПРЕДМЕТОВ (BLOCK ITEMS)
     // ====================================================================
     private fun <T : Block> registerBlock(name: String, blockSupplier: () -> T): Supplier<T> {

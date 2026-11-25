@@ -6,6 +6,10 @@
     "divinesouls:wither_seal_block",
     "divinesouls:life_crystal_cluster",
     "divinesouls:end_crystal_block",
-    "divinesouls:abyss_pedestal"
+    "divinesouls:abyss_pedestal",
+    "divinesouls:abyssal_stone",
+    "divinesouls:abyssal_cobblestone",
+    "divinesouls:abyssal_mycelium",
+    "divinesouls:abyssal_tuff"
   ]
 }

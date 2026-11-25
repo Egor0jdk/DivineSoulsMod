@@ -173,6 +173,8 @@ object AbyssPortalManager {
             1.2f, 0.7f
         )
 
+        AncientCityPedestalSavedData.get(level).setLastPortalPos(frame.bottomCenter.above())
+
         if (!event.entity.isCreative) {
             stack.shrink(1)
         }
@@ -331,23 +333,136 @@ object AbyssPortalManager {
     }
 
     fun teleportEntityThroughPortal(entity: Entity, fromLevel: ServerLevel, destLevel: ServerLevel, portalPos: BlockPos) {
-        val destX = if (destLevel.dimension() == AbyssPortalBlock.THE_ABYSS_KEY) 0.5 else portalPos.x + 0.5
-        val destY = if (destLevel.dimension() == AbyssPortalBlock.THE_ABYSS_KEY) 140.0 else (portalPos.y + 1).toDouble()
-        val destZ = if (destLevel.dimension() == AbyssPortalBlock.THE_ABYSS_KEY) 0.5 else portalPos.z + 0.5
+        if (destLevel.dimension() == AbyssPortalBlock.THE_ABYSS_KEY) {
+            val arrivalCenter = BlockPos(0, 140, 0)
+            ensureAbyssArrivalPlatform(destLevel, arrivalCenter)
 
-        val transition = DimensionTransition(
-            destLevel,
-            Vec3(destX, destY, destZ),
-            Vec3.ZERO,
-            entity.yRot,
-            entity.xRot,
-            DimensionTransition.DO_NOTHING
-        )
-        entity.changeDimension(transition)
+            val transition = DimensionTransition(
+                destLevel,
+                Vec3(arrivalCenter.x + 0.5, (arrivalCenter.y + 1).toDouble(), arrivalCenter.z + 2.5),
+                Vec3.ZERO,
+                180.0f,
+                entity.xRot,
+                DimensionTransition.DO_NOTHING
+            )
+            entity.changeDimension(transition)
+        } else {
+            val returnPos = findReturnOverworldPortal(destLevel, portalPos)
+            val transition = DimensionTransition(
+                destLevel,
+                Vec3(returnPos.x + 0.5, returnPos.y.toDouble(), returnPos.z + 0.5),
+                Vec3.ZERO,
+                entity.yRot,
+                entity.xRot,
+                DimensionTransition.DO_NOTHING
+            )
+            entity.changeDimension(transition)
+        }
+    }
+
+    private fun ensureAbyssArrivalPlatform(abyssLevel: ServerLevel, center: BlockPos) {
+        // Если обратный портал уже стоит рядом — не перестраиваем
+        if (abyssLevel.getBlockState(center.above()).`is`(ModBlocks.ABYSS_PORTAL.get())) return
+
+        val polished = Blocks.POLISHED_DEEPSLATE.defaultBlockState()
+        val bricks = Blocks.DEEPSLATE_BRICKS.defaultBlockState()
+        val tiles = Blocks.DEEPSLATE_TILES.defaultBlockState()
+        val chiseled = Blocks.CHISELED_DEEPSLATE.defaultBlockState()
+        val wall = Blocks.DEEPSLATE_BRICK_WALL.defaultBlockState()
+        val soulLantern = Blocks.SOUL_LANTERN.defaultBlockState()
+
+        // 1. Нижний фундамент под платформой (чтобы не выглядела тонким блином в воздухе) + основная площадка 11x9
+        for (dx in -5..5) {
+            for (dz in -4..4) {
+                val isOuterEdge = kotlin.math.abs(dx) == 5 || kotlin.math.abs(dz) == 4
+                val floor = center.offset(dx, 0, dz)
+
+                abyssLevel.setBlock(floor, if (isOuterEdge) bricks else polished, 3)
+                if (!isOuterEdge) {
+                    abyssLevel.setBlock(floor.below(), tiles, 3)
+                }
+
+                // Расчищаем воздух над площадкой
+                for (dy in 1..7) {
+                    abyssLevel.setBlock(floor.above(dy), Blocks.AIR.defaultBlockState(), 3)
+                }
+            }
+        }
+
+        // 2. Подиум под самой рамкой портала (7x3 из резного глубинного сланца и плитки)
+        for (dx in -3..3) {
+            for (dz in -1..1) {
+                val stepPos = center.offset(dx, 0, dz)
+                abyssLevel.setBlock(stepPos, if (dz == 0) chiseled else tiles, 3)
+            }
+        }
+
+        // 3. Миниатюрная копия портала Древнего города: горизонтально вытянутая рамка 7x5 (внутри проём 5x3)
+        val portalState = ModBlocks.ABYSS_PORTAL.get().defaultBlockState()
+            .setValue(AbyssPortalBlock.AXIS, Direction.Axis.X)
+
+        for (x in -3..3) {
+            for (y in 0..4) {
+                val p = center.offset(x, y, 0)
+                val isBorder = (x == -3 || x == 3 || y == 0 || y == 4)
+                abyssLevel.setBlock(
+                    p,
+                    if (isBorder) Blocks.REINFORCED_DEEPSLATE.defaultBlockState() else portalState,
+                    3
+                )
+            }
+        }
+
+        // 4. Боковые контрфорсы и корона над рамкой портала
+        for (sideX in listOf(-4, 4)) {
+            abyssLevel.setBlock(center.offset(sideX, 1, 0), chiseled, 3)
+            abyssLevel.setBlock(center.offset(sideX, 2, 0), wall, 3)
+            abyssLevel.setBlock(center.offset(sideX, 3, 0), soulLantern, 3)
+        }
+        abyssLevel.setBlock(center.offset(0, 5, 0), chiseled, 3)
+        abyssLevel.setBlock(center.offset(-2, 5, 0), wall, 3)
+        abyssLevel.setBlock(center.offset(2, 5, 0), wall, 3)
+
+        // 5. Четыре угловые колонны по краям площадки с Фонарями душ сверху
+        val corners = listOf(-5 to -4, 5 to -4, -5 to 4, 5 to 4)
+        for ((cx, cz) in corners) {
+            abyssLevel.setBlock(center.offset(cx, 1, cz), chiseled, 3)
+            abyssLevel.setBlock(center.offset(cx, 2, cz), wall, 3)
+            abyssLevel.setBlock(center.offset(cx, 3, cz), wall, 3)
+            abyssLevel.setBlock(center.offset(cx, 4, cz), soulLantern, 3)
+        }
+    }
+
+    private fun findReturnOverworldPortal(overworld: ServerLevel, hintPos: BlockPos): BlockPos {
+        val savedPortal = AncientCityPedestalSavedData.get(overworld).getLastPortalPos()
+        val searchCenters = listOfNotNull(savedPortal, hintPos, overworld.sharedSpawnPos)
+
+        for (origin in searchCenters) {
+            for (dx in -16..16) {
+                for (dz in -16..16) {
+                    for (dy in -10..10) {
+                        val p = origin.offset(dx, dy, dz)
+                        if (overworld.getBlockState(p).`is`(ModBlocks.ABYSS_PORTAL.get())) {
+                            // Находим свободную клетку спереди или сзади от мембраны портала
+                            val southPos = p.south(2)
+                            if (overworld.getBlockState(southPos).isAir) return southPos
+                            val northPos = p.north(2)
+                            if (overworld.getBlockState(northPos).isAir) return northPos
+                            val eastPos = p.east(2)
+                            if (overworld.getBlockState(eastPos).isAir) return eastPos
+                            return p.west(2)
+                        }
+                    }
+                }
+            }
+        }
+        val spawn = overworld.sharedSpawnPos
+        return overworld.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, spawn)
     }
 
     private class AncientCityPedestalSavedData : SavedData() {
         private val processed = HashSet<Long>()
+        private var lastPortalPosLong: Long = Long.MIN_VALUE
 
         fun isProcessed(pos: BlockPos): Boolean = processed.contains(pos.asLong())
 
@@ -357,12 +472,24 @@ object AbyssPortalManager {
             }
         }
 
+        fun setLastPortalPos(pos: BlockPos) {
+            lastPortalPosLong = pos.asLong()
+            setDirty()
+        }
+
+        fun getLastPortalPos(): BlockPos? {
+            return if (lastPortalPosLong != Long.MIN_VALUE) BlockPos.of(lastPortalPosLong) else null
+        }
+
         override fun save(tag: CompoundTag, registries: HolderLookup.Provider): CompoundTag {
             val list = ListTag()
             for (v in processed) {
                 list.add(LongTag.valueOf(v))
             }
             tag.put("ProcessedAncientCities", list)
+            if (lastPortalPosLong != Long.MIN_VALUE) {
+                tag.putLong("LastPortalPos", lastPortalPosLong)
+            }
             return tag
         }
 
@@ -383,6 +510,9 @@ object AbyssPortalManager {
                     if (item is LongTag) {
                         data.processed.add(item.asLong)
                     }
+                }
+                if (tag.contains("LastPortalPos")) {
+                    data.lastPortalPosLong = tag.getLong("LastPortalPos")
                 }
                 return data
             }

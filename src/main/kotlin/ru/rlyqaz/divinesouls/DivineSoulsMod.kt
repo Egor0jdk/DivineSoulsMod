@@ -58,6 +58,14 @@ object DivineSoulsMod {
         ru.rlyqaz.divinesouls.worldgen.LifeCrystalFeature(NoneFeatureConfiguration.CODEC)
     }) as Supplier<Feature<NoneFeatureConfiguration>>
 
+    val ABYSSAL_MUSHROOM_FEATURE: Supplier<Feature<NoneFeatureConfiguration>> = FEATURES.register("abyssal_mushroom", Supplier<Feature<*>> {
+        ru.rlyqaz.divinesouls.worldgen.AbyssalMushroomFeature(NoneFeatureConfiguration.CODEC)
+    }) as Supplier<Feature<NoneFeatureConfiguration>>
+
+    val ABYSS_DECORATION_FEATURE: Supplier<Feature<NoneFeatureConfiguration>> = FEATURES.register("abyss_decoration", Supplier<Feature<*>> {
+        ru.rlyqaz.divinesouls.worldgen.AbyssDecorationFeature(NoneFeatureConfiguration.CODEC)
+    }) as Supplier<Feature<NoneFeatureConfiguration>>
+
     init {
         val modEventBus: IEventBus = MOD_BUS
 
@@ -147,6 +155,29 @@ object DivineSoulsMod {
                     net.minecraft.resources.ResourceLocation.withDefaultNamespace("thrusting")
                 ) { stack, _, entity, _ ->
                     if (entity != null && entity.isUsingItem && entity.useItem == stack) 1.0f else 0.0f
+                }
+
+                // В измерении The Abyss любой обычный компас указывает на обратный портал (0, 140, 0)!
+                val vanillaCompassProp = net.minecraft.client.renderer.item.ItemProperties.getProperty(
+                    net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.COMPASS),
+                    net.minecraft.resources.ResourceLocation.withDefaultNamespace("angle")
+                )
+                net.minecraft.client.renderer.item.ItemProperties.register(
+                    net.minecraft.world.item.Items.COMPASS,
+                    net.minecraft.resources.ResourceLocation.withDefaultNamespace("angle")
+                ) { stack, clientLevel, entity, seed ->
+                    val holder = entity ?: stack.entityRepresentation
+                    val level = clientLevel ?: holder?.level()
+                    if (holder != null && level != null && level.dimension() == ru.rlyqaz.divinesouls.block.custom.AbyssPortalBlock.THE_ABYSS_KEY) {
+                        val dx = 0.5 - holder.x
+                        val dz = 0.5 - holder.z
+                        val targetAngle = kotlin.math.atan2(dz, dx) / (Math.PI * 2.0)
+                        val entityYaw = net.minecraft.util.Mth.positiveModulo((holder.visualRotationYInDegrees / 360.0).toDouble(), 1.0)
+                        val rawAngle = 0.5 - (entityYaw - 0.25 - targetAngle)
+                        net.minecraft.util.Mth.positiveModulo(rawAngle.toFloat(), 1.0f)
+                    } else {
+                        vanillaCompassProp?.call(stack, clientLevel, entity, seed) ?: 0.0f
+                    }
                 }
             }
         }

@@ -1,0 +1,11 @@
+{
+  "type": "divinesouls:the_abyss",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "divinesouls:the_abyss",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "divinesouls:the_abyss_depths"
+    }
+  }
+}

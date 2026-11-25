@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "particle": "divinesouls:block/abyssal_mycelium_side",
+    "bottom": "divinesouls:block/abyssal_stone",
+    "top": "divinesouls:block/abyssal_mycelium_top",
+    "side": "divinesouls:block/abyssal_mycelium_side"
+  }
+}
