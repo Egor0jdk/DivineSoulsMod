@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "divinesouls:cooked_crab_meat"
+    "divinesouls:cooked_crab_meat",
+    "divinesouls:cooked_ray_meat"
   ]
 }

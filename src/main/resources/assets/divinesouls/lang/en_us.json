@@ -82,6 +82,10 @@
   "item.divinesouls.mycelial_bark": "Mycelial Bark",
   "item.divinesouls.abyssal_membrane": "Abyssal Membrane",
   "block.divinesouls.abyssal_stalagmite": "Abyssal Stalagmite",
+  "block.divinesouls.mecha_wither_core_block": "Mecha-Wither Core",
+  "item.divinesouls.mecha_soul": "Mecha Soul",
+  "item.divinesouls.molten_heart": "Molten Heart",
+  "item.divinesouls.jungle_locator": "Jungle Locator",
 
   "item.divinesouls.raw_crab_meat": "Raw Crab Meat",
   "item.divinesouls.cooked_crab_meat": "Cooked Crab Meat",
@@ -89,6 +93,8 @@
   "item.minecraft.potion.effect.mana_potion": "Potion of Mana",
   "item.minecraft.splash_potion.effect.mana_potion": "Splash Potion of Mana",
   "item.minecraft.lingering_potion.effect.mana_potion": "Lingering Potion of Mana",
+  "item.divinesouls.raw_ray_meat": "Raw Ray Meat",
+  "item.divinesouls.cooked_ray_meat": "Cooked Ray Meat",
 
   "item.divinesouls.end_crystal_sword": "End Gem Sword",
   "item.divinesouls.end_crystal_pickaxe": "End Gem Pickaxe",
@@ -140,6 +146,8 @@
   "entity.divinesouls.abyssal_shadow": "Abyssal Shadow",
   "entity.divinesouls.abyssal_sporeling": "Abyssal Sporeling",
   "entity.divinesouls.abyssal_walker": "Abyssal Walker",
+  "entity.divinesouls.abyssal_ray": "Abyssal Ray",
+  "entity.divinesouls.mecha_wither": "Mecha-Wither",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Sorrow Wraith Spawn Egg",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Wither Twins Spawn Egg",
@@ -162,6 +170,8 @@
   "item.divinesouls.abyssal_shadow_spawn_egg": "Abyssal Shadow Spawn Egg",
   "item.divinesouls.abyssal_sporeling_spawn_egg": "Abyssal Sporeling Spawn Egg",
   "item.divinesouls.abyssal_walker_spawn_egg": "Abyssal Walker Spawn Egg",
+  "item.divinesouls.abyssal_ray_spawn_egg": "Abyssal Ray Spawn Egg",
+  "item.divinesouls.mecha_wither_spawn_egg": "Mecha-Wither Spawn Egg",
 
   "advancements.divinesouls.kill_warden.title": "Overthrowing the Gatekeeper",
   "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune",
@@ -187,5 +197,7 @@
   "tooltip.divinesouls.bastion_locator": "Single-use. Points toward the nearest Bastion Remnant",
   "tooltip.divinesouls.mycelial_bark_1": "+15% Movement Speed",
   "tooltip.divinesouls.mycelial_bark_2": "+4.0 Safe Fall Distance",
-  "tooltip.divinesouls.mycelial_bark_3": "Double-tap A or D to perform a sideways spore dash"
+  "tooltip.divinesouls.mycelial_bark_3": "Double-tap A or D to perform a sideways spore dash",
+  "tooltip.divinesouls.jungle_locator": "Single-use. Points toward the nearest Jungle",
+  "message.divinesouls.post_mech_unlocked": "The ancient jungle and molten depths have awakened!"
 }

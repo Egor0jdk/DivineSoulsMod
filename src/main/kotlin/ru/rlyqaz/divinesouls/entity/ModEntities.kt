@@ -29,6 +29,10 @@ import ru.rlyqaz.divinesouls.entity.custom.LocatorEyeEntity
 import ru.rlyqaz.divinesouls.entity.custom.AbyssalShadowEntity
 import ru.rlyqaz.divinesouls.entity.custom.AbyssalSporelingEntity
 import ru.rlyqaz.divinesouls.entity.custom.AbyssalWalkerEntity
+import ru.rlyqaz.divinesouls.entity.custom.AbyssalRayEntity
+import ru.rlyqaz.divinesouls.entity.custom.MechaWitherEntity
+import ru.rlyqaz.divinesouls.entity.custom.MechaLaserBoltEntity
+import ru.rlyqaz.divinesouls.entity.custom.MechaRocketEntity
 import java.util.function.Supplier
 
 /**
@@ -208,6 +212,37 @@ object ModEntities {
             .sized(0.75f, 2.25f)
             .clientTrackingRange(12)
             .build("abyssal_walker")
+    })
+
+    val ABYSSAL_RAY: Supplier<EntityType<AbyssalRayEntity>> = REGISTRY.register("abyssal_ray", Supplier {
+        EntityType.Builder.of(::AbyssalRayEntity, MobCategory.MONSTER)
+            .sized(2.35f, 0.85f)
+            .clientTrackingRange(14)
+            .build("abyssal_ray")
+    })
+
+    val MECHA_WITHER: Supplier<EntityType<MechaWitherEntity>> = REGISTRY.register("mecha_wither", Supplier {
+        EntityType.Builder.of(::MechaWitherEntity, MobCategory.MONSTER)
+            .sized(1.1f, 3.2f)
+            .fireImmune()
+            .clientTrackingRange(16)
+            .build("mecha_wither")
+    })
+
+    val MECHA_LASER_BOLT: Supplier<EntityType<MechaLaserBoltEntity>> = REGISTRY.register("mecha_laser_bolt", Supplier {
+        EntityType.Builder.of(::MechaLaserBoltEntity, MobCategory.MISC)
+            .sized(0.3f, 0.3f)
+            .clientTrackingRange(12)
+            .updateInterval(4)
+            .build("mecha_laser_bolt")
+    })
+
+    val MECHA_ROCKET: Supplier<EntityType<MechaRocketEntity>> = REGISTRY.register("mecha_rocket", Supplier {
+        EntityType.Builder.of(::MechaRocketEntity, MobCategory.MISC)
+            .sized(0.45f, 0.45f)
+            .clientTrackingRange(12)
+            .updateInterval(4)
+            .build("mecha_rocket")
     })
 
     fun register(eventBus: IEventBus) {

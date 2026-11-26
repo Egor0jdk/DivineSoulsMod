@@ -46,6 +46,13 @@ import ru.rlyqaz.divinesouls.entity.client.AbyssalSporelingModel
 import ru.rlyqaz.divinesouls.entity.client.AbyssalSporelingRenderer
 import ru.rlyqaz.divinesouls.entity.client.AbyssalWalkerModel
 import ru.rlyqaz.divinesouls.entity.client.AbyssalWalkerRenderer
+import ru.rlyqaz.divinesouls.entity.client.AbyssalRayModel
+import ru.rlyqaz.divinesouls.entity.client.AbyssalRayRenderer
+import ru.rlyqaz.divinesouls.entity.client.MechaWitherModel
+import ru.rlyqaz.divinesouls.entity.client.MechaWitherRenderer
+import ru.rlyqaz.divinesouls.entity.client.MechaLaserBoltRenderer
+import ru.rlyqaz.divinesouls.entity.client.MechaRocketModel
+import ru.rlyqaz.divinesouls.entity.client.MechaRocketRenderer
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
@@ -66,6 +73,8 @@ import ru.rlyqaz.divinesouls.entity.custom.PurpurGuardianEntity
 import ru.rlyqaz.divinesouls.entity.custom.AbyssalShadowEntity
 import ru.rlyqaz.divinesouls.entity.custom.AbyssalSporelingEntity
 import ru.rlyqaz.divinesouls.entity.custom.AbyssalWalkerEntity
+import ru.rlyqaz.divinesouls.entity.custom.AbyssalRayEntity
+import ru.rlyqaz.divinesouls.entity.custom.MechaWitherEntity
 
 object ModEntityEvents {
 
@@ -92,7 +101,8 @@ object ModEntityEvents {
             event.put(ModEntities.ABYSSAL_SHADOW.get(), AbyssalShadowEntity.createAttributes().build())
             event.put(ModEntities.ABYSSAL_SPORELING.get(), AbyssalSporelingEntity.createAttributes().build())
             event.put(ModEntities.ABYSSAL_WALKER.get(), AbyssalWalkerEntity.createAttributes().build())
-
+            event.put(ModEntities.ABYSSAL_RAY.get(), AbyssalRayEntity.createAttributes().build())
+            event.put(ModEntities.MECHA_WITHER.get(), MechaWitherEntity.createAttributes().build())
 
         }
 
@@ -123,8 +133,10 @@ object ModEntityEvents {
             event.registerEntityRenderer(ModEntities.ABYSSAL_SHADOW.get(), ::AbyssalShadowRenderer)
             event.registerEntityRenderer(ModEntities.ABYSSAL_SPORELING.get(), ::AbyssalSporelingRenderer)
             event.registerEntityRenderer(ModEntities.ABYSSAL_WALKER.get(), ::AbyssalWalkerRenderer)
-
-
+            event.registerEntityRenderer(ModEntities.ABYSSAL_RAY.get(), ::AbyssalRayRenderer)
+            event.registerEntityRenderer(ModEntities.MECHA_WITHER.get(), ::MechaWitherRenderer)
+            event.registerEntityRenderer(ModEntities.MECHA_LASER_BOLT.get(), ::MechaLaserBoltRenderer)
+            event.registerEntityRenderer(ModEntities.MECHA_ROCKET.get(), ::MechaRocketRenderer)
         }
 
         // 3. 3D-слои моделей
@@ -179,6 +191,15 @@ object ModEntityEvents {
             }
             event.registerLayerDefinition(AbyssalWalkerModel.LAYER_LOCATION) {
                 AbyssalWalkerModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(AbyssalRayModel.LAYER_LOCATION) {
+                AbyssalRayModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(MechaWitherModel.LAYER_LOCATION) {
+                MechaWitherModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(MechaRocketModel.LAYER_LOCATION) {
+                MechaRocketModel.createBodyLayer()
             }
         }
 
@@ -308,6 +329,13 @@ object ModEntityEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 AbyssalWalkerEntity::checkAbyssalWalkerSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.ABYSSAL_RAY.get(),
+                SpawnPlacementTypes.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                AbyssalRayEntity::checkAbyssalRaySpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
             )
         }

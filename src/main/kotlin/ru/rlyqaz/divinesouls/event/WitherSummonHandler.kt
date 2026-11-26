@@ -55,7 +55,7 @@ object WitherSummonHandler {
         }
     }
 
-    // 2. Перехватываем установку черепа или Блока Печати
+    // 2. Перехватываем установку черепа или Блока Печати / Механического ядра Иссушения
     @SubscribeEvent
     fun onBlockPlaced(event: BlockEvent.EntityPlaceEvent) {
         val level = event.level as? Level ?: return
@@ -64,21 +64,98 @@ object WitherSummonHandler {
         val placedState = event.placedBlock
         val pos = event.pos
 
-        val isSkull = placedState.`is`(Blocks.WITHER_SKELETON_SKULL) || placedState.`is`(Blocks.WITHER_SKELETON_WALL_SKULL)
+        val isWitherSkull = placedState.`is`(Blocks.WITHER_SKELETON_SKULL) || placedState.`is`(Blocks.WITHER_SKELETON_WALL_SKULL)
         val isSealBlock = placedState.`is`(ModBlocks.WITHER_SEAL_BLOCK.get())
 
-        if (!isSkull && !isSealBlock) return
-
-        if (isSkull) {
-            val possibleCenters = listOf(pos, pos.north(), pos.south(), pos.east(), pos.west())
-            for (center in possibleCenters) {
-                if (trySpawnCustomWither(level, center)) {
-                    return
+        if (isWitherSkull || isSealBlock) {
+            if (isWitherSkull) {
+                val possibleCenters = listOf(pos, pos.north(), pos.south(), pos.east(), pos.west())
+                for (center in possibleCenters) {
+                    if (trySpawnCustomWither(level, center)) return
                 }
+            } else {
+                trySpawnCustomWither(level, pos)
             }
-        } else {
-            trySpawnCustomWither(level, pos)
+            return
         }
+
+        // Призыв Мех-Визера (строго в Верхнем мире!)
+        val isSkeletonSkull = placedState.`is`(Blocks.SKELETON_SKULL) || placedState.`is`(Blocks.SKELETON_WALL_SKULL)
+        val isMechaCore = placedState.`is`(ModBlocks.MECHA_WITHER_CORE_BLOCK.get())
+
+        if (isSkeletonSkull || isMechaCore) {
+            if (level.dimension() != Level.OVERWORLD) return
+            if (isSkeletonSkull) {
+                val possibleCenters = listOf(pos, pos.north(), pos.south(), pos.east(), pos.west())
+                for (center in possibleCenters) {
+                    if (trySpawnMechaWither(level, center)) return
+                }
+            } else {
+                trySpawnMechaWither(level, pos)
+            }
+        }
+    }
+
+    private fun trySpawnMechaWither(level: Level, corePos: BlockPos): Boolean {
+        if (level.dimension() != Level.OVERWORLD) return false
+        if (!level.getBlockState(corePos).`is`(ModBlocks.MECHA_WITHER_CORE_BLOCK.get())) return false
+
+        val abyssBlock = ModBlocks.ABYSSAL_BLOCK.get()
+        val midBase = corePos.below()
+        val bottomBase = midBase.below()
+        if (!level.getBlockState(midBase).`is`(abyssBlock)) return false
+        if (!level.getBlockState(bottomBase).`is`(abyssBlock)) return false
+
+        val axes = listOf(Pair(Direction.NORTH, Direction.SOUTH), Pair(Direction.WEST, Direction.EAST))
+
+        for ((dir1, dir2) in axes) {
+            val sideBase1 = midBase.relative(dir1)
+            val sideBase2 = midBase.relative(dir2)
+            val skullPos1 = corePos.relative(dir1)
+            val skullPos2 = corePos.relative(dir2)
+
+            val hasArms = level.getBlockState(sideBase1).`is`(abyssBlock) &&
+                    level.getBlockState(sideBase2).`is`(abyssBlock)
+
+            val hasSkulls = isSkeletonSkull(level, skullPos1) && isSkeletonSkull(level, skullPos2)
+
+            if (hasArms && hasSkulls) {
+                val blocksToClear = listOf(corePos, midBase, bottomBase, sideBase1, sideBase2, skullPos1, skullPos2)
+                for (clearPos in blocksToClear) {
+                    level.setBlock(clearPos, Blocks.AIR.defaultBlockState(), 3)
+                    level.levelEvent(2001, clearPos, Block.getId(abyssBlock.defaultBlockState()))
+                }
+
+                val mechaWither = ru.rlyqaz.divinesouls.entity.ModEntities.MECHA_WITHER.get().create(level)
+                if (mechaWither != null) {
+                    mechaWither.moveTo(
+                        corePos.x + 0.5,
+                        bottomBase.y + 0.55,
+                        corePos.z + 0.5,
+                        0.0f,
+                        0.0f
+                    )
+                    mechaWither.setPersistenceRequired()
+                    level.addFreshEntity(mechaWither)
+
+                    level.playSound(
+                        null, corePos.x.toDouble(), corePos.y.toDouble(), corePos.z.toDouble(),
+                        SoundEvents.ANVIL_LAND, SoundSource.HOSTILE, 1.3f, 0.55f
+                    )
+                    level.playSound(
+                        null, corePos.x.toDouble(), corePos.y.toDouble(), corePos.z.toDouble(),
+                        SoundEvents.BEACON_ACTIVATE, SoundSource.HOSTILE, 1.4f, 0.7f
+                    )
+                }
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun isSkeletonSkull(level: Level, pos: BlockPos): Boolean {
+        val state = level.getBlockState(pos)
+        return state.`is`(Blocks.SKELETON_SKULL) || state.`is`(Blocks.SKELETON_WALL_SKULL)
     }
 
     // 3. Проверка новой конструкции с Блоком Печати и выдача достижения игрокам рядом

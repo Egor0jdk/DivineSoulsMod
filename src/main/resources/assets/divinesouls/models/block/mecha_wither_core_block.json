@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "divinesouls:block/mecha_wither_core_block"
+  }
+}

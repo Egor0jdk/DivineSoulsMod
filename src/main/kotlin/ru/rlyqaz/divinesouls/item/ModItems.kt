@@ -568,6 +568,74 @@ object ModItems {
         Item(Item.Properties().rarity(Rarity.UNCOMMON))
     }
 
+    // Яйцо призыва Парящего ската Бездны
+    val ABYSSAL_RAY_SPAWN_EGG: Supplier<Item> = registerItem("abyssal_ray_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.ABYSSAL_RAY,
+            0x0F172A,
+            0x38BDF8,
+            Item.Properties()
+        )
+    }
+
+    val RAW_RAY_MEAT: Supplier<Item> = registerItem("raw_ray_meat") {
+        Item(
+            Item.Properties().food(
+                net.minecraft.world.food.FoodProperties.Builder()
+                    .nutrition(3)
+                    .saturationModifier(0.3f)
+                    .effect(
+                        { net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.CONFUSION, 80, 0) },
+                        0.15f
+                    )
+                    .build()
+            )
+        )
+    }
+
+    val COOKED_RAY_MEAT: Supplier<Item> = registerItem("cooked_ray_meat") {
+        Item(
+            Item.Properties().food(
+                net.minecraft.world.food.FoodProperties.Builder()
+                    .nutrition(8)
+                    .saturationModifier(0.8f)
+                    .build()
+            )
+        )
+    }
+
+    // Яйцо призыва Мех-Визера
+    val MECHA_WITHER_SPAWN_EGG: Supplier<Item> = registerItem("mecha_wither_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.MECHA_WITHER,
+            0x1E293B,
+            0xEF4444,
+            Item.Properties()
+        )
+    }
+
+    // Механическая душа (100% дроп с Мех-Визера -> призывалка финального босса Бездны)
+    val MECHA_SOUL: Supplier<Item> = registerItem("mecha_soul") {
+        Item(Item.Properties().rarity(Rarity.EPIC))
+    }
+
+    // Расплавленное сердце (дроп с Лавового голема после победы над Мех-Визером)
+    val MOLTEN_HEART: Supplier<Item> = registerItem("molten_heart") {
+        Item(Item.Properties().rarity(Rarity.RARE))
+    }
+
+    // Искатель джунглей (Слитки абиссалита по углам + Лианы крестом + Ядро искателя)
+    val JUNGLE_LOCATOR: Supplier<Item> = registerItem("jungle_locator") {
+        ru.rlyqaz.divinesouls.item.custom.SingleUseLocatorItem(
+            properties = Item.Properties().stacksTo(16).rarity(Rarity.RARE),
+            tooltipKey = "tooltip.divinesouls.jungle_locator",
+            biomeTag = net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.BIOME,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, "jungle_locator")
+            )
+        )
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }

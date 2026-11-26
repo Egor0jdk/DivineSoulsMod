@@ -589,6 +589,18 @@ object ModBlocks {
         }
     }
 
+    // Механическое ядро Иссушения (центральный блок для Т-образного призыва Мех-Визера в Верхнем мире)
+    val MECHA_WITHER_CORE_BLOCK: Supplier<Block> = registerBlock("mecha_wither_core_block") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLUE)
+                .strength(8.0f, 16.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.METAL)
+                .lightLevel { 9 }
+        )
+    }
+
     // ====================================================================
     // АВТОМАТИЧЕСКАЯ РЕГИСТРАЦИЯ БЛОКОВ И ИХ ПРЕДМЕТОВ (BLOCK ITEMS)
     // ====================================================================

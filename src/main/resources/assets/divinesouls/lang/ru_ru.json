@@ -82,6 +82,10 @@
   "item.divinesouls.mycelial_bark": "Мицелиевая кора",
   "item.divinesouls.abyssal_membrane": "Мембрана Бездны",
   "block.divinesouls.abyssal_stalagmite": "Сталагмит Бездны",
+  "block.divinesouls.mecha_wither_core_block": "Механическое ядро Иссушения",
+  "item.divinesouls.mecha_soul": "Механическая душа",
+  "item.divinesouls.molten_heart": "Расплавленное сердце",
+  "item.divinesouls.jungle_locator": "Искатель джунглей",
 
   "item.divinesouls.raw_crab_meat": "Сырое крабовое мясо",
   "item.divinesouls.cooked_crab_meat": "Жареное крабовое мясо",
@@ -89,6 +93,8 @@
   "item.minecraft.potion.effect.mana_potion": "Зелье маны",
   "item.minecraft.splash_potion.effect.mana_potion": "Взрывное зелье маны",
   "item.minecraft.lingering_potion.effect.mana_potion": "Туманное зелье маны",
+  "item.divinesouls.raw_ray_meat": "Сырое мясо ската",
+  "item.divinesouls.cooked_ray_meat": "Жареное мясо ската",
 
   "item.divinesouls.end_crystal_sword": "Меч из самоцвета Энда",
   "item.divinesouls.end_crystal_pickaxe": "Кирка из самоцвета Энда",
@@ -140,6 +146,8 @@
   "entity.divinesouls.abyssal_shadow": "Тень Бездны",
   "entity.divinesouls.abyssal_sporeling": "Споровик Бездны",
   "entity.divinesouls.abyssal_walker": "Грибной скиталец",
+  "entity.divinesouls.abyssal_ray": "Парящий скат Бездны",
+  "entity.divinesouls.mecha_wither": "Мех-Визер",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Яйцо призыва Духа Скорби",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Яйцо призыва Близнецов Иссушения",
@@ -162,6 +170,8 @@
   "item.divinesouls.abyssal_shadow_spawn_egg": "Яйцо призыва тени Бездны",
   "item.divinesouls.abyssal_sporeling_spawn_egg": "Яйцо призыва споровика Бездны",
   "item.divinesouls.abyssal_walker_spawn_egg": "Яйцо призыва грибного скитальца",
+  "item.divinesouls.abyssal_ray_spawn_egg": "Яйцо призыва парящего ската Бездны",
+  "item.divinesouls.mecha_wither_spawn_egg": "Яйцо призыва Мех-Визера",
 
   "advancements.divinesouls.kill_warden.title": "Свержение Привратника",
   "advancements.divinesouls.kill_warden.description": "Одолейте Хранителя глубин и соберите его душу для создания Древней Руны",
@@ -187,5 +197,7 @@
   "tooltip.divinesouls.bastion_locator": "Одноразовый. Указывает направление к ближайшему бастиону",
   "tooltip.divinesouls.mycelial_bark_1": "+15% к скорости передвижения",
   "tooltip.divinesouls.mycelial_bark_2": "+4.0 блока безопасного падения",
-  "tooltip.divinesouls.mycelial_bark_3": "Двойное нажатие A или D для рывка в сторону"
+  "tooltip.divinesouls.mycelial_bark_3": "Двойное нажатие A или D для рывка в сторону",
+  "tooltip.divinesouls.jungle_locator": "Одноразовый. Указывает направление к ближайшим джунглям",
+  "message.divinesouls.post_mech_unlocked": "Древние джунгли и расплавленные недра пробудились!"
 }

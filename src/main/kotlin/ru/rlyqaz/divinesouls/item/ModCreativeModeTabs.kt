@@ -35,6 +35,7 @@ object ModCreativeModeTabs {
                 output.accept(ModItems.LIVING_MYCELIUM.get())
                 output.accept(ModItems.ABYSS_ESSENCE.get())
                 output.accept(ModItems.ABYSSAL_MEMBRANE.get())
+                output.accept(ModItems.MOLTEN_HEART.get())
                 output.accept(ModItems.LOCATOR_CORE.get())
                 output.accept(ModItems.NETHER_ESSENCE.get())
                 output.accept(ModItems.END_WOOD_STICK.get())
@@ -52,11 +53,13 @@ object ModCreativeModeTabs {
                 output.accept(ModItems.BASTION_LOCATOR.get())
                 output.accept(ModItems.END_CITY_LOCATOR.get())
                 output.accept(ModItems.SWAMP_LOCATOR.get())
+                output.accept(ModItems.JUNGLE_LOCATOR.get())
                 output.accept(ModItems.WARDEN_SOUL.get())
                 output.accept(ModItems.SOUL_OF_FLIGHT.get())
                 output.accept(ModItems.BURNING_SOUL.get())
                 output.accept(ModItems.DRAGON_SOUL_SHARD.get())
                 output.accept(ModItems.AWOKEN_WARDEN_SOUL.get())
+                output.accept(ModItems.MECHA_SOUL.get())
             }
             .build()
     })
@@ -80,6 +83,7 @@ object ModCreativeModeTabs {
                 output.accept(ModWeapons.POISON_THROWING_DAGGER.get())
                 output.accept(ModItems.FIRE_BOW.get())
                 output.accept(ModItems.INFERNAL_CORE.get())
+
                 // Стрелы маны (I и II)
                 output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
                     net.minecraft.world.item.Items.TIPPED_ARROW,
@@ -132,7 +136,9 @@ object ModCreativeModeTabs {
                 output.accept(ModItems.ABYSSAL_SPORELING_SPAWN_EGG.get())
                 output.accept(ModItems.ABYSSAL_WALKER_SPAWN_EGG.get())
                 output.accept(ModItems.ABYSSAL_SHADOW_SPAWN_EGG.get())
+                output.accept(ModItems.ABYSSAL_RAY_SPAWN_EGG.get())
                 output.accept(ModItems.TWIN_WITHER_SKELETON_SPAWN_EGG.get())
+                output.accept(ModItems.MECHA_WITHER_SPAWN_EGG.get())
             }
             .build()
     })
@@ -172,6 +178,7 @@ object ModCreativeModeTabs {
                 output.accept(ModBlocks.ABYSSAL_BLOCK.get())
                 output.accept(ModBlocks.WITHER_SEAL_BLOCK.get())
                 output.accept(ModBlocks.ABYSS_PEDESTAL.get())
+                output.accept(ModBlocks.MECHA_WITHER_CORE_BLOCK.get())
             }
             .build()
     })
@@ -200,6 +207,9 @@ object ModCreativeModeTabs {
             .displayItems { _, output ->
                 output.accept(ModItems.RAW_CRAB_MEAT.get())
                 output.accept(ModItems.COOKED_CRAB_MEAT.get())
+                output.accept(ModItems.RAW_RAY_MEAT.get())
+                output.accept(ModItems.COOKED_RAY_MEAT.get())
+
                 // Обычные зелья маны (I и II)
                 output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
                     net.minecraft.world.item.Items.POTION,
@@ -209,6 +219,7 @@ object ModCreativeModeTabs {
                     net.minecraft.world.item.Items.POTION,
                     ru.rlyqaz.divinesouls.potion.ModPotions.STRONG_MANA_POTION
                 ))
+
                 // Взрывные зелья маны (I и II)
                 output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
                     net.minecraft.world.item.Items.SPLASH_POTION,
@@ -218,6 +229,7 @@ object ModCreativeModeTabs {
                     net.minecraft.world.item.Items.SPLASH_POTION,
                     ru.rlyqaz.divinesouls.potion.ModPotions.STRONG_MANA_POTION
                 ))
+
                 // Туманные зелья маны (I и II)
                 output.accept(net.minecraft.world.item.alchemy.PotionContents.createItemStack(
                     net.minecraft.world.item.Items.LINGERING_POTION,

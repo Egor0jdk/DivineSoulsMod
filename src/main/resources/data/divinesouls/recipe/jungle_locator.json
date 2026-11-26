@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "AVA",
+    "VCV",
+    "AVA"
+  ],
+  "key": {
+    "A": {
+      "item": "divinesouls:abyssal_ingot"
+    },
+    "V": {
+      "item": "minecraft:vine"
+    },
+    "C": {
+      "item": "divinesouls:locator_core"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:jungle_locator"
+  }
+}

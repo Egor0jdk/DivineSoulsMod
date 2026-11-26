@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "AEA",
+    "ERE",
+    "AEA"
+  ],
+  "key": {
+    "A": {
+      "item": "divinesouls:abyssal_block"
+    },
+    "E": {
+      "item": "divinesouls:abyss_essence"
+    },
+    "R": {
+      "item": "minecraft:redstone_block"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:mecha_wither_core_block"
+  }
+}
