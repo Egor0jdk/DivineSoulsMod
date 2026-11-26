@@ -157,4 +157,46 @@ object WardenBalanceHandler {
         }
         activeBossEvents.clear()
     }
+
+    @SubscribeEvent
+    fun onWardenChangeTarget(event: net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent) {
+        val warden = event.entity as? Warden ?: return
+        val newTarget = event.newAboutToBeSetTarget
+        if (newTarget is ru.rlyqaz.divinesouls.entity.custom.SculkCrawlerEntity ||
+            newTarget is ru.rlyqaz.divinesouls.entity.custom.SculkStalkerEntity
+        ) {
+            warden.clearAnger(newTarget)
+            event.newAboutToBeSetTarget = null
+            event.isCanceled = true
+        }
+    }
+
+    @SubscribeEvent
+    fun onWardenTickCalmSculk(event: net.neoforged.neoforge.event.tick.EntityTickEvent.Pre) {
+        val warden = event.entity as? Warden ?: return
+        if (warden.level().isClientSide) return
+
+        val brainTarget = warden.brain.getMemory(net.minecraft.world.entity.ai.memory.MemoryModuleType.ATTACK_TARGET).orElse(null)
+        if (brainTarget is ru.rlyqaz.divinesouls.entity.custom.SculkCrawlerEntity ||
+            brainTarget is ru.rlyqaz.divinesouls.entity.custom.SculkStalkerEntity
+        ) {
+            warden.clearAnger(brainTarget)
+            warden.brain.eraseMemory(net.minecraft.world.entity.ai.memory.MemoryModuleType.ATTACK_TARGET)
+            warden.brain.eraseMemory(net.minecraft.world.entity.ai.memory.MemoryModuleType.ROAR_TARGET)
+            warden.brain.eraseMemory(net.minecraft.world.entity.ai.memory.MemoryModuleType.ANGRY_AT)
+        }
+    }
+
+    @SubscribeEvent
+    fun onWardenDamageSculkAllies(event: net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent) {
+        val attacker = event.source.entity
+        if (attacker is Warden && (
+                    event.entity is ru.rlyqaz.divinesouls.entity.custom.SculkCrawlerEntity ||
+                            event.entity is ru.rlyqaz.divinesouls.entity.custom.SculkStalkerEntity
+                    )
+        ) {
+            attacker.clearAnger(event.entity)
+            event.isCanceled = true
+        }
+    }
 }

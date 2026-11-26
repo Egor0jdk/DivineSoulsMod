@@ -92,6 +92,16 @@ object ManaManager {
                     ru.rlyqaz.divinesouls.item.custom.LivingBarkItem.SAFE_FALL_MODIFIER_ID
                 )
             }
+
+            val hasMycelialBark = player.inventory.contains { it.item is ru.rlyqaz.divinesouls.item.custom.MycelialBarkItem }
+            if (!hasMycelialBark) {
+                player.getAttribute(Attributes.MOVEMENT_SPEED)?.removeModifier(
+                    ru.rlyqaz.divinesouls.item.custom.MycelialBarkItem.SPEED_MODIFIER_ID
+                )
+                player.getAttribute(Attributes.SAFE_FALL_DISTANCE)?.removeModifier(
+                    ru.rlyqaz.divinesouls.item.custom.MycelialBarkItem.SAFE_FALL_MODIFIER_ID
+                )
+            }
         }
 
         if (data.regenDelayTicks != 0) {

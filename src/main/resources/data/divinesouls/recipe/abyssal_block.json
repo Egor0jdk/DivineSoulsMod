@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "divinesouls:abyssal_ingot"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:abyssal_block"
+  }
+}

@@ -76,7 +76,7 @@ class SculkCrawlerEntity(
             val endLevel = serverLevel.server.getLevel(Level.END)
             if (endLevel?.dragonFight?.hasPreviouslyKilledDragon() != true) return false
 
-            val inSculkSurface = SculkInfectionManager.isSculkBiomeAt(serverLevel.seed, pos.x, pos.z)
+            val inSculkSurface = SculkInfectionManager.isSculkBiomeAt(serverLevel, pos.x, pos.z)
             val inDeepDark = level.getBiome(pos).`is`(Biomes.DEEP_DARK)
             if (!inSculkSurface && !inDeepDark) return false
 
@@ -112,6 +112,14 @@ class SculkCrawlerEntity(
         targetSelector.addGoal(1, HurtByTargetGoal(this))
     }
 
+    private fun isValidSculkPrey(entity: LivingEntity): Boolean {
+        if (!entity.isAlive) return false
+        if (entity is SculkCrawlerEntity || entity is SculkStalkerEntity || entity is net.minecraft.world.entity.monster.warden.Warden) return false
+        if (entity is net.minecraft.world.entity.decoration.ArmorStand) return false
+        if (entity is Player && (entity.isCreative || entity.isSpectator)) return false
+        return true
+    }
+
     override fun customServerAiStep() {
         super.customServerAiStep()
         val serverLevel = level() as? ServerLevel ?: return
@@ -120,11 +128,11 @@ class SculkCrawlerEntity(
             echoWaveTicks--
         }
 
-        // 1. Слух: засекаем игроков рядом, которые не крадутся на Shift и двигаются/прыгают
+        // 1. Слух: засекаем любых живых существ рядом, которые не крадутся на Shift и двигаются/прыгают
         if (target == null || !target!!.isAlive) {
-            val heardPlayer = findAudiblePlayer(serverLevel, 14.0)
-            if (heardPlayer != null) {
-                alertToTarget(serverLevel, heardPlayer, playPing = false)
+            val heardPrey = findAudiblePrey(serverLevel, 14.0)
+            if (heardPrey != null) {
+                alertToTarget(serverLevel, heardPrey, playPing = false)
             }
         } else {
             val currentTarget = target
@@ -139,7 +147,7 @@ class SculkCrawlerEntity(
             }
         }
 
-        // 2. Активная эхо-локация каждые ~3.5–4.5 секунды
+        // 2. Активная эхо-локация каждые ~3.5–4.5 секунды (засекает всех живых существ, как Варден!)
         if (echolocationCooldown != 0) {
             echolocationCooldown--
         } else {
@@ -148,15 +156,13 @@ class SculkCrawlerEntity(
         }
     }
 
-    private fun findAudiblePlayer(level: ServerLevel, radius: Double): Player? {
+    private fun findAudiblePrey(level: ServerLevel, radius: Double): LivingEntity? {
         val box = boundingBox.inflate(radius)
-        val players = level.getEntitiesOfClass(Player::class.java, box) { p ->
-            p.isAlive && !p.isCreative && !p.isSpectator
-        }
-        for (p in players) {
-            if (p.isCrouching && p.onGround()) continue
-            val isMoving = p.deltaMovement.horizontalDistanceSqr().compareTo(0.002) == 1 || !p.onGround()
-            if (isMoving) return p
+        val entities = level.getEntitiesOfClass(LivingEntity::class.java, box) { isValidSculkPrey(it) }
+        for (e in entities) {
+            if (e.isCrouching && e.onGround()) continue
+            val isMoving = e.deltaMovement.horizontalDistanceSqr().compareTo(0.002) == 1 || !e.onGround()
+            if (isMoving) return e
         }
         return null
     }
@@ -168,12 +174,11 @@ class SculkCrawlerEntity(
             1.1f, 1.25f
         )
 
-        // Запускаем синхронизированный 3D-обруч волны на клиенте (14 тиков)
         echoWaveTicks = 14
 
         val pulseRadius = 13.5
-        val detected = level.getEntitiesOfClass(Player::class.java, boundingBox.inflate(pulseRadius)) { p ->
-            p.isAlive && !p.isCreative && !p.isSpectator && distanceToSqr(p).compareTo(pulseRadius * pulseRadius) != 1
+        val detected = level.getEntitiesOfClass(LivingEntity::class.java, boundingBox.inflate(pulseRadius)) { e ->
+            isValidSculkPrey(e) && distanceToSqr(e).compareTo(pulseRadius * pulseRadius) != 1
         }.minByOrNull { distanceToSqr(it) }
 
         if (detected != null) {
@@ -181,8 +186,8 @@ class SculkCrawlerEntity(
         }
     }
 
-    private fun alertToTarget(level: ServerLevel, player: Player, playPing: Boolean) {
-        target = player
+    private fun alertToTarget(level: ServerLevel, prey: LivingEntity, playPing: Boolean) {
+        target = prey
         memoryTicks = 90
         if (playPing) {
             level.playSound(

@@ -41,6 +41,11 @@ import ru.rlyqaz.divinesouls.entity.client.LavaGolemModel
 import ru.rlyqaz.divinesouls.entity.client.LavaGolemRenderer
 import ru.rlyqaz.divinesouls.entity.client.PurpurGuardianModel
 import ru.rlyqaz.divinesouls.entity.client.PurpurGuardianRenderer
+import ru.rlyqaz.divinesouls.entity.client.AbyssalShadowRenderer
+import ru.rlyqaz.divinesouls.entity.client.AbyssalSporelingModel
+import ru.rlyqaz.divinesouls.entity.client.AbyssalSporelingRenderer
+import ru.rlyqaz.divinesouls.entity.client.AbyssalWalkerModel
+import ru.rlyqaz.divinesouls.entity.client.AbyssalWalkerRenderer
 import ru.rlyqaz.divinesouls.entity.custom.MeadowSlimeEntity
 import ru.rlyqaz.divinesouls.entity.custom.SandyCrabEntity
 import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
@@ -58,6 +63,9 @@ import ru.rlyqaz.divinesouls.entity.custom.UnicornEntity
 import ru.rlyqaz.divinesouls.entity.custom.AstralWandererEntity
 import ru.rlyqaz.divinesouls.entity.custom.LavaGolemEntity
 import ru.rlyqaz.divinesouls.entity.custom.PurpurGuardianEntity
+import ru.rlyqaz.divinesouls.entity.custom.AbyssalShadowEntity
+import ru.rlyqaz.divinesouls.entity.custom.AbyssalSporelingEntity
+import ru.rlyqaz.divinesouls.entity.custom.AbyssalWalkerEntity
 
 object ModEntityEvents {
 
@@ -81,6 +89,11 @@ object ModEntityEvents {
             event.put(ModEntities.ASTRAL_WANDERER.get(), AstralWandererEntity.createAttributes().build())
             event.put(ModEntities.LAVA_GOLEM.get(), LavaGolemEntity.createAttributes().build())
             event.put(ModEntities.PURPUR_GUARDIAN.get(), PurpurGuardianEntity.createAttributes().build())
+            event.put(ModEntities.ABYSSAL_SHADOW.get(), AbyssalShadowEntity.createAttributes().build())
+            event.put(ModEntities.ABYSSAL_SPORELING.get(), AbyssalSporelingEntity.createAttributes().build())
+            event.put(ModEntities.ABYSSAL_WALKER.get(), AbyssalWalkerEntity.createAttributes().build())
+
+
         }
 
         // 2. Рендереры мобов
@@ -107,6 +120,11 @@ object ModEntityEvents {
             event.registerEntityRenderer(ModEntities.LOCATOR_EYE.get()) { ctx ->
                 net.minecraft.client.renderer.entity.ThrownItemRenderer(ctx, 1.0f, true)
             }
+            event.registerEntityRenderer(ModEntities.ABYSSAL_SHADOW.get(), ::AbyssalShadowRenderer)
+            event.registerEntityRenderer(ModEntities.ABYSSAL_SPORELING.get(), ::AbyssalSporelingRenderer)
+            event.registerEntityRenderer(ModEntities.ABYSSAL_WALKER.get(), ::AbyssalWalkerRenderer)
+
+
         }
 
         // 3. 3D-слои моделей
@@ -155,6 +173,12 @@ object ModEntityEvents {
             }
             event.registerLayerDefinition(PurpurGuardianModel.LAYER_LOCATION) {
                 PurpurGuardianModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(AbyssalSporelingModel.LAYER_LOCATION) {
+                AbyssalSporelingModel.createBodyLayer()
+            }
+            event.registerLayerDefinition(AbyssalWalkerModel.LAYER_LOCATION) {
+                AbyssalWalkerModel.createBodyLayer()
             }
         }
 
@@ -263,6 +287,27 @@ object ModEntityEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 LavaGolemEntity::checkLavaGolemSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.ABYSSAL_SHADOW.get(),
+                SpawnPlacementTypes.NO_RESTRICTIONS,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                AbyssalShadowEntity::checkAbyssalShadowSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.ABYSSAL_SPORELING.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                AbyssalSporelingEntity::checkAbyssalSporelingSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE
+            )
+            event.register(
+                ModEntities.ABYSSAL_WALKER.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                AbyssalWalkerEntity::checkAbyssalWalkerSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE
             )
         }

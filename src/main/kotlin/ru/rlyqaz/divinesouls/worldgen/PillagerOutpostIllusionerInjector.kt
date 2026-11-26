@@ -11,11 +11,14 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.EquipmentSlot
 import net.minecraft.world.entity.MobSpawnType
+import net.minecraft.world.entity.monster.Illusioner
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.levelgen.structure.BuiltinStructures
 import net.minecraft.world.level.saveddata.SavedData
+import net.minecraft.world.phys.AABB
 import net.neoforged.bus.api.SubscribeEvent
 import net.neoforged.neoforge.event.EventHooks
 import net.neoforged.neoforge.event.level.ChunkEvent
@@ -44,7 +47,6 @@ object PillagerOutpostIllusionerInjector {
 
     @SubscribeEvent
     fun onChunkLoad(event: ChunkEvent.Load) {
-        if (!event.isNewChunk) return
         val level = event.level as? ServerLevel ?: return
         if (level.dimension() != Level.OVERWORLD) return
 
@@ -100,9 +102,16 @@ object PillagerOutpostIllusionerInjector {
                 if (!allLoaded) break
             }
 
-            if (!allLoaded) {
-                pendingOutposts.add(task)
-                break
+            if (!allLoaded) continue
+
+            // Проверяем, нет ли уже Иллюзора в пределах этого аванпоста
+            val outpostBox = AABB(
+                task.minX.toDouble(), task.minY.toDouble(), task.minZ.toDouble(),
+                task.maxX.toDouble(), task.maxY.toDouble() + 16.0, task.maxZ.toDouble()
+            )
+            if (level.getEntitiesOfClass(Illusioner::class.java, outpostBox).isNotEmpty()) {
+                savedData.markProcessed(task.outpostOrigin)
+                continue
             }
 
             val topRoomPos = findTopTowerRoom(level, task)
@@ -128,33 +137,30 @@ object PillagerOutpostIllusionerInjector {
                     }
                     illusioner.setPersistenceRequired()
                     level.addFreshEntity(illusioner)
+                    savedData.markProcessed(task.outpostOrigin)
                     DivineSoulsMod.LOGGER.info("Divine Souls: Spawned Illusioner at Pillager Outpost top room $topRoomPos")
                 }
             }
-
-            savedData.markProcessed(task.outpostOrigin)
         }
     }
 
-    /**
-     * Находит самую верхнюю комнату/балкон башни аванпоста (пол + 2 блока воздуха + крыша сверху, чтобы не спавнить на самой макушке)
-     */
     private fun findTopTowerRoom(level: ServerLevel, task: PendingOutpost): BlockPos? {
-        val centerX = (task.minX + task.maxX) / 2
-        val centerZ = (task.minZ + task.maxZ) / 2
-
-        // Ищем сверху вниз внутри башни: пол, над ним 2 блока воздуха, а выше (на +3..+5) есть крыша шатра
-        for (y in (task.maxY - 3) downTo (task.minY + 8)) {
-            for (dx in -3..3) {
-                for (dz in -3..3) {
-                    val pos = BlockPos(centerX + dx, y, centerZ + dz)
+        // Ищем сверху вниз по всей площади башни: пол из досок/брёвен/булыжника аванпоста, 2 блока воздуха и крышу шатра сверху
+        for (y in (task.maxY + 4) downTo (task.minY + 6)) {
+            for (x in task.minX..task.maxX) {
+                for (z in task.minZ..task.maxZ) {
+                    val pos = BlockPos(x, y, z)
                     val floor = level.getBlockState(pos.below())
-                    if (!floor.isSolidRender(level, pos.below())) continue
+                    val isTowerFloor = floor.`is`(Blocks.DARK_OAK_PLANKS) ||
+                            floor.`is`(Blocks.DARK_OAK_LOG) ||
+                            floor.`is`(Blocks.COBBLESTONE) ||
+                            floor.`is`(Blocks.MOSSY_COBBLESTONE)
+                    if (!isTowerFloor) continue
+
                     if (!level.getBlockState(pos).isAir || !level.getBlockState(pos.above()).isAir) continue
 
-                    // Проверяем, что над головой есть крыша башни (а не открытое небо на самом шпиле)
                     var hasRoof = false
-                    for (ry in 2..5) {
+                    for (ry in 2..7) {
                         if (!level.getBlockState(pos.above(ry)).isAir) {
                             hasRoof = true
                             break

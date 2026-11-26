@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    {
+      "item": "divinesouls:living_bark"
+    },
+    {
+      "item": "divinesouls:living_mycelium"
+    },
+    {
+      "item": "divinesouls:abyssal_spore"
+    },
+    {
+      "item": "divinesouls:wings_of_wind"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "divinesouls:mycelial_bark"
+  }
+}

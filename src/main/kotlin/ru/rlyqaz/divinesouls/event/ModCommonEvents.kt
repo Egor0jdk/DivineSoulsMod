@@ -88,13 +88,20 @@ object ModCommonEvents {
         }
     }
 
-    // 3. ОТКЛЮЧЕНИЕ ТИТРОВ ПОСЛЕ ПОРТАЛА ЭНДА
+    // 3. ОТКЛЮЧЕНИЕ ТИТРОВ ПОСЛЕ ПОРТАЛА ЭНДА И СИНХРОНИЗАЦИЯ ХАРДМОДА
     @SubscribeEvent
     fun onPlayerChangeDimension(event: net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent) {
         val player = event.entity as? net.minecraft.server.level.ServerPlayer ?: return
         if (event.from == net.minecraft.world.level.Level.END || event.to == net.minecraft.world.level.Level.END) {
             player.seenCredits = true
         }
+        ru.rlyqaz.divinesouls.network.HardmodeSyncPayload.syncToPlayer(player)
+    }
+
+    @SubscribeEvent
+    fun onPlayerLoggedIn(event: net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent) {
+        val player = event.entity as? net.minecraft.server.level.ServerPlayer ?: return
+        ru.rlyqaz.divinesouls.network.HardmodeSyncPayload.syncToPlayer(player)
     }
 
     // 4. СООБЩЕНИЕ В ДУХЕ СТЕНЫ ПЛОТИ РОВНО В МОМЕНТ РАСПАДА ДРАКОНА В ОПЫТ
@@ -122,6 +129,10 @@ object ModCommonEvents {
             server.playerList.broadcastSystemMessage(hardmodeMessage, false)
 
             for (player in server.playerList.players) {
+                net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(
+                    player,
+                    ru.rlyqaz.divinesouls.network.HardmodeSyncPayload(true)
+                )
                 player.level().playSound(
                     null,
                     player.x,
@@ -203,5 +214,81 @@ object ModCommonEvents {
                 break
             }
         }
+    }
+
+    // 8. ДЕБАГ-КОМАНДА /hardmode ДЛЯ БЫСТРОГО ТЕСТИРОВАНИЯ ХАРДМОД-КОНТЕНТА
+    @SubscribeEvent
+    fun onRegisterHardmodeCommand(event: net.neoforged.neoforge.event.RegisterCommandsEvent) {
+        event.dispatcher.register(
+            net.minecraft.commands.Commands.literal("hardmode")
+                .requires { it.hasPermission(2) }
+                .executes { ctx ->
+                    val source = ctx.source
+                    val server = source.server
+                    val endLevel = server.getLevel(net.minecraft.world.level.Level.END)
+                    val fight = endLevel?.dragonFight
+
+                    if (fight == null) {
+                        source.sendFailure(net.minecraft.network.chat.Component.literal("End dimension dragon fight not found!"))
+                        return@executes 0
+                    }
+
+                    // Ставим dragonKilled = true и previouslyKilled = true прямо в живой объект EndDragonFight
+                    for (field in net.minecraft.world.level.dimension.end.EndDragonFight::class.java.declaredFields) {
+                        if (field.type == Boolean::class.javaPrimitiveType && !java.lang.reflect.Modifier.isStatic(field.modifiers)) {
+                            if (field.name == "previouslyKilled" || field.name == "dragonKilled") {
+                                field.isAccessible = true
+                                field.setBoolean(fight, true)
+                            }
+                        }
+                    }
+
+                    // На случай если имена полей обфусцированы — дублируем по порядку (1 = dragonKilled, 2 = previouslyKilled)
+                    if (!fight.hasPreviouslyKilledDragon()) {
+                        val boolFields = net.minecraft.world.level.dimension.end.EndDragonFight::class.java.declaredFields.filter {
+                            it.type == Boolean::class.javaPrimitiveType && !java.lang.reflect.Modifier.isStatic(it.modifiers)
+                        }
+                        if (boolFields.size >= 3) {
+                            boolFields[1].isAccessible = true
+                            boolFields[1].setBoolean(fight, true)
+                            boolFields[2].isAccessible = true
+                            boolFields[2].setBoolean(fight, true)
+                        }
+                    }
+
+                    // Сразу фиксируем сохранение в worldData, чтобы не сбросилось при перезаходе в мир!
+                    endLevel.server.worldData.setEndDragonFightData(fight.saveData())
+
+                    val overworld = server.overworld()
+                    ru.rlyqaz.divinesouls.worldgen.SculkInfectionManager.infectLoadedChunksAroundPlayers(overworld)
+
+                    val hardmodeMessage = net.minecraft.network.chat.Component.translatable("message.divinesouls.hardmode_unlocked")
+                        .withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE, net.minecraft.ChatFormatting.BOLD)
+                    server.playerList.broadcastSystemMessage(hardmodeMessage, false)
+
+                    for (player in server.playerList.players) {
+                        net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(
+                            player,
+                            ru.rlyqaz.divinesouls.network.HardmodeSyncPayload(true)
+                        )
+                        player.level().playSound(
+                            null,
+                            player.x,
+                            player.y,
+                            player.z,
+                            net.minecraft.sounds.SoundEvents.WITHER_SPAWN,
+                            net.minecraft.sounds.SoundSource.MASTER,
+                            0.8f,
+                            0.75f
+                        )
+                    }
+
+                    source.sendSuccess(
+                        { net.minecraft.network.chat.Component.literal("Hardmode has been activated!").withStyle(net.minecraft.ChatFormatting.GREEN) },
+                        true
+                    )
+                    1
+                }
+        )
     }
 }

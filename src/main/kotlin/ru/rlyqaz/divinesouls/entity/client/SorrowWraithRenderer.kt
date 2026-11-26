@@ -10,7 +10,7 @@ class SorrowWraithRenderer(context: EntityRendererProvider.Context) :
     MobRenderer<SorrowWraithEntity, SorrowWraithModel<SorrowWraithEntity>>(
         context,
         SorrowWraithModel(context.bakeLayer(SorrowWraithModel.LAYER_LOCATION)),
-        0.5f // Размер тени под парящим духом
+        0.5f
     ) {
 
     // Жестко связываем рендерер с твоей текстурой-разметкой из Blockbench

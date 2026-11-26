@@ -479,6 +479,116 @@ object ModBlocks {
         }
     }
 
+    // Руда Абиссалита (генерируется в массивах Камня Бездны, требует кирку из Самоцвета Энда)
+    val ABYSSAL_ORE: Supplier<Block> = registerBlock("abyssal_ore") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLUE)
+                .strength(8.0f, 12.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.DEEPSLATE)
+                .lightLevel { 4 }
+        )
+    }
+
+    // Блок рудного абиссалита (9 единиц рудного абиссалита; также редко спавнится внутри гигантских рудных жил)
+    val RAW_ABYSSAL_BLOCK: Supplier<Block> = registerBlock("raw_abyssal_block") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLUE)
+                .strength(7.0f, 10.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.STONE)
+                .lightLevel { 5 }
+        )
+    }
+
+    // Блок Абиссалита (9 слитков абиссалита — каркас для призыва Мех-Визера)
+    val ABYSSAL_BLOCK: Supplier<Block> = registerBlock("abyssal_block") {
+        Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLUE)
+                .strength(8.0f, 14.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.METAL)
+                .lightLevel { 6 }
+        )
+    }
+
+    // Сталагмит Бездны (твёрдый крестовый каменный шип на полу из Камня Бездны, наносит урон при касании и падении)
+    val ABYSSAL_STALAGMITE: Supplier<Block> = registerBlock("abyssal_stalagmite") {
+        object : Block(
+            BlockBehaviour.Properties.of()
+                .mapColor(net.minecraft.world.level.material.MapColor.COLOR_BLUE)
+                .strength(2.0f, 6.0f)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.POINTED_DRIPSTONE)
+                .noOcclusion()
+                .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)
+        ) {
+            private val SHAPE: VoxelShape = box(4.0, 0.0, 4.0, 12.0, 13.0, 12.0)
+
+            override fun getShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = SHAPE
+
+            override fun getCollisionShape(state: BlockState, level: BlockGetter, pos: BlockPos, context: CollisionContext): VoxelShape = SHAPE
+
+            override fun canSurvive(state: BlockState, level: net.minecraft.world.level.LevelReader, pos: BlockPos): Boolean {
+                return level.getBlockState(pos.below()).`is`(ABYSSAL_STONE.get())
+            }
+
+            override fun updateShape(
+                state: BlockState,
+                direction: net.minecraft.core.Direction,
+                neighborState: BlockState,
+                level: net.minecraft.world.level.LevelAccessor,
+                pos: BlockPos,
+                neighborPos: BlockPos
+            ): BlockState {
+                if (direction == net.minecraft.core.Direction.DOWN && !state.canSurvive(level, pos)) {
+                    return Blocks.AIR.defaultBlockState()
+                }
+                return super.updateShape(state, direction, neighborState, level, pos, neighborPos)
+            }
+
+            override fun fallOn(
+                level: net.minecraft.world.level.Level,
+                state: BlockState,
+                pos: BlockPos,
+                entity: net.minecraft.world.entity.Entity,
+                fallDistance: Float
+            ) {
+                if (fallDistance > 0.5f) {
+                    entity.causeFallDamage(fallDistance + 1.5f, 2.2f, level.damageSources().stalagmite())
+                } else {
+                    super.fallOn(level, state, pos, entity, fallDistance)
+                }
+            }
+
+            override fun stepOn(
+                level: net.minecraft.world.level.Level,
+                pos: BlockPos,
+                state: BlockState,
+                entity: net.minecraft.world.entity.Entity
+            ) {
+                if (!level.isClientSide && entity is net.minecraft.world.entity.LivingEntity && entity.tickCount % 12 == 0) {
+                    entity.hurt(level.damageSources().stalagmite(), 2.5f)
+                }
+                super.stepOn(level, pos, state, entity)
+            }
+
+            override fun entityInside(
+                state: BlockState,
+                level: net.minecraft.world.level.Level,
+                pos: BlockPos,
+                entity: net.minecraft.world.entity.Entity
+            ) {
+                if (!level.isClientSide && entity is net.minecraft.world.entity.LivingEntity && entity.tickCount % 12 == 0) {
+                    entity.hurt(level.damageSources().stalagmite(), 2.5f)
+                }
+            }
+        }
+    }
+
     // ====================================================================
     // АВТОМАТИЧЕСКАЯ РЕГИСТРАЦИЯ БЛОКОВ И ИХ ПРЕДМЕТОВ (BLOCK ITEMS)
     // ====================================================================

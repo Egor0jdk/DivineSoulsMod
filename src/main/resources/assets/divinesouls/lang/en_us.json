@@ -68,6 +68,20 @@
   "block.divinesouls.abyssal_mushroom_cap": "Abyssal Mushroom Cap",
   "block.divinesouls.abyssal_mushroom": "Abyssal Mushroom",
   "block.divinesouls.abyssal_tuff": "Abyssal Tuff",
+  "block.divinesouls.abyssal_ore": "Abyssal Ore",
+  "block.divinesouls.raw_abyssal_block": "Block of Raw Abyssalite",
+  "block.divinesouls.abyssal_block": "Block of Abyssalite",
+  "item.divinesouls.raw_abyssal_ore": "Raw Abyssalite",
+  "item.divinesouls.abyssal_ingot": "Abyssalite Ingot",
+  "item.divinesouls.abyss_essence": "Abyss Essence",
+  "item.divinesouls.abyssal_spore": "Abyssal Spore",
+  "item.divinesouls.living_mycelium": "Living Mycelium",
+  "item.divinesouls.trial_chambers_locator": "Trial Chambers Locator",
+  "item.divinesouls.fortress_locator": "Nether Fortress Locator",
+  "item.divinesouls.bastion_locator": "Bastion Remnant Locator",
+  "item.divinesouls.mycelial_bark": "Mycelial Bark",
+  "item.divinesouls.abyssal_membrane": "Abyssal Membrane",
+  "block.divinesouls.abyssal_stalagmite": "Abyssal Stalagmite",
 
   "item.divinesouls.raw_crab_meat": "Raw Crab Meat",
   "item.divinesouls.cooked_crab_meat": "Cooked Crab Meat",
@@ -123,6 +137,9 @@
   "entity.divinesouls.astral_wanderer": "Astral Wanderer",
   "entity.divinesouls.lava_golem": "Lava Golem",
   "entity.divinesouls.purpur_guardian": "Purpur Guardian",
+  "entity.divinesouls.abyssal_shadow": "Abyssal Shadow",
+  "entity.divinesouls.abyssal_sporeling": "Abyssal Sporeling",
+  "entity.divinesouls.abyssal_walker": "Abyssal Walker",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Sorrow Wraith Spawn Egg",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Wither Twins Spawn Egg",
@@ -142,6 +159,9 @@
   "item.divinesouls.lava_golem_spawn_egg": "Lava Golem Spawn Egg",
   "item.divinesouls.purpur_guardian_spawn_egg": "Purpur Guardian Spawn Egg",
   "item.divinesouls.illusioner_spawn_egg": "Illusioner Spawn Egg",
+  "item.divinesouls.abyssal_shadow_spawn_egg": "Abyssal Shadow Spawn Egg",
+  "item.divinesouls.abyssal_sporeling_spawn_egg": "Abyssal Sporeling Spawn Egg",
+  "item.divinesouls.abyssal_walker_spawn_egg": "Abyssal Walker Spawn Egg",
 
   "advancements.divinesouls.kill_warden.title": "Overthrowing the Gatekeeper",
   "advancements.divinesouls.kill_warden.description": "Defeat the Guardian of the Depths and claim its soul to craft the Ancient Rune",
@@ -161,5 +181,11 @@
   "tooltip.divinesouls.ancient_city_locator": "Single-use. Points toward the nearest Ancient City",
   "tooltip.divinesouls.swamp_locator": "Single-use. Points toward the nearest Swamp",
   "message.divinesouls.locator_not_found": "No resonance detected nearby...",
-  "tooltip.divinesouls.end_city_locator": "Single-use. Points toward the nearest End City"
+  "tooltip.divinesouls.end_city_locator": "Single-use. Points toward the nearest End City",
+  "tooltip.divinesouls.trial_chambers_locator": "Single-use. Points toward the nearest Trial Chambers",
+  "tooltip.divinesouls.fortress_locator": "Single-use. Points toward the nearest Nether Fortress",
+  "tooltip.divinesouls.bastion_locator": "Single-use. Points toward the nearest Bastion Remnant",
+  "tooltip.divinesouls.mycelial_bark_1": "+15% Movement Speed",
+  "tooltip.divinesouls.mycelial_bark_2": "+4.0 Safe Fall Distance",
+  "tooltip.divinesouls.mycelial_bark_3": "Double-tap A or D to perform a sideways spore dash"
 }

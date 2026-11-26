@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "divinesouls:abyssal_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "divinesouls:abyssal_ingot"
+  }
+}

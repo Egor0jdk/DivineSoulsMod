@@ -10,6 +10,10 @@
     "divinesouls:abyssal_stone",
     "divinesouls:abyssal_cobblestone",
     "divinesouls:abyssal_mycelium",
-    "divinesouls:abyssal_tuff"
+    "divinesouls:abyssal_tuff",
+    "divinesouls:abyssal_ore",
+    "divinesouls:raw_abyssal_block",
+    "divinesouls:abyssal_block",
+    "divinesouls:abyssal_stalagmite"
   ]
 }

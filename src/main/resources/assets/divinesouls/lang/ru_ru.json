@@ -68,6 +68,20 @@
   "block.divinesouls.abyssal_mushroom_cap": "Шляпка гриба Бездны",
   "block.divinesouls.abyssal_mushroom": "Гриб Бездны",
   "block.divinesouls.abyssal_tuff": "Туф Бездны",
+  "block.divinesouls.abyssal_ore": "Руда Абиссалита",
+  "block.divinesouls.raw_abyssal_block": "Блок рудного абиссалита",
+  "block.divinesouls.abyssal_block": "Блок абиссалита",
+  "item.divinesouls.raw_abyssal_ore": "Рудный абиссалит",
+  "item.divinesouls.abyssal_ingot": "Слиток абиссалита",
+  "item.divinesouls.abyss_essence": "Эссенция Бездны",
+  "item.divinesouls.abyssal_spore": "Спора Бездны",
+  "item.divinesouls.living_mycelium": "Живой мицелий",
+  "item.divinesouls.trial_chambers_locator": "Искатель камер испытаний",
+  "item.divinesouls.fortress_locator": "Искатель адской крепости",
+  "item.divinesouls.bastion_locator": "Искатель бастиона",
+  "item.divinesouls.mycelial_bark": "Мицелиевая кора",
+  "item.divinesouls.abyssal_membrane": "Мембрана Бездны",
+  "block.divinesouls.abyssal_stalagmite": "Сталагмит Бездны",
 
   "item.divinesouls.raw_crab_meat": "Сырое крабовое мясо",
   "item.divinesouls.cooked_crab_meat": "Жареное крабовое мясо",
@@ -123,6 +137,9 @@
   "entity.divinesouls.astral_wanderer": "Астральный скиталец",
   "entity.divinesouls.lava_golem": "Лавовый голем",
   "entity.divinesouls.purpur_guardian": "Пурпуровый страж",
+  "entity.divinesouls.abyssal_shadow": "Тень Бездны",
+  "entity.divinesouls.abyssal_sporeling": "Споровик Бездны",
+  "entity.divinesouls.abyssal_walker": "Грибной скиталец",
 
   "item.divinesouls.sorrow_wraith_spawn_egg": "Яйцо призыва Духа Скорби",
   "item.divinesouls.twin_wither_skeleton_spawn_egg": "Яйцо призыва Близнецов Иссушения",
@@ -142,6 +159,9 @@
   "item.divinesouls.lava_golem_spawn_egg": "Яйцо призыва лавового голема",
   "item.divinesouls.purpur_guardian_spawn_egg": "Яйцо призыва пурпурового стража",
   "item.divinesouls.illusioner_spawn_egg": "Яйцо призыва иллюзора",
+  "item.divinesouls.abyssal_shadow_spawn_egg": "Яйцо призыва тени Бездны",
+  "item.divinesouls.abyssal_sporeling_spawn_egg": "Яйцо призыва споровика Бездны",
+  "item.divinesouls.abyssal_walker_spawn_egg": "Яйцо призыва грибного скитальца",
 
   "advancements.divinesouls.kill_warden.title": "Свержение Привратника",
   "advancements.divinesouls.kill_warden.description": "Одолейте Хранителя глубин и соберите его душу для создания Древней Руны",
@@ -161,5 +181,11 @@
   "tooltip.divinesouls.ancient_city_locator": "Одноразовый. Указывает направление к ближайшему Древнему городу",
   "tooltip.divinesouls.swamp_locator": "Одноразовый. Указывает направление к ближайшему болоту",
   "message.divinesouls.locator_not_found": "Поблизости не обнаружено отклика...",
-  "tooltip.divinesouls.end_city_locator": "Одноразовый. Указывает направление к ближайшему городу Энда"
+  "tooltip.divinesouls.end_city_locator": "Одноразовый. Указывает направление к ближайшему городу Энда",
+  "tooltip.divinesouls.trial_chambers_locator": "Одноразовый. Указывает направление к ближайшим камерам испытаний",
+  "tooltip.divinesouls.fortress_locator": "Одноразовый. Указывает направление к ближайшей адской крепости",
+  "tooltip.divinesouls.bastion_locator": "Одноразовый. Указывает направление к ближайшему бастиону",
+  "tooltip.divinesouls.mycelial_bark_1": "+15% к скорости передвижения",
+  "tooltip.divinesouls.mycelial_bark_2": "+4.0 блока безопасного падения",
+  "tooltip.divinesouls.mycelial_bark_3": "Двойное нажатие A или D для рывка в сторону"
 }

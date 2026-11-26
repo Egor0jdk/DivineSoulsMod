@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 1.2,
+  "ingredient": {
+    "item": "divinesouls:raw_abyssal_ore"
+  },
+  "result": {
+    "id": "divinesouls:abyssal_ingot"
+  }
+}

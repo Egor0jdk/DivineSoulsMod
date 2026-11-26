@@ -244,6 +244,11 @@ object DivineSoulsMod {
                 ru.rlyqaz.divinesouls.mana.ManaSyncPayload.STREAM_CODEC,
                 ru.rlyqaz.divinesouls.mana.ManaSyncPayload::handleClient
             )
+            registrar.playToClient(
+                ru.rlyqaz.divinesouls.network.HardmodeSyncPayload.TYPE,
+                ru.rlyqaz.divinesouls.network.HardmodeSyncPayload.STREAM_CODEC,
+                ru.rlyqaz.divinesouls.network.HardmodeSyncPayload::handleClient
+            )
         }
 
         // Регистрируем наш кастомный строитель обсидианового пьедестала в Энде

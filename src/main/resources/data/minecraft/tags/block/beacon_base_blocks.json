@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "divinesouls:end_crystal_block"
+    "divinesouls:end_crystal_block",
+    "divinesouls:abyssal_block"
   ]
 }

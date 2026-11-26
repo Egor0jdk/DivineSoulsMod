@@ -69,7 +69,7 @@ class SculkStalkerEntity(
 
             // Строго на поверхности Скалк-биома (не под землёй)
             if (!level.canSeeSky(pos)) return false
-            if (!SculkInfectionManager.isSculkBiomeAt(serverLevel.seed, pos.x, pos.z)) return false
+            if (!SculkInfectionManager.isSculkBiomeAt(serverLevel, pos.x, pos.z)) return false
             if (!level.getBlockState(pos).isAir) return false
 
             val nearby = level.getEntitiesOfClass(
@@ -90,6 +90,14 @@ class SculkStalkerEntity(
         targetSelector.addGoal(1, HurtByTargetGoal(this))
     }
 
+    private fun isValidSculkPrey(entity: LivingEntity): Boolean {
+        if (!entity.isAlive) return false
+        if (entity is SculkCrawlerEntity || entity is SculkStalkerEntity || entity is net.minecraft.world.entity.monster.warden.Warden) return false
+        if (entity is net.minecraft.world.entity.decoration.ArmorStand) return false
+        if (entity is Player && (entity.isCreative || entity.isSpectator)) return false
+        return true
+    }
+
     override fun customServerAiStep() {
         super.customServerAiStep()
         val serverLevel = level() as? ServerLevel ?: return
@@ -100,7 +108,7 @@ class SculkStalkerEntity(
 
         val currentTarget = target
         if (currentTarget == null || !currentTarget.isAlive) {
-            val heard = findAudiblePlayer(serverLevel, 18.0)
+            val heard = findAudiblePrey(serverLevel, 18.0)
             if (heard != null) {
                 lockOntoPrey(serverLevel, heard, screech = true)
             }
@@ -120,8 +128,8 @@ class SculkStalkerEntity(
             scanCooldown--
         } else {
             scanCooldown = 90 + random.nextInt(30)
-            val nearbyPrey = serverLevel.getEntitiesOfClass(Player::class.java, boundingBox.inflate(14.0)) { p ->
-                p.isAlive && !p.isCreative && !p.isSpectator
+            val nearbyPrey = serverLevel.getEntitiesOfClass(LivingEntity::class.java, boundingBox.inflate(14.0)) {
+                isValidSculkPrey(it)
             }.minByOrNull { distanceToSqr(it) }
 
             if (nearbyPrey != null) {
@@ -130,20 +138,20 @@ class SculkStalkerEntity(
         }
     }
 
-    private fun findAudiblePlayer(level: ServerLevel, radius: Double): Player? {
-        val players = level.getEntitiesOfClass(Player::class.java, boundingBox.inflate(radius)) { p ->
-            p.isAlive && !p.isCreative && !p.isSpectator
+    private fun findAudiblePrey(level: ServerLevel, radius: Double): LivingEntity? {
+        val entities = level.getEntitiesOfClass(LivingEntity::class.java, boundingBox.inflate(radius)) {
+            isValidSculkPrey(it)
         }
-        for (p in players) {
-            if (p.isCrouching && p.onGround()) continue
-            if (p.deltaMovement.horizontalDistanceSqr() > 0.002 || !p.onGround()) return p
+        for (e in entities) {
+            if (e.isCrouching && e.onGround()) continue
+            if (e.deltaMovement.horizontalDistanceSqr() > 0.002 || !e.onGround()) return e
         }
         return null
     }
 
-    private fun lockOntoPrey(level: ServerLevel, player: Player, screech: Boolean) {
-        val wasUnaware = target != player
-        target = player
+    private fun lockOntoPrey(level: ServerLevel, prey: LivingEntity, screech: Boolean) {
+        val wasUnaware = target != prey
+        target = prey
         memoryTicks = 110
 
         if (screech && wasUnaware && screechCooldown == 0) {
@@ -158,7 +166,9 @@ class SculkStalkerEntity(
                 x, eyeY, z,
                 14, 0.4, 0.4, 0.4, 0.05
             )
-            player.addEffect(MobEffectInstance(MobEffects.DARKNESS, 70, 0), this)
+            if (prey is Player) {
+                prey.addEffect(MobEffectInstance(MobEffects.DARKNESS, 70, 0), this)
+            }
         }
     }
 

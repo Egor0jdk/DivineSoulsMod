@@ -466,6 +466,108 @@ object ModItems {
         )
     }
 
+    // 5. Искатель камер испытаний (Светокамень крестом + Медные блоки по углам вокруг ядра -> после входа в Незер)
+    val TRIAL_CHAMBERS_LOCATOR: Supplier<Item> = registerItem("trial_chambers_locator") {
+        ru.rlyqaz.divinesouls.item.custom.SingleUseLocatorItem(
+            properties = Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON),
+            tooltipKey = "tooltip.divinesouls.trial_chambers_locator",
+            structureTag = net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.STRUCTURE,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, "trial_chambers_locator")
+            )
+        )
+    }
+
+    // 6. Искатель адской крепости (Почва душ крестом + Адские кирпичи по углам вокруг ядра)
+    val FORTRESS_LOCATOR: Supplier<Item> = registerItem("fortress_locator") {
+        ru.rlyqaz.divinesouls.item.custom.SingleUseLocatorItem(
+            properties = Item.Properties().stacksTo(16).rarity(Rarity.UNCOMMON),
+            tooltipKey = "tooltip.divinesouls.fortress_locator",
+            structureTag = net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.STRUCTURE,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, "fortress_locator")
+            )
+        )
+    }
+
+    // 7. Искатель бастиона (8 незеритовых ломов вокруг ядра)
+    val BASTION_LOCATOR: Supplier<Item> = registerItem("bastion_locator") {
+        ru.rlyqaz.divinesouls.item.custom.SingleUseLocatorItem(
+            properties = Item.Properties().stacksTo(16).rarity(Rarity.RARE),
+            tooltipKey = "tooltip.divinesouls.bastion_locator",
+            structureTag = net.minecraft.tags.TagKey.create(
+                net.minecraft.core.registries.Registries.STRUCTURE,
+                net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(DivineSoulsMod.MOD_ID, "bastion_locator")
+            )
+        )
+    }
+
+    // Рудный абиссалит (добывается из Руды Абиссалита, переплавляется в Слиток Абиссалита)
+    val RAW_ABYSSAL_ORE: Supplier<Item> = registerItem("raw_abyssal_ore") {
+        Item(Item.Properties().rarity(Rarity.UNCOMMON))
+    }
+
+    // Слиток Абиссалита (переплавка Рудного абиссалита -> Блок Абиссалита)
+    val ABYSSAL_INGOT: Supplier<Item> = registerItem("abyssal_ingot") {
+        Item(Item.Properties().rarity(Rarity.RARE))
+    }
+
+    // Эссенция Бездны (дроп с Тени Бездны -> крафт Механического ядра Иссушения)
+    val ABYSS_ESSENCE: Supplier<Item> = registerItem("abyss_essence") {
+        Item(Item.Properties().rarity(Rarity.RARE))
+    }
+
+    // Яйцо призыва Тени Бездны
+    val ABYSSAL_SHADOW_SPAWN_EGG: Supplier<Item> = registerItem("abyssal_shadow_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.ABYSSAL_SHADOW,
+            0x0B132B,
+            0x3A86FF,
+            Item.Properties()
+        )
+    }
+
+    // Спора Бездны (дроп со Споровика Бездны -> крафт апгрейда Живой коры)
+    val ABYSSAL_SPORE: Supplier<Item> = registerItem("abyssal_spore") {
+        Item(Item.Properties().rarity(Rarity.UNCOMMON))
+    }
+
+    // Яйцо призыва Споровика Бездны
+    val ABYSSAL_SPORELING_SPAWN_EGG: Supplier<Item> = registerItem("abyssal_sporeling_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.ABYSSAL_SPORELING,
+            0x4A1D6E,
+            0xE040FB,
+            Item.Properties()
+        )
+    }
+
+    // Живой мицелий (дроп с Грибного скитальца -> крафт апгрейда Живой коры)
+    val LIVING_MYCELIUM: Supplier<Item> = registerItem("living_mycelium") {
+        Item(Item.Properties().rarity(Rarity.UNCOMMON))
+    }
+
+    // Яйцо призыва Грибного скитальца
+    val ABYSSAL_WALKER_SPAWN_EGG: Supplier<Item> = registerItem("abyssal_walker_spawn_egg") {
+        net.neoforged.neoforge.common.DeferredSpawnEggItem(
+            ModEntities.ABYSSAL_WALKER,
+            0x2B193D,
+            0x9C27B0,
+            Item.Properties()
+        )
+    }
+
+    val MYCELIAL_BARK: Supplier<Item> = registerItem("mycelial_bark") {
+        ru.rlyqaz.divinesouls.item.custom.MycelialBarkItem(
+            Item.Properties().stacksTo(1).rarity(Rarity.RARE)
+        )
+    }
+
+    // Мембрана Бездны (будущий дроп с Парящего ската Бездны)
+    val ABYSSAL_MEMBRANE: Supplier<Item> = registerItem("abyssal_membrane") {
+        Item(Item.Properties().rarity(Rarity.UNCOMMON))
+    }
+
     fun register(eventBus: IEventBus) {
         // Оставляем пустым, вызов просто триггерит загрузку статических полей
     }

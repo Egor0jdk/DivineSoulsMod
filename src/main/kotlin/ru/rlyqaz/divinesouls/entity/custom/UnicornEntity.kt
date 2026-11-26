@@ -45,17 +45,18 @@ class UnicornEntity(
     }
 
     companion object {
-        // 0 = обычный бег, 1 = подготовка (опустил голову), 2 = таранный рывок, 3 = передышка
+        // 0 = сближение, 1 = подготовка (опустил рог), 2 = таранный рывок, 3 = короткая передышка
         private val DATA_CHARGE_STATE: EntityDataAccessor<Int> =
             SynchedEntityData.defineId(UnicornEntity::class.java, EntityDataSerializers.INT)
 
         fun createAttributes(): AttributeSupplier.Builder {
             return createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 44.0)
-                .add(Attributes.MOVEMENT_SPEED, 0.30)
+                .add(Attributes.MOVEMENT_SPEED, 0.31)
                 .add(Attributes.ATTACK_DAMAGE, 11.0)
                 .add(Attributes.ARMOR, 4.0)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.55)
+                .add(Attributes.STEP_HEIGHT, 1.1)
                 .add(Attributes.FOLLOW_RANGE, 26.0)
         }
 
@@ -95,7 +96,7 @@ class UnicornEntity(
 
     override fun registerGoals() {
         goalSelector.addGoal(0, FloatGoal(this))
-        goalSelector.addGoal(1, UnicornHornChargeGoal(this))
+        goalSelector.addGoal(1, UnicornCombatGoal(this))
         goalSelector.addGoal(2, WaterAvoidingRandomStrollGoal(this, 0.9))
         goalSelector.addGoal(3, LookAtPlayerGoal(this, Player::class.java, 10.0f))
         goalSelector.addGoal(4, RandomLookAroundGoal(this))
@@ -114,8 +115,9 @@ class UnicornEntity(
 
     override fun getVoicePitch(): Float = 1.15f
 
-    private class UnicornHornChargeGoal(private val unicorn: UnicornEntity) : Goal() {
+    private class UnicornCombatGoal(private val unicorn: UnicornEntity) : Goal() {
         private var timer = 0
+        private var biteCooldown = 0
         private var chargeDir = Vec3.ZERO
         private var hitDuringCharge = false
 
@@ -130,7 +132,8 @@ class UnicornEntity(
 
         override fun start() {
             unicorn.chargeState = 0
-            timer = 15
+            timer = 0
+            biteCooldown = 0
         }
 
         override fun stop() {
@@ -138,16 +141,49 @@ class UnicornEntity(
             unicorn.navigation.stop()
         }
 
+        private fun tryCloseBite(target: LivingEntity, serverLevel: ServerLevel): Boolean {
+            if (biteCooldown > 0) return false
+            if (unicorn.distanceToSqr(target) > 6.76) return false // Радиус укуса ~2.6 блока
+
+            biteCooldown = 18
+            unicorn.swing(net.minecraft.world.InteractionHand.MAIN_HAND, true)
+            target.hurt(unicorn.damageSources().mobAttack(unicorn), 7.0f)
+
+            val pushVec = Vec3(target.x - unicorn.x, 0.0, target.z - unicorn.z)
+            if (pushVec.lengthSqr() > 0.001) {
+                val norm = pushVec.normalize()
+                target.push(norm.x * 0.65, 0.3, norm.z * 0.65)
+                target.hurtMarked = true
+            }
+
+            serverLevel.playSound(
+                null, unicorn.x, unicorn.y, unicorn.z,
+                SoundEvents.HORSE_ANGRY, SoundSource.HOSTILE,
+                1.0f, 1.35f
+            )
+            return true
+        }
+
         override fun tick() {
             val target = unicorn.target ?: return
             val serverLevel = unicorn.level() as? ServerLevel ?: return
 
+            if (biteCooldown > 0) {
+                biteCooldown--
+            }
+
+            val distSq = unicorn.distanceToSqr(target)
+
             when (unicorn.chargeState) {
+                // ФАЗА 0: Сближение с целью (если вплотную — кусает; если на дистанции 3..14 блоков — начинает подготовку к рывку)
                 0 -> {
                     unicorn.lookControl.setLookAt(target, 30.0f, 30.0f)
-                    val distSq = unicorn.distanceToSqr(target)
-                    if (distSq.compareTo(196.0) == 1) {
-                        unicorn.navigation.moveTo(target, 1.15)
+
+                    if (distSq <= 6.76) {
+                        unicorn.navigation.stop()
+                        tryCloseBite(target, serverLevel)
+                    } else if (distSq > 196.0) {
+                        unicorn.navigation.moveTo(target, 1.2)
                     } else {
                         unicorn.navigation.stop()
                         unicorn.chargeState = 1
@@ -156,11 +192,20 @@ class UnicornEntity(
                     }
                 }
 
+                // ФАЗА 1: Подготовка к рывку (если игрок подошёл вплотную — кусает и сбрасывает подготовку, чтобы начать её заново когда игрок отойдёт!)
                 1 -> {
                     unicorn.navigation.stop()
                     unicorn.lookControl.setLookAt(target, 45.0f, 45.0f)
+
+                    if (distSq <= 6.76) {
+                        tryCloseBite(target, serverLevel)
+                        unicorn.chargeState = 0
+                        timer = 0
+                        return
+                    }
+
                     val toTarget = Vec3(target.x - unicorn.x, 0.0, target.z - unicorn.z)
-                    if (toTarget.lengthSqr().compareTo(0.001) == 1) {
+                    if (toTarget.lengthSqr() > 0.001) {
                         chargeDir = toTarget.normalize()
                         val yaw = (Mth.atan2(chargeDir.z, chargeDir.x) * (180.0 / Math.PI)).toFloat() - 90.0f
                         unicorn.yRot = yaw
@@ -177,9 +222,9 @@ class UnicornEntity(
                     }
 
                     timer--
-                    if (timer == 0) {
+                    if (timer <= 0) {
                         unicorn.chargeState = 2
-                        timer = 20
+                        timer = 22
                         hitDuringCharge = false
                         serverLevel.playSound(
                             null, unicorn.x, unicorn.y, unicorn.z,
@@ -189,8 +234,9 @@ class UnicornEntity(
                     }
                 }
 
+                // ФАЗА 2: Таранный рывок (благодаря STEP_HEIGHT = 1.1 легко залетает на уступы высотой 1 блок!)
                 2 -> {
-                    val speed = 0.88
+                    val speed = 0.90
                     unicorn.deltaMovement = Vec3(
                         chargeDir.x * speed,
                         unicorn.deltaMovement.y,
@@ -208,13 +254,13 @@ class UnicornEntity(
                     )
 
                     if (!hitDuringCharge) {
-                        val goreBox = unicorn.boundingBox.expandTowards(chargeDir.scale(0.9)).inflate(0.35)
+                        val goreBox = unicorn.boundingBox.expandTowards(chargeDir.scale(0.95)).inflate(0.4)
                         val victims = serverLevel.getEntitiesOfClass(LivingEntity::class.java, goreBox) { e ->
                             e != unicorn && e !is UnicornEntity && e.isAlive
                         }
                         for (victim in victims) {
                             hitDuringCharge = true
-                            victim.hurt(unicorn.damageSources().mobAttack(unicorn), 11.0f)
+                            victim.hurt(unicorn.damageSources().mobAttack(unicorn), 11.5f)
                             victim.push(chargeDir.x * 1.15, 0.45, chargeDir.z * 1.15)
                             victim.hurtMarked = true
                             serverLevel.playSound(
@@ -226,19 +272,27 @@ class UnicornEntity(
                     }
 
                     timer--
-                    if (timer == 0 || unicorn.horizontalCollision || hitDuringCharge) {
+                    // Прерываем рывок только по таймеру, при попадании или при упоре в стену 2+ блока (когда STEP_HEIGHT не справился)
+                    val hitTallWall = unicorn.horizontalCollision && unicorn.deltaMovement.horizontalDistanceSqr() < 0.04
+                    if (timer <= 0 || hitTallWall || hitDuringCharge) {
                         unicorn.chargeState = 3
-                        timer = 45
+                        timer = 25
                         unicorn.deltaMovement = unicorn.deltaMovement.scale(0.25)
                         unicorn.playSound(SoundEvents.HORSE_BREATHE, 1.0f, 0.9f)
                     }
                 }
 
+                // ФАЗА 3: Короткая передышка (1.25 сек), но если игрок лезет вплотную — кусает!
                 3 -> {
                     unicorn.navigation.stop()
-                    unicorn.lookControl.setLookAt(target, 15.0f, 15.0f)
+                    unicorn.lookControl.setLookAt(target, 20.0f, 20.0f)
+
+                    if (distSq <= 6.76) {
+                        tryCloseBite(target, serverLevel)
+                    }
+
                     timer--
-                    if (timer == 0) {
+                    if (timer <= 0) {
                         unicorn.chargeState = 0
                     }
                 }

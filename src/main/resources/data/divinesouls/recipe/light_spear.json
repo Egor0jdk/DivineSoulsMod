@@ -3,15 +3,15 @@
   "category": "equipment",
   "pattern": [
     "  H",
-    " G ",
+    " N ",
     "/  "
   ],
   "key": {
     "H": {
       "item": "divinesouls:unicorn_horn"
     },
-    "G": {
-      "item": "minecraft:gold_ingot"
+    "N": {
+      "item": "minecraft:netherite_ingot"
     },
     "/": {
       "item": "divinesouls:end_wood_stick"

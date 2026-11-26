@@ -39,13 +39,19 @@ object SculkInfectionManager {
         return endLevel?.dragonFight?.hasPreviouslyKilledDragon() ?: false
     }
 
+    fun isSculkBiomeAt(level: ServerLevel, blockX: Int, blockZ: Int): Boolean {
+        val spawn = level.sharedSpawnPos
+        val dx = (blockX - spawn.x).toDouble()
+        val dz = (blockZ - spawn.z).toDouble()
+        if (dx * dx + dz * dz < SPAWN_SAFE_RADIUS_SQ) return false
+
+        return isSculkBiomeAt(level.seed, blockX, blockZ)
+    }
+
     /**
      * Детерминированный 2D-шум: определяет, попадает ли колонка (blockX, blockZ) в скалк-биом.
      */
     fun isSculkBiomeAt(seed: Long, blockX: Int, blockZ: Int): Boolean {
-        val distSq = blockX.toDouble() * blockX.toDouble() + blockZ.toDouble() * blockZ.toDouble()
-        if (distSq < SPAWN_SAFE_RADIUS_SQ) return false
-
         val seedOffset = ((seed xor 0x5DEECE66DL) % 100000L).toDouble() * 0.05
         val x = blockX.toDouble() * 0.005 + seedOffset
         val z = blockZ.toDouble() * 0.005 - seedOffset
@@ -136,7 +142,7 @@ object SculkInfectionManager {
             val worldX = startX + localX
             for (localZ in 0..15) {
                 val worldZ = startZ + localZ
-                if (!isSculkBiomeAt(seed, worldX, worldZ)) continue
+                if (!isSculkBiomeAt(level, worldX, worldZ)) continue
 
                 val topY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, localX, localZ)
                 val minScanY = (topY - 32).coerceAtLeast(level.minBuildHeight + 1)
@@ -288,7 +294,7 @@ object SculkInfectionManager {
                             for (dz in listOf(-radius, radius)) {
                                 val checkX = startPos.x + dx
                                 val checkZ = startPos.z + dz
-                                if (isSculkBiomeAt(seed, checkX, checkZ)) {
+                                if (isSculkBiomeAt(level, checkX, checkZ)) {
                                     val surfaceY = generator.getBaseHeight(
                                         checkX, checkZ, Heightmap.Types.WORLD_SURFACE_WG, level, randomState
                                     )
@@ -303,7 +309,7 @@ object SculkInfectionManager {
                             for (dx in listOf(-radius, radius)) {
                                 val checkX = startPos.x + dx
                                 val checkZ = startPos.z + dz
-                                if (isSculkBiomeAt(seed, checkX, checkZ)) {
+                                if (isSculkBiomeAt(level, checkX, checkZ)) {
                                     val surfaceY = generator.getBaseHeight(
                                         checkX, checkZ, Heightmap.Types.WORLD_SURFACE_WG, level, randomState
                                     )
@@ -345,7 +351,7 @@ object SculkInfectionManager {
 
         val x = net.minecraft.util.Mth.floor(event.x)
         val z = net.minecraft.util.Mth.floor(event.z)
-        if (!isSculkBiomeAt(serverLevel.seed, x, z)) return
+        if (!isSculkBiomeAt(serverLevel, x, z)) return
 
         val namespace = BuiltInRegistries.ENTITY_TYPE.getKey(event.entity.type).namespace
         if (namespace == "minecraft") {

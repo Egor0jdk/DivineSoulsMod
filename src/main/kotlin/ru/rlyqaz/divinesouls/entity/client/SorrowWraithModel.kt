@@ -9,12 +9,11 @@ import net.minecraft.client.model.geom.PartPose
 import net.minecraft.client.model.geom.builders.*
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.util.Mth
+import net.minecraft.world.entity.monster.Monster
 import ru.rlyqaz.divinesouls.DivineSoulsMod
-import ru.rlyqaz.divinesouls.entity.custom.SorrowWraithEntity
 
-class SorrowWraithModel<T : SorrowWraithEntity>(rootPart: ModelPart) : EntityModel<T>() {
+class SorrowWraithModel<T : Monster>(rootPart: ModelPart) : EntityModel<T>() {
 
-    // БАГФИКС: Достаем кости напрямую из rootPart, чтобы избежать NullPointerException при спавне!
     private val root: ModelPart = rootPart.getChild("root")
     private val body: ModelPart = this.root.getChild("body")
     private val head: ModelPart = this.root.getChild("head")
@@ -29,11 +28,9 @@ class SorrowWraithModel<T : SorrowWraithEntity>(rootPart: ModelPart) : EntityMod
         netHeadYaw: Float,
         headPitch: Float
     ) {
-        // Поворот головы по углам взгляда ИИ моба
         this.head.yRot = netHeadYaw * (Mth.PI / 180.0f)
         this.head.xRot = headPitch * (Mth.PI / 180.0f)
 
-        // Руки и тело в абсолютной статике
         this.rightArm.xRot = 0.0f
         this.rightArm.yRot = 0.0f
         this.leftArm.xRot = 0.0f
@@ -47,7 +44,6 @@ class SorrowWraithModel<T : SorrowWraithEntity>(rootPart: ModelPart) : EntityMod
         packedOverlay: Int,
         color: Int
     ) {
-        // Отрисовываем корень модели
         this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, color)
     }
 
@@ -62,7 +58,6 @@ class SorrowWraithModel<T : SorrowWraithEntity>(rootPart: ModelPart) : EntityMod
             val meshdefinition = MeshDefinition()
             val partdefinition = meshdefinition.root
 
-            // Обязательно регистрируем корневую кость "root"
             val root = partdefinition.addOrReplaceChild(
                 "root",
                 CubeListBuilder.create(),

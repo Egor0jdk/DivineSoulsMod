@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BGB",
+    "GCG",
+    "BGB"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:copper_bulb"
+    },
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "C": {
+      "item": "divinesouls:locator_core"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:trial_chambers_locator"
+  }
+}

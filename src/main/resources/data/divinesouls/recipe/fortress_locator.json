@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "NSN",
+    "SCS",
+    "NSN"
+  ],
+  "key": {
+    "N": {
+      "item": "minecraft:nether_bricks"
+    },
+    "S": {
+      "item": "minecraft:soul_soil"
+    },
+    "C": {
+      "item": "divinesouls:locator_core"
+    }
+  },
+  "result": {
+    "count": 1,
+    "id": "divinesouls:fortress_locator"
+  }
+}

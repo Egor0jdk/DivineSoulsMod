@@ -109,11 +109,11 @@ class AbyssDecorationFeature(codec: Codec<NoneFeatureConfiguration>) : Feature<N
             }
         }
 
-        // 4. Редкие грибные островки (Мицелий Бездны + малые и гигантские грибы)
-        if (random.nextFloat().compareTo(0.20f) == -1) {
+        // 4. Грибные рощи Бездны (широкие поляны Мицелия Бездны + 3..6 гигантских грибов + малые грибы)
+        if (random.nextFloat().compareTo(0.38f) == -1) {
             val gx = chunkStartX + 4 + random.nextInt(8)
             val gz = chunkStartZ + 4 + random.nextInt(8)
-            val scanY = 50 + random.nextInt(150)
+            val scanY = 50 + random.nextInt(160)
 
             var surfaceGround: BlockPos? = null
             for (y in scanY downTo 25) {
@@ -125,17 +125,25 @@ class AbyssDecorationFeature(codec: Codec<NoneFeatureConfiguration>) : Feature<N
             }
 
             if (surfaceGround != null) {
-                val radius = 5 + random.nextInt(4)
+                val radius = 9 + random.nextInt(6) // Радиус 9..14 блоков (диаметр ~20-28 блоков!)
+                val myceliumSpots = mutableListOf<BlockPos>()
+
                 for (dx in -radius..radius) {
                     for (dz in -radius..radius) {
-                        if (dx * dx + dz * dz > radius * radius) continue
-                        for (dy in -2..2) {
+                        val distSq = dx * dx + dz * dz
+                        // Рваный природный край поляны
+                        val edgeJitter = random.nextInt(14)
+                        if (distSq > radius * radius - edgeJitter) continue
+
+                        for (dy in -3..3) {
                             val check = surfaceGround.offset(dx, dy, dz)
                             if (level.getBlockState(check).`is`(ModBlocks.ABYSSAL_STONE.get()) &&
                                 level.isEmptyBlock(check.above())
                             ) {
                                 level.setBlock(check, myceliumState, 2)
-                                if (random.nextFloat().compareTo(0.18f) == -1) {
+                                myceliumSpots.add(check)
+
+                                if (random.nextFloat().compareTo(0.24f) == -1) {
                                     level.setBlock(check.above(), smallMushroomState, 2)
                                 }
                                 break
@@ -144,10 +152,107 @@ class AbyssDecorationFeature(codec: Codec<NoneFeatureConfiguration>) : Feature<N
                     }
                 }
 
-                // Выращиваем 1–2 гигантских гриба на островке
-                val giantSpot = surfaceGround.above()
-                if (level.getBlockState(surfaceGround).`is`(ModBlocks.ABYSSAL_MYCELIUM.get())) {
-                    AbyssalMushroomFeature.growGiantMushroom(level, giantSpot, random)
+                // Выращиваем 3..6 гигантских грибов по всей поляне
+                if (myceliumSpots.isNotEmpty()) {
+                    val giantCount = 3 + random.nextInt(4)
+                    myceliumSpots.shuffle()
+                    var grown = 0
+                    for (spot in myceliumSpots) {
+                        if (grown >= giantCount) break
+                        val aboveSpot = spot.above()
+                        val stateAbove = level.getBlockState(aboveSpot)
+                        if (stateAbove.isAir || stateAbove.`is`(ModBlocks.ABYSSAL_MUSHROOM.get())) {
+                            if (AbyssalMushroomFeature.growGiantMushroom(level, aboveSpot, random)) {
+                                grown++
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 5. Стандартные жилы Руды Абиссалита (7 жил по 4–7 блоков на чанк внутри Камня/Туфа Бездны)
+        val oreState = ModBlocks.ABYSSAL_ORE.get().defaultBlockState()
+        val rawBlockState = ModBlocks.RAW_ABYSSAL_BLOCK.get().defaultBlockState()
+
+        repeat(7) {
+            var ox = chunkStartX + 2 + random.nextInt(12)
+            var oy = 25 + random.nextInt(215)
+            var oz = chunkStartZ + 2 + random.nextInt(12)
+            val veinSize = 4 + random.nextInt(4)
+
+            repeat(veinSize) {
+                val pos = BlockPos(ox, oy, oz)
+                val targetState = level.getBlockState(pos)
+                if (targetState.`is`(ModBlocks.ABYSSAL_STONE.get()) || targetState.`is`(ModBlocks.ABYSSAL_TUFF.get())) {
+                    level.setBlock(pos, oreState, 2)
+                }
+                ox += random.nextInt(3) - 1
+                oy += random.nextInt(3) - 1
+                oz += random.nextInt(3) - 1
+            }
+        }
+
+        // 6. Редкая гигантская рудная жила в стиле пещер 1.18+ (Туф Бездны + Руда + целые блоки рудного абиссалита!)
+        if (random.nextInt(18) == 0) {
+            var vx = chunkStartX + 4 + random.nextInt(8)
+            var vy = 45 + random.nextInt(175)
+            var vz = chunkStartZ + 4 + random.nextInt(8)
+            val steps = 16 + random.nextInt(10)
+
+            repeat(steps) {
+                val r = 2 + random.nextInt(2)
+                for (dx in -r..r) {
+                    for (dy in -r..r) {
+                        for (dz in -r..r) {
+                            if (dx * dx + dy * dy + dz * dz > r * r + 1) continue
+                            val p = BlockPos(vx + dx, vy + dy, vz + dz)
+                            val st = level.getBlockState(p)
+                            if (st.`is`(ModBlocks.ABYSSAL_STONE.get()) || st.`is`(ModBlocks.ABYSSAL_TUFF.get())) {
+                                val roll = random.nextFloat()
+                                val blockToSet = when {
+                                    roll < 0.08f -> rawBlockState // 8% — целый блок рудного абиссалита!
+                                    roll < 0.42f -> oreState      // 34% — руда абиссалита
+                                    else -> tuffState             // 58% — матрица из туфа Бездны
+                                }
+                                level.setBlock(p, blockToSet, 2)
+                            }
+                        }
+                    }
+                }
+                vx += random.nextInt(3) - 1
+                vy += random.nextInt(3) - 1
+                vz += random.nextInt(3) - 1
+            }
+        }
+
+        // 7. Сталагмиты Бездны (abyssal_stalagmite) на полу из Камня Бездны (группами по 1–4 шипа)
+        val stalagmiteState = ModBlocks.ABYSSAL_STALAGMITE.get().defaultBlockState()
+        repeat(5) {
+            val sx = chunkStartX + 2 + random.nextInt(12)
+            val sz = chunkStartZ + 2 + random.nextInt(12)
+            val scanStart = 35 + random.nextInt(195)
+
+            for (y in scanStart downTo 22) {
+                val floorPos = BlockPos(sx, y, sz)
+                if (level.getBlockState(floorPos).`is`(ModBlocks.ABYSSAL_STONE.get()) &&
+                    level.isEmptyBlock(floorPos.above())
+                ) {
+                    val clusterCount = 1 + random.nextInt(4)
+                    repeat(clusterCount) {
+                        val ox = sx + random.nextInt(5) - 2
+                        val oz = sz + random.nextInt(5) - 2
+                        for (dy in -2..2) {
+                            val checkGround = BlockPos(ox, y + dy, oz)
+                            if (level.getBlockState(checkGround).`is`(ModBlocks.ABYSSAL_STONE.get()) &&
+                                level.isEmptyBlock(checkGround.above())
+                            ) {
+                                level.setBlock(checkGround.above(), stalagmiteState, 2)
+                                break
+                            }
+                        }
+                    }
+                    break
                 }
             }
         }

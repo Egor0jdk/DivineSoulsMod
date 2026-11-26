@@ -21,7 +21,26 @@
     }
   },
   "spawners": {
-    "monster": [],
+    "monster": [
+      {
+        "type": "divinesouls:abyssal_shadow",
+        "weight": 60,
+        "minCount": 1,
+        "maxCount": 2
+      },
+      {
+        "type": "divinesouls:abyssal_sporeling",
+        "weight": 70,
+        "minCount": 1,
+        "maxCount": 3
+      },
+      {
+        "type": "divinesouls:abyssal_walker",
+        "weight": 55,
+        "minCount": 1,
+        "maxCount": 2
+      }
+    ],
     "creature": [],
     "ambient": [],
     "axolotls": [],

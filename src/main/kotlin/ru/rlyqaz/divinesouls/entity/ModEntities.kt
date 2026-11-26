@@ -26,6 +26,9 @@ import ru.rlyqaz.divinesouls.entity.custom.AstralWandererEntity
 import ru.rlyqaz.divinesouls.entity.custom.LavaGolemEntity
 import ru.rlyqaz.divinesouls.entity.custom.PurpurGuardianEntity
 import ru.rlyqaz.divinesouls.entity.custom.LocatorEyeEntity
+import ru.rlyqaz.divinesouls.entity.custom.AbyssalShadowEntity
+import ru.rlyqaz.divinesouls.entity.custom.AbyssalSporelingEntity
+import ru.rlyqaz.divinesouls.entity.custom.AbyssalWalkerEntity
 import java.util.function.Supplier
 
 /**
@@ -184,6 +187,27 @@ object ModEntities {
             .clientTrackingRange(4)
             .updateInterval(4)
             .build("locator_eye")
+    })
+
+    val ABYSSAL_SHADOW: Supplier<EntityType<AbyssalShadowEntity>> = REGISTRY.register("abyssal_shadow", Supplier {
+        EntityType.Builder.of(::AbyssalShadowEntity, MobCategory.MONSTER)
+            .sized(0.65f, 1.85f)
+            .clientTrackingRange(12)
+            .build("abyssal_shadow")
+    })
+
+    val ABYSSAL_SPORELING: Supplier<EntityType<AbyssalSporelingEntity>> = REGISTRY.register("abyssal_sporeling", Supplier {
+        EntityType.Builder.of(::AbyssalSporelingEntity, MobCategory.MONSTER)
+            .sized(0.75f, 1.15f)
+            .clientTrackingRange(10)
+            .build("abyssal_sporeling")
+    })
+
+    val ABYSSAL_WALKER: Supplier<EntityType<AbyssalWalkerEntity>> = REGISTRY.register("abyssal_walker", Supplier {
+        EntityType.Builder.of(::AbyssalWalkerEntity, MobCategory.MONSTER)
+            .sized(0.75f, 2.25f)
+            .clientTrackingRange(12)
+            .build("abyssal_walker")
     })
 
     fun register(eventBus: IEventBus) {
